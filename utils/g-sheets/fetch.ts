@@ -1,6 +1,6 @@
 import { Item } from '@/types/Listings';
 import { JWT } from 'google-auth-library';
-import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { GoogleSpreadsheet, GoogleSpreadsheetRow } from 'google-spreadsheet';
 import { cache } from 'react';
 
 const doc = new GoogleSpreadsheet('1CIWYxRUcMcXdDdPme3A-oioy33_tATkUxvZq0duWERs', new JWT({
@@ -10,6 +10,8 @@ const doc = new GoogleSpreadsheet('1CIWYxRUcMcXdDdPme3A-oioy33_tATkUxvZq0duWERs'
     'https://www.googleapis.com/auth/spreadsheets',
   ],
 }));
+
+const Subjects = ['English', 'Math', 'Science', 'History', 'Classics/MFL', 'Art'] as const;
 
 export const getSheet = cache(async () => {
   try {
@@ -24,7 +26,7 @@ export const getSheet = cache(async () => {
     const courses: Item[][] = [];
     let i = -1;
 
-    rows.forEach(row => {
+    rows.forEach((row: GoogleSpreadsheetRow) => {
       if (!row.get("Course Number")) {
         i++;
         courses[i] = [];
@@ -33,7 +35,7 @@ export const getSheet = cache(async () => {
       courses[i].push({
         code: row.get("Course Number"),
         name: row.get("Course Title"),
-        subject: ['English', 'Math', 'Science', 'History', 'Classics/MFL', 'Art'][i],
+        subject: Subjects[i],
         rigor: (row.get("Course Title") as string).startsWith('AP ') ? 'AP' : ((row.get("Course Title") as string).includes('Honors') ? 'Honors' : 'Regular'),
         description: row.get("Course Description"),
         link: row.get("Course Video Link"),
