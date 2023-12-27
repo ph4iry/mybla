@@ -4,18 +4,17 @@ const { base64encode, base64decode } = require('nodejs-base64');
 import { GoogleSpreadsheet, GoogleSpreadsheetRow } from 'google-spreadsheet';
 import { cache } from 'react';
 
-const doc = new GoogleSpreadsheet('1CIWYxRUcMcXdDdPme3A-oioy33_tATkUxvZq0duWERs', new JWT({
-  email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  key: base64decode(process.env.GOOGLE_PRIVATE_KEY),
-  scopes: [
-    'https://www.googleapis.com/auth/spreadsheets',
-  ],
-}));
-
 const Subjects = ['English', 'Math', 'Science', 'History', 'Classics/MFL', 'Art'] as const;
 
 export const getSheet = cache(async () => {
   try {
+    const doc = new GoogleSpreadsheet('1CIWYxRUcMcXdDdPme3A-oioy33_tATkUxvZq0duWERs', new JWT({
+      email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+      key: base64decode(process.env.GOOGLE_PRIVATE_KEY!).replace(/\\n/g, '\n'),
+      scopes: [
+        'https://www.googleapis.com/auth/spreadsheets',
+      ],
+    }));
 
     await doc.loadInfo();
 
