@@ -2,26 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base{
+  body {
+    @apply dark:bg-zinc-800 bg-white transition duration-700
   }
-}
+  #course-list {
+    max-height: 60vh;
+  }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  #content h1 {
+    @apply mb-4 mt-0;
+  }
+
+  #content h2 {
+    @apply mb-4 mt-5;
+  }
+
+  #content h3 {
+    @apply mb-3 mt-2;
+  }
+
+  #content p {
+    @apply mb-2 leading-5;
+  }
+
+  #content {
+    @apply leading-5;
+  }
 }

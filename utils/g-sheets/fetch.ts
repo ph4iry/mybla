@@ -1,0 +1,48 @@
+import { Item } from '@/types/Listings';
+import { JWT } from 'google-auth-library';
+import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { cache } from 'react';
+
+const doc = new GoogleSpreadsheet('1CIWYxRUcMcXdDdPme3A-oioy33_tATkUxvZq0duWERs', new JWT({
+  email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+  key: process.env.GOOGLE_PRIVATE_KEY,
+  scopes: [
+    'https://www.googleapis.com/auth/spreadsheets',
+  ],
+}));
+
+export const getSheet = cache(async () => {
+  try {
+
+    await doc.loadInfo();
+
+    console.log(doc.title);
+    const sheet = doc.sheetsByIndex[0];
+
+    const rows = await sheet.getRows();
+
+    const courses: Item[][] = [];
+    let i = -1;
+
+    rows.forEach(row => {
+      if (!row.get("Course Number")) {
+        i++;
+        courses[i] = [];
+        return;
+      }
+      courses[i].push({
+        code: row.get("Course Number"),
+        name: row.get("Course Title"),
+        subject: ['English', 'Math', 'Science', 'History', 'Classics/MFL', 'Art'][i],
+        rigor: (row.get("Course Title") as string).startsWith('AP ') ? 'AP' : ((row.get("Course Title") as string).includes('Honors') ? 'Honors' : 'Regular'),
+        description: row.get("Course Description"),
+        link: row.get("Course Video Link"),
+      });
+    });
+    
+    return courses.flat();
+  } catch (error) {
+    console.error('Error fetching data from Google Sheet: ', error);
+    throw error;
+  }
+});
