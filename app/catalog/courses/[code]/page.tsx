@@ -4,9 +4,11 @@ import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import Link from "next/link";
 import FavoriteButton from "@/components/page/FavoriteButton";
+import { getSheet } from "@/utils/g-sheets/fetch";
+import { checkEnvironment } from "@/utils/environment";
 
 export default async function CourseView({ params }: {params: { code: string }}) {
-  const sheet: Item[] = await (await fetch('/api', { method: 'GET' })).json();
+  const sheet: Item[] = await (await fetch(checkEnvironment() + '/api', { method: 'GET' })).json();
   const course = sheet.find(item => item.code === params.code)!;
 
   const media = categorize(course!.link);
