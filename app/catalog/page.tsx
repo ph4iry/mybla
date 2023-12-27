@@ -5,7 +5,7 @@ export const revalidate = 3600;
 
 export default async function Catalog() {
   console.log('loading...');
-  const sheet: Item[] = await (await fetch(process.env.URL + '/api', { method: 'GET' })).json();
+  const sheet: Item[] = await (await fetch('/api''/api', { method: 'GET' })).json();
 
   return (
     <div className="">

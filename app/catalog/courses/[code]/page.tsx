@@ -6,7 +6,7 @@ import Link from "next/link";
 import FavoriteButton from "@/components/page/FavoriteButton";
 
 export default async function CourseView({ params }: {params: { code: string }}) {
-  const sheet: Item[] = await (await fetch(process.env.URL + '/api', { method: 'GET' })).json();
+  const sheet: Item[] = await (await fetch('/api', { method: 'GET' })).json();
   const course = sheet.find(item => item.code === params.code)!;
 
   const media = categorize(course!.link);
