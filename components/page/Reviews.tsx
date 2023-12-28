@@ -4,7 +4,6 @@ import { Fragment } from "react";
 import { StarRating } from 'star-rating-react-ts'
 
 export default function Reviews({ reviews } : { reviews: Review[] }) {
-  console.log(reviews)
   const overallAverage = reviews.length > 0 ? reviews.map(r => r.ratings.overall).reduce((a, b) => a + b) / reviews.length : 0
   const rigorAverage = reviews.length > 0 ? reviews.map(r => r.ratings.rigor).reduce((a, b) => a + b) / reviews.length : 0
   const supportAverage = reviews.length > 0 ? reviews.map(r => r.ratings.support).reduce((a: number, b: number) => a + b) / reviews.length : 0
