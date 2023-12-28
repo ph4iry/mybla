@@ -13,8 +13,6 @@ export default async function CourseView({ params }: {params: { code: string }})
   const course = sheet.find(item => item.code === params.code)!;
 
   const media = categorize(course!.link);
-
-  console.log('review', course.reviews[0].ratings)
   return (
     <div>
       <a href="/catalog" className="flex text-md items-center font-medium group w-fit"><ArrowLeftIcon className="h-6 mr-1 group-hover:mr-2 transition-all stroke-2" /> Course Catalog</a>
