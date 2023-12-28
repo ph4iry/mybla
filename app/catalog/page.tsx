@@ -1,11 +1,14 @@
 import Filters from '@/components/search/Filters';
 import { Item } from '@/types/Listings';
 import { checkEnvironment } from '@/utils/environment';
-export const revalidate = 3600;
+
+// export const revalidate = 3600;
 
 
 export default async function Catalog() {
   const sheet: Item[] = await (await fetch(checkEnvironment() + '/api', { method: 'GET' })).json();
+
+  console.log(sheet)
 
   return (
     <div className="">
