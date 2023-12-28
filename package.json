@@ -21,6 +21,7 @@
     "nodejs-base64": "^2.0.0",
     "react": "^18",
     "react-dom": "^18",
+    "star-rating-react-ts": "^1.1.4",
     "vercel": "^33.0.1"
   },
   "devDependencies": {

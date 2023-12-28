@@ -6,13 +6,13 @@ import Link from "next/link";
 import FavoriteButton from "@/components/page/FavoriteButton";
 import { getSheet } from "@/utils/g-sheets/fetch";
 import { checkEnvironment } from "@/utils/environment";
+import Reviews from "@/components/page/Reviews";
 
 export default async function CourseView({ params }: {params: { code: string }}) {
   const sheet: Item[] = await (await fetch(checkEnvironment() + '/api', { method: 'GET' })).json();
   const course = sheet.find(item => item.code === params.code)!;
 
   const media = categorize(course!.link);
-
   return (
     <div>
       <a href="/catalog" className="flex text-md items-center font-medium group w-fit"><ArrowLeftIcon className="h-6 mr-1 group-hover:mr-2 transition-all stroke-2" /> Course Catalog</a>
@@ -63,6 +63,9 @@ export default async function CourseView({ params }: {params: { code: string }})
           <h2 className="text-2xl font-semibold">Course Description</h2>
           {course.description}
         </div>
+      </div>
+      <div className="block">
+        <Reviews reviews={course.reviews}/>
       </div>
     </div>
   )
