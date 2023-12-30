@@ -18,7 +18,7 @@ const getReviews = cache(async () => {
     }));
 
     await doc.loadInfo();
-    const sheet = doc.sheetsByIndex[0];
+    const sheet = doc.sheetsByIndex[1];
 
     const rows: GoogleSpreadsheetRow[] = await sheet.getRows();
 
@@ -47,7 +47,7 @@ export const getSheet = cache(async () => {
   try {
     const courseReviews = await getReviews();
     
-    const doc = new GoogleSpreadsheet('1CIWYxRUcMcXdDdPme3A-oioy33_tATkUxvZq0duWERs', new JWT({
+    const doc = new GoogleSpreadsheet('1b2bc7mICAUj_3JMU6fjlztVjycPNPviBAa2GtCqgXng', new JWT({
       email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
       key: base64decode(process.env.GOOGLE_PRIVATE_KEY!).replace(/\\n/g, '\n'),
       scopes: [
