@@ -1,19 +1,23 @@
 import { Item } from "@/types/Listings";
 import categorize from "@/utils/embeds/categorize";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { ArrowTopRightOnSquareIcon, InformationCircleIcon, LightBulbIcon } from '@heroicons/react/24/outline';
 import Link from "next/link";
 import FavoriteButton from "@/components/page/FavoriteButton";
 import { getSheet } from "@/utils/g-sheets/fetch";
 import { checkEnvironment } from "@/utils/environment";
 import Reviews from "@/components/page/Reviews";
+import NotFoundPage from "@/app/not-found";
 
 export default async function CourseView({ params }: {params: { code: string }}) {
   const sheet: Item[] = await (await fetch(checkEnvironment() + '/api', { method: 'GET' })).json();
-  const course = sheet.find(item => item.code === params.code)!;
+  const course = sheet.find(item => item.code === params.code);
+
+  if (!course) {
+    return <NotFoundPage />
+  }
 
   const media = categorize(course!.link);
-  console.log(course);
   return (
     <div>
       <a href="/catalog" className="flex text-md items-center font-medium group w-fit"><ArrowLeftIcon className="h-6 mr-1 group-hover:mr-2 transition-all stroke-2" /> Course Catalog</a>
@@ -45,7 +49,7 @@ export default async function CourseView({ params }: {params: { code: string }})
           ) : null
         )
       }
-      <div className={`md:flex gap-4`}>
+      <div className={`md:flex gap-4 ${media?.source === 'gsites' ? 'flex-col' : ''}`}>
         {
           media?.source !== 'gsites' && media ? (
             <div className="basis-1/2">
@@ -55,8 +59,12 @@ export default async function CourseView({ params }: {params: { code: string }})
         }
         {
           media?.source === 'gsites' && media  ? (
-            <div className="bg-emerald-400/40">
-              This course has a <Link href={media?.link}>website</Link>!
+            <div className="bg-sky-400/40 p-4 rounded text-lg">
+              <LightBulbIcon className="h-8 text-sky-600 inline mr-2" />
+              <span>This course has a </span>
+              <Link legacyBehavior href={media.link} className="text-sky-800" passHref>
+                <a target="_blank" rel="noreferrer noopener">website <ArrowTopRightOnSquareIcon className="h-5 inline -translate-y-1" /></a>
+              </Link>!
             </div>
           ) : null
         }

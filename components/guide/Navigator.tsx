@@ -15,9 +15,9 @@ export default function Navigator() {
         <a className="flex items-center py-1 text-sm" href="/guide/ap-courses">
           Taking AP Courses
         </a>
-        {/* <a className="flex items-center py-1 text-sm" href="/guide/calculate-gpa">
-          GPA Weighing
-        </a> */}
+        <a className="flex items-center py-1 text-sm" href="/guide/arts-electives">
+          Arts Electives
+        </a>
       </div>
     </div>
   )

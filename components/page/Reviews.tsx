@@ -4,7 +4,6 @@ import { Fragment } from "react";
 import { StarRating } from 'star-rating-react-ts'
 
 export default function Reviews({ reviews } : { reviews: Review[] }) {
-  console.log(reviews);
   if (!reviews) reviews = [];
   const overallAverage = reviews.length > 0 ? reviews.map(r => r.ratings.overall).reduce((a, b) => a + b) / reviews.length : 0
   const rigorAverage = reviews.length > 0 ? reviews.map(r => r.ratings.rigor).reduce((a, b) => a + b) / reviews.length : 0
@@ -90,13 +89,15 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
             </div>
           </div>
           <h3 className="text-2xl font-semibold mt-4 mb-2">{reviews.length} Review{pluralize(reviews.length)}</h3>
-          {
-            reviews.map((review, i) => (
-              <Fragment key={i}>
-                <Review data={review}/>
-              </Fragment>
-            ))
-          }
+          <div className="flex flex-col gap-2">
+            {
+              reviews.map((review, i) => (
+                <Fragment key={i}>
+                  <Review data={review}/>
+                </Fragment>
+              ))
+            }
+          </div>
         </>
         ) : (
           <div className="">

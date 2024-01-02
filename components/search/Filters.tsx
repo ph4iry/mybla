@@ -21,8 +21,8 @@ export default function Filters({ sheet }: { sheet: Item[] }) {
 
   return (
     <>
-      <div className="flex gap-2 items-center">
-        <span className="text-sm font-bold">Filter by:</span>
+      <div className="flex gap-2 items-center flex-nowrap">
+        <span className="text-sm font-bold whitespace-nowrap">Filter by:</span>
         <Filter
           name="Subject"
           index={0}
@@ -63,7 +63,10 @@ type FilterOptions = {
 }
 function Filter({ name, index, previous,condition, setState, options } : FilterOptions) {
   const [values, setValues] = useState<[string, boolean][]>(options.map((o) => [o, false]));
-  
+  const [toggles, setToggles] = useState([...options].map((o: string) => ({
+    text: o,
+    enabled: false
+  }))); 
   const clickHandler = (e: React.MouseEvent<HTMLInputElement>) => {
     let targetedValue = values.findIndex((v) => v[0] === (e.target as HTMLInputElement).name as string)!
     const vals = values;
@@ -72,15 +75,31 @@ function Filter({ name, index, previous,condition, setState, options } : FilterO
     setValues(vals);
     const valuesToCheck = values.filter(v => v[1]);
 
-    console.log('values to check: ' + valuesToCheck.map(v => v[0]).join(" "))
-
     const x = previous;
     x[index]= (i: Item) => condition(i, valuesToCheck);
-    console.log(valuesToCheck);
 
     setState(x.slice());
-    console.log(x);
   }
+
+  const enabledValues: string[] = (() => {
+    const res: string[] = [];
+    values.forEach((v: [string, boolean]) => {
+      if (v[1]) res.push(v[0]);
+    });
+    return res;
+  })();
+
+  const buttonDisplay = (() => {
+    if (enabledValues.length > 0) {
+      if (enabledValues.length === 1) {
+        return enabledValues[0];
+      } else {
+        return `${enabledValues[0]} +${enabledValues.length - 1}`
+      }
+    } else {
+      return name;
+    }
+  })();
 
   return (
     <Popover className="relative">
@@ -88,8 +107,8 @@ function Filter({ name, index, previous,condition, setState, options } : FilterO
         <>
           <Popover.Button className={`
             ${open ? 'dark:text-white' : 'dark:text-white/90 text-zinc-900/90'}
-            group inline-flex items-center rounded-md bg-zinc-400/50 dark:bg-zinc-700 px-3 py-2 text-base font-medium hover:text-zinc-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}>
-            <span>{name}</span>
+            group inline-flex items-center rounded-md bg-zinc-400/50 dark:bg-zinc-700 px-3 py-2 text-base font-medium hover:text-zinc-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 whitespace-nowrap`}>
+            <span>{buttonDisplay}</span>
             <ChevronDownIcon
               className={`${open ? 'text-zinc-600 dark:text-zinc-300' : 'text-zinc-600/50 dark:text-zinc-300/50'}
                 ml-2 h-5 w-5 transition duration-150 ease-in-out dark:group-hover:text-zinc-300/80 stroke-2`}
@@ -111,6 +130,8 @@ function Filter({ name, index, previous,condition, setState, options } : FilterO
                   <FilterToggle
                     key={i}
                     content={o}
+                    allToggles={toggles}
+                    updateToggle={setToggles}
                     handler={clickHandler}
                   />
                 ))}
@@ -124,12 +145,31 @@ function Filter({ name, index, previous,condition, setState, options } : FilterO
   )
 }
 
-function FilterToggle({ handler, content }: {handler: (e: React.MouseEvent<HTMLInputElement>) => void, content: string}) {
+function FilterToggle({ handler, content, allToggles, updateToggle }: {handler: (e: React.MouseEvent<HTMLInputElement>) => void, content: string, allToggles: {
+  text: string,
+  enabled: boolean
+}[], updateToggle: Dispatch<SetStateAction<{
+  text: string,
+  enabled: boolean
+}[]>> }) {
   const [enabled, setEnabled] = useState(false);
+
+  const updateCheckbox = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    handler(e);
+    const thisCheckbox = allToggles.findIndex(t => t.text === content)!;
+    updateToggle(
+      allToggles.toSpliced(thisCheckbox, 1, {
+        text: content,
+        enabled: !allToggles[thisCheckbox].enabled,
+      })
+    );
+  }
+
+  const isChecked = allToggles.find(t => t.text === content)!.enabled;
   return (
     <div className="flex flex-nowrap p-1">
        <label className="text-base whitespace-nowrap" >
-          <input type="checkbox" name={content} className="w-6 h-6 text-xs py-1 px-2 rounded transition mr-3" onClick={(e) => { handler(e); setEnabled(!enabled) }} />
+          <input type="checkbox" name={content} className="w-6 h-6 text-xs py-1 px-2 rounded transition mr-3" checked={isChecked} onClick={(e) => { updateCheckbox(e)}} />
           {content}
         </label>
     </div>

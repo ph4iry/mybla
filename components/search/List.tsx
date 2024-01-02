@@ -98,10 +98,36 @@ function ListItem({ data }: { data: Item }) {
       <div className="block">
         <a href={`/catalog/courses/${data.code}`} className="text-2xl underline font-semibold">{data.name}</a>
         <div className="flex gap-3 text-xs font-medium mt-2">
-          <span className="uppercase px-3 py-1 rounded-full bg-sky-200 dark:bg-sky-800">{data.subject}</span>
-          <span className="uppercase px-3 py-1 rounded-full bg-sky-200 dark:bg-sky-800">{data.rigor}</span>
+          <span className={`uppercase px-3 py-1 rounded-full ${getSubjectColor(data.subject)}`}>{data.subject}</span>
+          <span className={`uppercase px-3 py-1 rounded-full ${getRigorColor(data.rigor)}`}>{data.rigor}</span>
         </div>
+        
       </div>
     </div>
   )
+}
+
+function getSubjectColor(subject: "English" | "Math" | "Science" | "History" | "Classics/MFL" | "Art") {
+  switch (subject) {
+    case "English":
+      return 'bg-amber-400/30';
+    case "Math":
+      return 'bg-blue-500/30';
+    case "Science":
+      return 'bg-emerald-400/30';
+    case "History":
+      return 'bg-amber-700/30';
+    case "Classics/MFL":
+      return 'bg-violet-400/30';
+    case "Art":
+      return 'bg-pink-400/30';
+  }
+}
+
+function getRigorColor(rigor: 'AP' | 'Honors' | 'Regular') {
+  switch (rigor) {
+    case "AP": return 'bg-sky-400/30';
+    case "Honors": return 'bg-emerald-30';
+    case "Regular": return 'bg-zinc-400/30';
+  }
 }

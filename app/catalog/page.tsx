@@ -8,8 +8,6 @@ import { checkEnvironment } from '@/utils/environment';
 export default async function Catalog() {
   const sheet: Item[] = await (await fetch(checkEnvironment() + '/api', { method: 'GET' })).json();
 
-  console.log(sheet)
-
   return (
     <div className="">
       <h1 className="text-4xl font-bold">Course Catalog</h1>
