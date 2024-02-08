@@ -1,4 +1,4 @@
-import { Item } from '@/types/Listings';
+import { Item, Review } from '@/types/Listings';
 import { JWT } from 'google-auth-library';
 const { base64encode, base64decode } = require('nodejs-base64');
 import { GoogleSpreadsheet, GoogleSpreadsheetRow } from 'google-spreadsheet';
@@ -9,7 +9,7 @@ const Subjects = ['English', 'Math', 'Science', 'History', 'Classics/MFL', 'Art'
 // COURSE REVIEWS
 const getReviews = cache(async () => {
   try {
-    const doc = new GoogleSpreadsheet('1tZ74p8YQ3rURKAPlZX2bVLpngKLcPoGKdznuc97O-34', new JWT({
+    const doc = new GoogleSpreadsheet('1QMGOGHlox_PiF0pX5BanF5JIRZfXIds1qAGL7qRQC00', new JWT({
       email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
       key: base64decode(process.env.GOOGLE_PRIVATE_KEY!).replace(/\\n/g, '\n'),
       scopes: [
@@ -22,17 +22,19 @@ const getReviews = cache(async () => {
 
     const rows: GoogleSpreadsheetRow[] = await sheet.getRows();
 
-    return rows.map((row) => ({
+    return rows.map<Review>((row) => ({
       name: row.get('name'),
       course: row.get('course').split(" | ")[0],
       ratings: {
-        rigor: parseInt(row.get('rigor')),
-        homework: parseInt(row.get('homework')),
-        support: parseInt(row.get('extraSupport')),
-        overall: parseInt(row.get('overall')),
+        weeklyCommitment: row.get('weekly'),
+        homework: row.get('homework'),
+        resources: row.get('resources'),
+        skills: {
+          humanities: [...row.get('humanities').split(', ')],
+          personal: [...row.get('personal').split(', ')],
+          stem: [...row.get('stem').split(', ')],
+        }
       },
-      wouldRecommend: row.get('wouldRecommend'),
-      comment: row.get('comment'),
       tips: row.get('tips'),
     }));
   
@@ -45,7 +47,7 @@ const getReviews = cache(async () => {
 // COURSE GETTER
 export const getSheet = cache(async () => {
   try {
-    const courseReviews = await getReviews();
+    const courseReviews: Review[] = await getReviews();
     
     const doc = new GoogleSpreadsheet('1b2bc7mICAUj_3JMU6fjlztVjycPNPviBAa2GtCqgXng', new JWT({
       email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,

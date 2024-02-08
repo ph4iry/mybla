@@ -1,191 +1,244 @@
 'use client';
 import { Review } from "@/types/Listings";
+import { BeakerIcon, BookOpenIcon, ClockIcon, CursorArrowRaysIcon, InboxArrowDownIcon, UserGroupIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
-import { StarRating } from 'star-rating-react-ts'
 
 export default function Reviews({ reviews } : { reviews: Review[] }) {
   if (!reviews) reviews = [];
-  const overallAverage = reviews.length > 0 ? reviews.map(r => r.ratings.overall).reduce((a, b) => a + b) / reviews.length : 0
-  const rigorAverage = reviews.length > 0 ? reviews.map(r => r.ratings.rigor).reduce((a, b) => a + b) / reviews.length : 0
-  const supportAverage = reviews.length > 0 ? reviews.map(r => r.ratings.support).reduce((a: number, b: number) => a + b) / reviews.length : 0
-  const homeworkAverage = reviews.length > 0 ? reviews.map(r => r.ratings.homework).reduce((a, b) => a + b) / reviews.length : 0
+  // SKILLS
+  const humanitiesSkillData = reviews.map(review => review.ratings.skills.humanities).flat()
+  const sortedHumanities = sortAndCountReviews(humanitiesSkillData);
+  const humanities = {
+    data: humanitiesSkillData,
+    sorted: sortedHumanities,
+  };
+
+  const stemStillData = reviews.map(review => review.ratings.skills.stem).flat()
+  const sortedStemSkillData = sortAndCountReviews(stemStillData);
+  const stem = {
+    data: stemStillData,
+    sorted: sortedStemSkillData,
+  };
+
+  const personalSkillData = reviews.map(review => review.ratings.skills.personal).flat()
+  const sortedPersonalSkillData = sortAndCountReviews(personalSkillData);
+  const personal = {
+    data: personalSkillData,
+    sorted: sortedPersonalSkillData,
+  };
+  
+  // COMMITMENT / RIGOR
+  const weeklyData = reviews.map(review => review.ratings.weeklyCommitment).flat();
+  const sortedWeeklyData = Object.entries(sortAndCountReviews(weeklyData)).sort((a, b) => b[1] - a[1]);
+
+  const homeworkData = reviews.map(review => review.ratings.homework).flat();
+  const sortedHomeworkData = Object.entries(sortAndCountReviews(homeworkData)).sort((a, b) => b[1] - a[1]);
+
+  const resourceData = reviews.map(review => review.ratings.resources).flat();
+  const sortedResourceData = Object.entries(sortAndCountReviews(resourceData)).sort((a, b) => b[1] - a[1]);
+
   return (
     <div className="mt-4">
-      <h2 className="text-3xl font-semibold mb-2">Student Ratings</h2>
+      <h2 className="text-3xl font-semibold mb-2">Student Voice</h2>
       {/* <p className="italic">Note: These are student-submitted comments on the courses they&apos;ve taken. While these reviews may not depict what your experience taking the course will be like, the comments submitted are subject to moderation and deletion.</p> */}
-      {reviews.length !== 0 ? (
-        <>
-          <div className="flex gap-3 items-center justify-center flex-wrap flex-col md:flex-row dark:bg-zinc-700/50 bg-zinc-100/75 p-4 rounded">
-            <div className="shrink-0 basis-1/3 flex flex-col items-center justify-center flex-nowrap whitespace-nowrap">
-              <span className="font-bold text-2xl">{overallAverage.toFixed(1)} ({reviews.length})</span>
-              <StarRating
-                readOnly initialRating={overallAverage}
-                theme={{
-                  colors: {
-                    backgroundColorActive: '#facc15',
-                    backgroundDefault: '#404040'
-                  },
-                  size: 36
-                }}
-              />
-            </div>
-            <div className="grow">
-              <table className="table-fixed border-collapse">
-                <tbody className="divide-y divide-zinc-500/30">
-                  <tr className="py-2">
-                    <td className="min-w-36">
-                      <span className="font-semibold text-lg">Rigor</span>
-                    </td>
-                    <td className="px-3">
-                      {rigorAverage.toFixed(1)}
-                    </td>
-                    <td>
-                      <div className="flex items-center gap-2">
-                        <progress
-                          className="w-24 md:w-56 [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:bg-green-400 [&::-moz-progress-bar]:bg-green-400"
-                          value={rigorAverage}
-                          max={5}
-                        ></progress>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="py-2">
-                    <td>
-                      <span className="font-semibold text-lg">Homework </span>
-                    </td>
-                    <td className="px-3">
-                      {homeworkAverage.toFixed(1)}
-                    </td>
-                    <td>
-                      <div className="flex items-center gap-2">
-                        
-                        <progress
-                          className="w-24 md:w-56 [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:bg-green-400 [&::-moz-progress-bar]:bg-green-400"
-                          value={homeworkAverage}
-                          max={5}
-                        ></progress>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="py-2">
-                    <td>
-                      <span className="font-semibold text-lg">Extra Support</span>
-                    </td>
-                    <td className="px-3">
-                      {supportAverage.toFixed(1)}
-                    </td>
-                    <td>
-                      <div className="flex items-center gap-2">
-                        <progress
-                          className="w-24 md:w-56 [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:bg-green-400 [&::-moz-progress-bar]:bg-green-400"
-                          value={supportAverage}
-                          max={5}
-                        ></progress>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <h3 className="text-2xl font-semibold mt-4 mb-2">{reviews.length} Review{pluralize(reviews.length)}</h3>
-          <div className="flex flex-col gap-2">
-            {
-              reviews.map((review, i) => (
+      { reviews.length > 0 ? (
+        <div className="space-y-4">
+          {/* <div className="bg-zinc-100/80 dark:bg-zinc-700 p-4 rounded">
+            <h3 className="text-2xl font-semibold mb-2">Course Commitment</h3>
+            <p className="italic text-base">How much time are students expected to put into this course?</p>
+            <h4 className="text-xl font-semibold my-2">Weekly Commitment (includes homework and projects outside of class time)</h4>
+            <div className="flex gap-2">
+              {weeklyData.map((comment, i) => (
                 <Fragment key={i}>
-                  <Review data={review}/>
+                  <CommitmentTag text={comment} type="weekly" quantity={sortedWeeklyData[i][1]}/>
                 </Fragment>
-              ))
+              ))}
+            </div>
+            <h4 className="text-xl font-semibold my-2">Homework Load</h4>
+            <div className="flex gap-2">
+              {homeworkData.map((comment, i) => (
+                <Fragment key={i}>
+                  <CommitmentTag text={comment} type="homework" quantity={sortedHomeworkData[i][1]}/>
+                </Fragment>
+              ))}
+            </div>
+            <h4 className="text-xl font-semibold my-2">Available Online Resources</h4>
+            <div className="flex gap-2">
+              {resourceData.map((comment, i) => (
+                <Fragment key={i}>
+                  <CommitmentTag text={comment} type="resources" quantity={sortedResourceData[i][1]}/>
+                </Fragment>
+              ))}
+            </div>
+          </div> */}
+          <div className="bg-zinc-100/80 dark:bg-zinc-700 p-4">
+            <h3 className="text-2xl font-semibold mb-2 text-zinc-500 dark:text-zinc-300">Skills Summary</h3>
+            <p className="text-base italic mb-2">What skills will help a student succeed in this course?</p>
+            {
+              humanities.data.length > 0 && (
+                <>
+                  <h4 className="text-xl font-semibold my-2 text-amber-500">Humanities</h4>
+                  <div className="flex gap-2">
+                    {humanities.data.map((comment, i) => (
+                      <Fragment key={i}>
+                        <SkillTag text={comment} type="humanities" quantity={humanities.sorted[comment]}/>
+                      </Fragment>
+                    ))}
+                  </div>
+                </>
+              )
+            }
+
+            {
+              stem.data.length > 0 && (
+                <>
+                  <h4 className="text-xl font-semibold my-2 text-emerald-500">STEM</h4>
+                  <div className="flex gap-2 flex-wrap">
+                    {stem.data.map((comment, i) => (
+                      <Fragment key={i}>
+                        <SkillTag text={comment} type="stem" quantity={stem.sorted[comment]}/>
+                      </Fragment>
+                    ))}
+                  </div>
+                </>
+              )
+            }
+
+            { 
+              personal.data.length > 0 && (
+                <>
+                  <h4 className="text-xl font-semibold my-2 text-sky-500">Personal</h4>
+                  <div className="flex gap-2 flex-wrap">
+                    {personal.data.map((comment, i) => (
+                      <Fragment key={i}>
+                        <SkillTag text={comment} type="personal" quantity={personal.sorted[comment]}/>
+                      </Fragment>
+                    ))}
+                  </div>
+                </>
+              )
             }
           </div>
-        </>
-        ) : (
-          <div className="">
-            There aren&apos;t any ratings available for this course to display.
-          </div>
-        )
-      }
+          <h3 className="text-2xl font-semibold mb-2">Comments</h3>
+          {
+            reviews.map((review, i) => {
+
+
+              return (
+                <div className="bg-zinc-100/80 dark:bg-zinc-700 p-4" key={i}>
+                  <div className="text-lg font-semibold">{review.name && review.name !== "" ? review.name : "Anonymous Student"}</div>
+                  <div className="flex flex-wrap gap-4">
+                    <CommitmentTag text={review.ratings.weeklyCommitment} type="weekly"/>
+                    <CommitmentTag text={review.ratings.homework} type="homework"/>
+                    <CommitmentTag text={review.ratings.resources} type="resources"/>
+                  </div>
+                  {
+                    review.tips && review.tips !== "" && (
+                      <div><span className="font-bold">Tips and Tricks: </span>{review.tips}</div>
+                    ) 
+                  }
+                </div>
+              )
+            })
+          }
+        </div>
+      ) : (
+        <div>There are no student submissions available for this course.</div>
+      )}
     </div>
   )
 }
 
-function pluralize(num: number) {
-  if (num === 1) return ''
-  else return 's';
-}
 
-function Review({ data }: { data: Review }) {
-  const homeworkScaleTranslation = (num: 1 | 2 | 3 | 4 | 5) => {
-    switch (num) {
-      case 1: return 'Very Light'
-      case 2: return 'Light'
-      case 3: return 'Moderate'
-      case 4: return 'Heavy'
-      case 5: return 'Very Heavy'
-    }
-  }
+type CommitmentTagType = 'weekly' | 'homework' | 'resources';
 
-  const rigorScaleTranslation = (num: 1 | 2 | 3 | 4 | 5) => {
-    switch (num) {
-      case 1: return 'Easy'
-      case 2: return 'Kinda Easy'
-      case 3: return 'So-So'
-      case 4: return 'Kinda Hard'
-      case 5: return 'Hard'
+function CommitmentTag({ text, type, quantity }:{ text: string, type: CommitmentTagType, quantity?: number }) {
+  const color = (() => {
+    switch(type) {
+      case "weekly": return 'bg-rose-400/30';
+      case "homework": return 'bg-fuchsia-400/30';
+      case "resources": return 'bg-blue-400/30';
     }
-  }
+  })();
 
-  const supportScaleTranslation = (num: 1 | 2 | 3 | 4 | 5) => {
-    switch (num) {
-      case 1: return 'Little to no support'
-      case 2: return 'Some support'
-      case 3: return 'Adequate support'
-      case 4: return 'Pretty good support'
-      case 5: return 'Plenty of support'
+  const explanation = (() => {
+    switch(type) {
+      case "weekly": return "Weekly Commitment: "
+      case "homework": return "Homework Load: "
+      case "resources": return "Available Resources: "
     }
-  }
+  })();
   return (
-    <div className="block dark:bg-zinc-700/50 bg-zinc-100/75 p-4">
-      <div className="font-medium text-lg">
-        <span className="mr-3 font-bold">{data.name === '' ? 'Anonymous' : data.name}</span>
-        <div className="inline-flex items-center rounded-full flex-nowrap bg-sky-300/20 px-3 py-1">
-          <span className="mr-3 font-bold">{data.ratings.overall} star{pluralize(data.ratings.overall)}</span>
-          <StarRating
-            readOnly initialRating={data.ratings.overall}
-            theme={{
-              colors: {
-                backgroundColorActive: '#facc15',
-                backgroundDefault: '#404040'
-              },
-              size: 20
-            }}
-          />
-        </div>
-      </div>
-      <div className="flex gap-4 flex-wrap leading-6 my-3">
-        <div className="inline-flex">
-          Rigor: <span className="font-bold ml-2">{data.ratings.rigor}/5 - {rigorScaleTranslation(data.ratings.rigor as 1 | 2 | 3 | 4 | 5)}</span>
-        </div>
-        <div className="inline-flex">
-          Homework:<span className="font-bold ml-2">{data.ratings.homework}/5 - {homeworkScaleTranslation(data.ratings.homework as 1 | 2 | 3 | 4 | 5)}</span>
-        </div>
-        <div className="inline-flex">
-          Extra Support/Resources:<span className="font-bold ml-2">{data.ratings.support}/5 - {supportScaleTranslation(data.ratings.support as 1 | 2 | 3 | 4 | 5)}</span>
-        </div>
-        <div className="inline-flex">
-          Would recommend to a friend?<span className="font-bold ml-2">{data.wouldRecommend}</span>
-        </div>
-      </div>
-      <div className="content my-2">
-        {data.comment}
-      </div>
-      {
-        data.tips && (
-          <div>
-            <span className="font-bold">Tips and Tricks: </span> {data.tips}
-          </div>
-        )
-      }
-    </div>
+    <span className={`md:inline inline-flex md:gap-0 px-3 py-1.5 md:rounded-full rounded ${color} md:whitespace-nowrap text-sm items-center`}><CommitmentTagIcon type={type}/>
+      <span><span className="inline font-bold">{explanation}</span>{text}</span> {quantity && quantity > 0 ? `(${quantity})` : null}
+    </span>
   )
+}
+
+function CommitmentTagIcon({ type }: { type: CommitmentTagType }) {
+  switch (type) {
+    case "weekly":
+      return (
+        <ClockIcon className="inline h-6 shrink-0 mx-1 mr-2 text-rose-400"/>
+      );
+    case "homework":
+      return (
+        <InboxArrowDownIcon className="inline h-6 shrink-0 mx-1 mr-2 text-fuchsia-400"/>
+      );
+    case "resources":
+      return (
+        <CursorArrowRaysIcon className="inline h-6 shrink-0 mx-1 mr-2 text-blue-400"/>
+      );
+  }
+}
+
+type SkillTagType = 'humanities' | 'stem' | 'personal'
+
+function SkillTag({ text, type, quantity }:{ text: string, type: SkillTagType, quantity?: number }) {
+  const color = (() => {
+    switch(type) {
+      case "humanities": return 'bg-amber-400/30';
+      case "stem": return 'bg-emerald-400/30';
+      case "personal": return 'bg-sky-400/30';
+    }
+  })();
+
+  return (
+    <span className={`md:inline inline-flex md:gap-0 px-3 py-1.5 md:rounded-full rounded ${color} md:whitespace-nowrap text-sm items-center`}><SkillTagIcon type={type}/> {text} {quantity && quantity > 0 ? `(${quantity})` : null}</span>
+  )
+}
+
+function SkillTagIcon({ type }: { type: SkillTagType }) {
+  switch (type) {
+    case "humanities":
+      return (
+        <BookOpenIcon className="inline h-6 shrink-0 mx-1 text-amber-400"/>
+      );
+    case "stem":
+      return (
+        <BeakerIcon className="inline h-6 shrink-0 mx-1 text-emerald-400"/>
+      );
+    case "personal":
+      return (
+        <UserGroupIcon className="inline h-6 shrink-0 mx-1 text-sky-400"/>
+      );
+  }
+}
+
+function sortAndCountReviews(arr: string[]): {
+  [index: string]: number,
+} {
+  const count: {
+    [index: string]: number,
+  } = {};
+
+  for (const element of arr) {
+    if (count[element]) {
+      count[element] += 1;
+    } else {
+      count[element] = 1;
+    }
+  }
+
+  return count;
 }
