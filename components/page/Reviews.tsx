@@ -29,13 +29,13 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
   
   // COMMITMENT / RIGOR
   const weeklyData = reviews.map(review => review.ratings.weeklyCommitment).flat();
-  const sortedWeeklyData = Object.entries(sortAndCountReviews(weeklyData)).sort((a, b) => b[1] - a[1]);
+  const mostFrequentWeeklyCommitmentReport = Object.entries(sortAndCountReviews(weeklyData)).sort((a, b) => b[1] - a[1])[0];
 
   const homeworkData = reviews.map(review => review.ratings.homework).flat();
-  const sortedHomeworkData = Object.entries(sortAndCountReviews(homeworkData)).sort((a, b) => b[1] - a[1]);
-
+  const mostFrequentHomeworkReport = Object.entries(sortAndCountReviews(homeworkData)).sort((a, b) => b[1] - a[1])[0];
+  
   const resourceData = reviews.map(review => review.ratings.resources).flat();
-  const sortedResourceData = Object.entries(sortAndCountReviews(resourceData)).sort((a, b) => b[1] - a[1]);
+  const mostFrequentResourceReport = Object.entries(sortAndCountReviews(resourceData)).sort((a, b) => b[1] - a[1])[0];
 
   return (
     <div className="mt-4">
@@ -78,10 +78,10 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
               humanities.data.length > 0 && (
                 <>
                   <h4 className="text-xl font-semibold my-2 text-amber-500">Humanities</h4>
-                  <div className="flex gap-2">
-                    {humanities.data.map((comment, i) => (
+                  <div className="flex gap-2 flex-wrap">
+                    {Object.entries(humanities.sorted).map((comment, i) => (
                       <Fragment key={i}>
-                        <SkillTag text={comment} type="humanities" quantity={humanities.sorted[comment]}/>
+                        <SkillTag type="humanities" text={comment[0]} quantity={comment[1]}/>
                       </Fragment>
                     ))}
                   </div>
@@ -94,9 +94,9 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
                 <>
                   <h4 className="text-xl font-semibold my-2 text-emerald-500">STEM</h4>
                   <div className="flex gap-2 flex-wrap">
-                    {stem.data.map((comment, i) => (
+                    {Object.entries(stem.sorted).map((comment, i) => (
                       <Fragment key={i}>
-                        <SkillTag text={comment} type="stem" quantity={stem.sorted[comment]}/>
+                        <SkillTag type="stem" text={comment[0]} quantity={comment[1]}/>
                       </Fragment>
                     ))}
                   </div>
@@ -109,9 +109,9 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
                 <>
                   <h4 className="text-xl font-semibold my-2 text-sky-500">Personal</h4>
                   <div className="flex gap-2 flex-wrap">
-                    {personal.data.map((comment, i) => (
+                    {Object.entries(personal.sorted).map((comment, i) => (
                       <Fragment key={i}>
-                        <SkillTag text={comment} type="personal" quantity={personal.sorted[comment]}/>
+                        <SkillTag type="personal" text={comment[0]} quantity={comment[1]}/>
                       </Fragment>
                     ))}
                   </div>

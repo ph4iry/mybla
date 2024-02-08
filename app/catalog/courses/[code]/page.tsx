@@ -1,13 +1,14 @@
 import { Item } from "@/types/Listings";
 import categorize from "@/utils/embeds/categorize";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-import { ArrowTopRightOnSquareIcon, InformationCircleIcon, LightBulbIcon } from '@heroicons/react/24/outline';
+import { ArrowTopRightOnSquareIcon, InformationCircleIcon, LightBulbIcon, HashtagIcon } from '@heroicons/react/24/outline';
 import Link from "next/link";
 import FavoriteButton from "@/components/page/FavoriteButton";
 import { getSheet } from "@/utils/g-sheets/fetch";
 import { checkEnvironment } from "@/utils/environment";
 import Reviews from "@/components/page/Reviews";
 import NotFoundPage from "@/app/not-found";
+import { colorTextByRigor, colorTextBySubject } from "@/utils/colors/text";
 
 export default async function CourseView({ params }: {params: { code: string }}) {
   const sheet: Item[] = await (await fetch(checkEnvironment() + '/api', { method: 'GET' })).json();
@@ -23,9 +24,14 @@ export default async function CourseView({ params }: {params: { code: string }})
       <a href="/catalog" className="flex text-md items-center font-medium group w-fit"><ArrowLeftIcon className="h-6 mr-1 group-hover:mr-2 transition-all stroke-2" /> Course Catalog</a>
       <h1 className="text-4xl font-bold"><FavoriteButton courseCode={course.code}/> {course.name}</h1>
       <div className="flex gap-2 my-3">
-        <span className="rounded-full px-3 bg-emerald-400 dark:bg-emerald-400/30">{course.subject}</span>
-        <span className="rounded-full px-3 bg-sky-400 dark:bg-sky-400/30">{course.rigor}</span>
+      {/* rounded-full px-3 bg-emerald-400 dark:bg-emerald-400/30 */}
+        <span className={`inline-flex uppercase items-center ${colorTextBySubject(course.subject)}`}><HashtagIcon className="h-4 stroke-2" /> {course.subject}</span>
+        <span className={`inline-flex uppercase items-center ${colorTextByRigor(course.rigor)}`}><HashtagIcon className="h-4 stroke-2" /> {course.rigor}</span>
       </div>
+      {/* <div className="flex gap-2 my-3">
+        <span className="inline-flex uppercase items-center text-rose-400"><HashtagIcon className="h-4 stroke-2" /> {course.subject}</span>
+        <span className="inline-flex uppercase items-center text-fuchsia-400"><HashtagIcon className="h-4 stroke-2" /> {course.rigor}</span>
+      </div> */}
       {
         course.rigor === 'AP' ? (
           <div className="p-4 mb-3 rounded bg-sky-300/40">
@@ -49,16 +55,16 @@ export default async function CourseView({ params }: {params: { code: string }})
           ) : null
         )
       }
-      <div className={`md:flex gap-4 ${media?.source === 'gsites' ? 'flex-col' : ''}`}>
+      <div className={`md:flex gap-4 ${(media?.source === 'gsites' || media?.source === 'other') ? 'flex-col' : ''}`}>
         {
-          media?.source !== 'gsites' && media ? (
+          (media?.source !== 'gsites' && media?.source !== 'other') && media ? (
             <div className="basis-1/2">
               <iframe src={media?.getEmbedLink()} className="w-full h-auto aspect-video"></iframe>
             </div>
           ) : null
         }
         {
-          media?.source === 'gsites' && media  ? (
+          (media?.source === 'gsites' || media?.source === 'other') && media  ? (
             <div className="bg-sky-400/40 p-4 rounded text-lg">
               <LightBulbIcon className="h-8 text-sky-600 inline mr-2" />
               <span>This course has a </span>
@@ -68,7 +74,7 @@ export default async function CourseView({ params }: {params: { code: string }})
             </div>
           ) : null
         }
-        <div className={`shrink ${media?.source !== 'gsites' && media ? "basis-1/2" : ""}`}>
+        <div className={`shrink ${(media?.source !== 'gsites' && media?.source !== 'other') && media ? "basis-1/2" : ""}`}>
           <h2 className="text-2xl font-semibold">Course Description</h2>
           {course.description}
         </div>

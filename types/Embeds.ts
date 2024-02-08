@@ -1,5 +1,5 @@
 import React from "react";
-export type EmbedCategories = 'gsites' | 'slides' | 'docs' | 'youtube' | 'drive' | 'canva';
+export type EmbedCategories = 'gsites' | 'slides' | 'docs' | 'youtube' | 'drive' | 'other';
 
 export abstract class Embed {
   link: string;
@@ -109,8 +109,8 @@ export namespace CustomEmbeds {
     }
   }
 
-  export class Canva extends Embed {
-    public source = 'canva' as EmbedCategories;
+  export class Other extends Embed {
+    public source = 'other' as EmbedCategories;
     constructor(link: string) {
       super(link);
     }

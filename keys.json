@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "mybla-388904",
+  "private_key_id": "d9ea6bba25a54dc37088cc049ec211302b7643ac",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDAsEJoXkbXxz6/\nlEoqFdWUuZvi+6IEO7mUxEkCF1b8710GzhgbND6o2nUgBfi1PS+scYYqF3I3nmpJ\nV0/lNizz7YPrPlSxArdibyTttOWUXqfJh/+1YlJVplaJOp6tD3F5ah3iHX+plFQs\nULvhUeQIxxb1MtkE6/bYmP5UW8HUYUlOmXcrFLg6CR+yMfnbir5V5GrYghFnMgMu\ncw9t6GqifwEXHlh7Oy6ieRq2qAkbOL3QKo960bY5il55WcZXG2U9r+TmuIPEwJyc\neDCPBSM4wkjVMeCazCkW7nrUVjRyV5sy2zXWZNyimt1VVMNFTv/PQ4jm2Tm4/Dps\nXCf8NlA/AgMBAAECggEAN4azZEsCpCyk7uUnKBCJryV7gAHeUtT5Kh8UINej+Bhs\nGMlsFe7MvbDSPqup22Rp6AoAzQFbpx5t53uTKOyfMJ25vaEFG8s6GFIJ9LwDymkq\ndb9MlzLhog/gcQQk9J72JrRHL0Er6Cy3wttzAL+t9D+W5IrGEg6DYDBaXenhJbdx\nJqMW5a0MYsNpXpAxpdkQ6gQfWdaUj0QtJiop75yi52GUvKS9MO9fsf8DUcuYaHM1\nDtByXtyijFs8l+r8Si+DWV1lo5Xger0rphJln57zvf6BVwgykF8bhecbm9SZr7RP\nuxWsl+DOeNiXKDYQUk1kxlpsEXUkN9mrBx1nuUbPcQKBgQDmaqGZwJMh/2Vck7Nl\nUCPmac12v5Tmj0OZoe5l0bkIWS/py4U5FlogWSjsqaJAv+HtBQDUaZKLEgKEID1f\nqqsb0cVyMBAA1+i8/COdk8k1og+eRWerxKLXjIF831xCK3rhmiil2IJRXKe7f2Ut\njdFNGC6hI6Ojbqs08/12qFxWMQKBgQDWFT7am0JDFviyx0j8eRehCsyCWtHt4Vld\nhwYn2PkiluSxelSi5+sEab3aJU0pmHxgn2LIZRfrkrPOkP3s/4yd99MCxEY/ZcMN\n05UmODf8PiTi1hgkRxo53bqAYXv54JLJv8WsUl7Cvx0USHLchK67zrZ5DrQAiZS5\nr18pm9LBbwKBgQDAgHusebAy6i3j714kmZS0rtZCjIK5MR34H8qNdG7TI7gc6rTN\n4ffAKN1BA+QTlnwJSnHMBLuyxoQloM3FvE+iOVptMOxd2ASQx1J2Fv82eMP1peSc\nI/csgC26ht2MRskt7F5jWIRftzpHMoL0URR5BWgHpj/TjeUpo2KyHKywMQKBgErb\nevLtvym+ao/45yiBHyYMpJ4gK6/GUH1HrXtZfyP9J1J3uAiOl7sfTmdtC6Iz06nl\nkaEI2GhjD8R3JpMseHr0ITCieP3KE35OMaT/m3P0Numqex6UTjNVuNUTQUqKoEkz\naWdsFf563SwueRtqub6p9Vw3K/HUKdET5W6jMfq5AoGAPzwDT+sJhK6fkZa8t28d\nCSzXvKoLDFx6gSJQwAoX2W7f0EKKGvbYbwmi+gAfpdtxPKih5NaHRwSUAEAK+0nF\nHBoHRUYKnPBvgVyxxLyVk+cLNg0IG915tL7dAqPojsfYSspEJo1ox2rEXNt02I5Z\nHlerY5fTyIn+qjDDICNNEHw=\n-----END PRIVATE KEY-----\n",
+  "client_email": "boston-latin-academy@mybla-388904.iam.gserviceaccount.com",
+  "client_id": "109215485592409961657",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/boston-latin-academy%40mybla-388904.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -1,17 +1,18 @@
 import { CustomEmbeds, Embed } from "@/types/Embeds";
-export type EmbedCategories = 'gsites' | 'slides' | 'docs' | 'youtube' | 'drive';
+export type EmbedCategories = 'gsites' | 'slides' | 'docs' | 'youtube' | 'drive' | 'other';
 
 export default function categorize(link: string | null): Embed | null {
   if (!link) {
     return null;
   };
 
-  const filters = [isYouTubeLink, isGoogleDriveLink, isGoogleSitesLink, isGoogleSlidesLink, isGoogleDocsLink, isCanvaLink];
-  const EmbedTypes = ['Youtube', 'Drive', 'GSite', 'Slideshow', 'Document', 'Canva'] as (keyof typeof CustomEmbeds)[];
+  const filters = [isYouTubeLink, isGoogleDriveLink, isGoogleSitesLink, isGoogleSlidesLink, isGoogleDocsLink, isALink];
+  const EmbedTypes = ['Youtube', 'Drive', 'GSite', 'Slideshow', 'Document', 'Other'] as (keyof typeof CustomEmbeds)[];
 
   for (let i = 0; i < filters.length; i++) {
     if (filters[i](link)) {
       const embedType: keyof typeof CustomEmbeds = EmbedTypes[i];
+      console.log(embedType);
       return new CustomEmbeds[embedType](link);
     }
   }
@@ -45,6 +46,6 @@ function isGoogleSlidesLink(link: string): boolean {
   return googleSlidesRegex.test(link);
 }
 
-function isCanvaLink(link: string): boolean {
-  return link.toLowerCase().includes('canva');
+function isALink(link: string): boolean {
+  return link.toLowerCase().includes('http');
 }
