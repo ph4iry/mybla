@@ -1,5 +1,5 @@
 import React from "react";
-export type EmbedCategories = 'gsites' | 'slides' | 'docs' | 'youtube' | 'drive';
+export type EmbedCategories = 'gsites' | 'slides' | 'docs' | 'youtube' | 'drive' | 'canva';
 
 export abstract class Embed {
   link: string;
@@ -106,6 +106,18 @@ export namespace CustomEmbeds {
       const googleDocsRegex = /(?:https?:\/\/)?(?:docs\.google\.com)\/(?:document|spreadsheets|presentation)\/d\/([^\/?]+)/;
       const match = this.link.match(googleDocsRegex);
       return match![1];
+    }
+  }
+
+  export class Canva extends Embed {
+    public source = 'canva' as EmbedCategories;
+    constructor(link: string) {
+      super(link);
+    }
+
+
+    getEmbedLink(): string {
+      return 'NONE';
     }
   }
   

@@ -6,8 +6,8 @@ export default function categorize(link: string | null): Embed | null {
     return null;
   };
 
-  const filters = [isYouTubeLink, isGoogleDriveLink, isGoogleSitesLink, isGoogleSlidesLink, isGoogleDocsLink];
-  const EmbedTypes = ['Youtube', 'Drive', 'GSite', 'Slideshow', 'Document'] as (keyof typeof CustomEmbeds)[];
+  const filters = [isYouTubeLink, isGoogleDriveLink, isGoogleSitesLink, isGoogleSlidesLink, isGoogleDocsLink, isCanvaLink];
+  const EmbedTypes = ['Youtube', 'Drive', 'GSite', 'Slideshow', 'Document', 'Canva'] as (keyof typeof CustomEmbeds)[];
 
   for (let i = 0; i < filters.length; i++) {
     if (filters[i](link)) {
@@ -43,4 +43,8 @@ function isGoogleDocsLink(link: string): boolean {
 function isGoogleSlidesLink(link: string): boolean {
   const googleSlidesRegex = /(?:https?:\/\/)?docs\.google\.com\/presentation\/d\/([^\/?]+)/;
   return googleSlidesRegex.test(link);
+}
+
+function isCanvaLink(link: string): boolean {
+  return link.toLowerCase().includes('canva');
 }

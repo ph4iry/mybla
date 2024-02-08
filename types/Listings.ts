@@ -2,14 +2,17 @@ const subjects = ['English', 'Math', 'Science', 'History', 'Classics/MFL', 'Art'
 
 export interface Review {
   name: string;
+  course: string;
   ratings: {
-    rigor: number;
-    homework: number;
-    support: number;
-    overall: number;
+    weeklyCommitment:string,
+    homework: string,
+    resources: string,
+    skills: {
+      humanities: string[],
+      stem: string[],
+      personal: string[],
+    }
   };
-  wouldRecommend: string
-  comment: string;
   tips?: string;
 }
 
