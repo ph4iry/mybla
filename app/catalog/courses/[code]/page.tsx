@@ -5,13 +5,13 @@ import { ArrowTopRightOnSquareIcon, InformationCircleIcon, LightBulbIcon, Hashta
 import Link from "next/link";
 import FavoriteButton from "@/components/page/FavoriteButton";
 import { getSheet } from "@/utils/g-sheets/fetch";
-import { checkEnvironment } from "@/utils/environment";
 import Reviews from "@/components/page/Reviews";
 import NotFoundPage from "@/app/not-found";
-import { colorTextByRigor, colorTextBySubject } from "@/utils/colors/text";
+
+export const revalidate = 3600;
 
 export default async function CourseView({ params }: {params: { code: string }}) {
-  const sheet: Item[] = await (await fetch(checkEnvironment() + '/api', { method: 'GET' })).json();
+  const sheet: Item[] = await getSheet();
   const course = sheet.find(item => item.code === params.code);
 
   if (!course) {
@@ -84,4 +84,23 @@ export default async function CourseView({ params }: {params: { code: string }})
       </div>
     </div>
   )
+}
+
+function colorTextBySubject(subject: ['English', 'Math', 'Science', 'History', 'Classics/MFL', 'Art'][number]) {
+  switch (subject) {
+    case "English": return "text-amber-400";
+    case "Math": return "text-sky-400";
+    case "Science": return "text-emerald-400";
+    case "History": return "text-amber-600";
+    case "Classics/MFL": return "text-violet-400";
+    case "Art": return "text-pink-400";
+  }
+}
+
+function colorTextByRigor(rigor: 'AP' | 'Honors' | 'Regular') {
+  switch (rigor) {
+    case "AP": return "text-sky-200";
+    case "Honors": return "text-emerald-200";
+    case "Regular": return "text-zinc-200";
+  }
 }

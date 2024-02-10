@@ -14,8 +14,8 @@ export function colorTextBySubject(subject: Subject) {
 
 export function colorTextByRigor(rigor: 'AP' | 'Honors' | 'Regular') {
   switch (rigor) {
-    case "AP": return "text-sky-400";
-    case "Honors": return "text-emerald-400";
-    case "Regular": return "text-zinc-400";
+    case "AP": return "text-sky-400/80";
+    case "Honors": return "text-emerald-400/80";
+    case "Regular": return "text-zinc-400/80";
   }
 }

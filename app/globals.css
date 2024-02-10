@@ -6,6 +6,10 @@
   body {
     @apply dark:bg-zinc-800 bg-white transition duration-700
   }
+
+  body * {
+    font-family: unset;
+  }
   #course-list {
     max-height: 60vh;
   }

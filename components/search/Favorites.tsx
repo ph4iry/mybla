@@ -55,16 +55,16 @@ function Course({ data } : { data: Item }) {
 function getSubjectColor(subject: typeof subjects[number], src: 0 | 1 | 2 | 3) {
   switch (subject) {
     case "English":
-      return ['bg-amber-400', 'text-amber-400', 'bg-amber-400/30', 'dark:text-amber-400/30'][src];
+      return ['bg-amber-400', 'text-amber-400', 'bg-amber-400/30', 'dark:text-amber-400/80'][src];
     case "Math":
-      return ['bg-sky-400', 'text-sky-400', 'bg-sky-400/30', 'dark:text-sky-400/30'][src];
+      return ['bg-sky-400', 'text-sky-400', 'bg-sky-400/30', 'dark:text-sky-400/80'][src];
     case "Science":
-      return ['bg-emerald-400', 'text-emerald-400', 'bg-emerald-400/30', 'dark:text-emerald-400/30'][src];
+      return ['bg-emerald-400', 'text-emerald-400', 'bg-emerald-400/30', 'dark:text-emerald-400/80'][src];
     case "History":
-      return ['bg-amber-700', 'text-amber-700', 'bg-amber-700/30', 'dark:text-amber-700/30'][src];
+      return ['bg-amber-700', 'text-amber-700', 'bg-amber-700/30', 'dark:text-amber-700/80'][src];
     case "Classics/MFL":
-      return ['bg-violet-400', 'text-violet-400', 'bg-violet-400/30', 'dark:text-violet-400/30'][src];
+      return ['bg-violet-400', 'text-violet-400', 'bg-violet-400/30', 'dark:text-violet-400/80'][src];
     case "Art":
-      return ['bg-pink-400', 'text-pink-400', 'bg-pink-400/30', 'dark:text-pink-400/30'][src];
+      return ['bg-pink-400', 'text-pink-400', 'bg-pink-400/30', 'dark:text-pink-400/80'][src];
   }
 }

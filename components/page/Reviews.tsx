@@ -1,7 +1,9 @@
 'use client';
 import { Review } from "@/types/Listings";
+import { Disclosure } from "@headlessui/react";
 import { BeakerIcon, BookOpenIcon, ClockIcon, CursorArrowRaysIcon, InboxArrowDownIcon, UserGroupIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
+import { Tooltip } from "@material-tailwind/react";
 
 export default function Reviews({ reviews } : { reviews: Review[] }) {
   if (!reviews) reviews = [];
@@ -72,7 +74,15 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
             </div>
           </div> */}
           <div className="bg-zinc-100/80 dark:bg-zinc-700 p-4">
-            <h3 className="text-2xl font-semibold mb-2 text-zinc-500 dark:text-zinc-300">Skills Summary</h3>
+            <Disclosure>
+              <Disclosure.Button className="py-2">
+                <h3 className="text-2xl font-semibold mb-2 text-zinc-500 dark:text-zinc-300">Skills Summary</h3>
+              </Disclosure.Button>
+              <Disclosure.Panel className="text-gray-500">
+                Yes! You can purchase a license that you can share with your entire
+                team.
+              </Disclosure.Panel>
+            </Disclosure>
             <p className="text-base italic mb-2">What skills will help a student succeed in this course?</p>
             {
               humanities.data.length > 0 && (
@@ -119,7 +129,7 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
               )
             }
           </div>
-          <h3 className="text-2xl font-semibold mb-2">Comments</h3>
+          <h3 className="text-2xl font-semibold mb-2">Comments ({reviews.length})</h3>
           {
             reviews.map((review, i) => {
 
@@ -127,7 +137,7 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
               return (
                 <div className="bg-zinc-100/80 dark:bg-zinc-700 p-4" key={i}>
                   <div className="text-lg font-semibold">{review.name && review.name !== "" ? review.name : "Anonymous Student"}</div>
-                  <div className="flex flex-wrap gap-4">
+                  <div className="flex flex-wrap gap-2 my-3">
                     <CommitmentTag text={review.ratings.weeklyCommitment} type="weekly"/>
                     <CommitmentTag text={review.ratings.homework} type="homework"/>
                     <CommitmentTag text={review.ratings.resources} type="resources"/>
@@ -155,22 +165,29 @@ type CommitmentTagType = 'weekly' | 'homework' | 'resources';
 function CommitmentTag({ text, type, quantity }:{ text: string, type: CommitmentTagType, quantity?: number }) {
   const color = (() => {
     switch(type) {
-      case "weekly": return 'bg-rose-400/30';
-      case "homework": return 'bg-fuchsia-400/30';
-      case "resources": return 'bg-blue-400/30';
+      case "weekly": return ['bg-rose-400/30', 'bg-rose-400'];
+      case "homework": return ['bg-fuchsia-400/30', 'bg-fuchsia-400'];
+      case "resources": return ['bg-blue-400/30','bg-blue-400'];
     }
   })();
 
   const explanation = (() => {
     switch(type) {
-      case "weekly": return "Weekly Commitment: "
-      case "homework": return "Homework Load: "
-      case "resources": return "Available Resources: "
+      case "weekly": return "Weekly Commitment"
+      case "homework": return "Homework Load"
+      case "resources": return "Available Resources"
     }
   })();
   return (
-    <span className={`md:inline inline-flex md:gap-0 px-3 py-1.5 md:rounded-full rounded ${color} md:whitespace-nowrap text-sm items-center`}><CommitmentTagIcon type={type}/>
-      <span><span className="inline font-bold">{explanation}</span>{text}</span> {quantity && quantity > 0 ? `(${quantity})` : null}
+    <span className={`md:inline inline-flex md:gap-0 px-3 py-1.5 md:rounded-full rounded ${color[0]} md:whitespace-nowrap text-sm items-center`}>
+      <Tooltip
+        content={explanation}
+        placement="top"
+        className={`${color[1]} rounded-full`}
+      >
+        <button><CommitmentTagIcon type={type}/></button>
+      </Tooltip>
+      <span>{text}</span> {quantity && quantity > 0 ? `(${quantity})` : null}
     </span>
   )
 }
