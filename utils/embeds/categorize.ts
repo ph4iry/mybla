@@ -6,13 +6,12 @@ export default function categorize(link: string | null): Embed | null {
     return null;
   };
 
-  const filters = [isYouTubeLink, isGoogleDriveLink, isGoogleSitesLink, isGoogleSlidesLink, isGoogleDocsLink, isALink];
-  const EmbedTypes = ['Youtube', 'Drive', 'GSite', 'Slideshow', 'Document', 'Other'] as (keyof typeof CustomEmbeds)[];
+  const filters = [isYouTubeLink, isGoogleDriveLink, isGoogleSlidesLink, isGoogleDocsLink, isGoogleSitesLink];
+  const EmbedTypes = ['Youtube', 'Drive', 'Slideshow', 'Document', 'GSite'] as (keyof typeof CustomEmbeds)[];
 
   for (let i = 0; i < filters.length; i++) {
     if (filters[i](link)) {
       const embedType: keyof typeof CustomEmbeds = EmbedTypes[i];
-      console.log(embedType);
       return new CustomEmbeds[embedType](link);
     }
   }
@@ -32,8 +31,7 @@ function isGoogleDriveLink(link: string): boolean {
 }
 
 function isGoogleSitesLink(link: string): boolean {
-  const googleSitesRegex = /(?:https?:\/\/)?sites\.google\.com\/([^\/]+)\/([^\/?]+)/;
-  return googleSitesRegex.test(link);
+  return link.includes('https://');
 }
 
 function isGoogleDocsLink(link: string): boolean {

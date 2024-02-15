@@ -169,7 +169,7 @@ function FilterToggle({ handler, content, allToggles, updateToggle }: {handler: 
   return (
     <div className="flex flex-nowrap p-1">
        <label className="text-base whitespace-nowrap" >
-          <input type="checkbox" name={content} className="w-6 h-6 text-xs py-1 px-2 rounded transition mr-3" checked={isChecked} onClick={(e) => { updateCheckbox(e)}} />
+          <input type="checkbox" name={content} className="w-6 h-6 text-xs py-1 px-2 rounded transition mr-3" checked={isChecked} onChange={() => {}} onClick={(e) => { updateCheckbox(e)}} />
           {content}
         </label>
     </div>

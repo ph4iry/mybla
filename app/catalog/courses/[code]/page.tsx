@@ -9,6 +9,14 @@ import Reviews from "@/components/page/Reviews";
 import NotFoundPage from "@/app/not-found";
 
 export const revalidate = 3600;
+export async function generateMetadata({ params }:{params: { code: string }}) {
+  const sheet: Item[] = await getSheet();
+  const course = sheet.find(item => item.code === params.code);
+
+  return {
+    title: `${course!.name} | myBLA`,
+  }
+}
 
 export default async function CourseView({ params }: {params: { code: string }}) {
   const sheet: Item[] = await getSheet();
@@ -21,17 +29,12 @@ export default async function CourseView({ params }: {params: { code: string }})
   const media = categorize(course!.link);
   return (
     <div>
-      <a href="/catalog" className="flex text-md items-center font-medium group w-fit"><ArrowLeftIcon className="h-6 mr-1 group-hover:mr-2 transition-all stroke-2" /> Course Catalog</a>
-      <h1 className="text-4xl font-bold"><FavoriteButton courseCode={course.code}/> {course.name}</h1>
+      <a href="/catalog" className="flex text-md items-center font-medium group w-fit mb-3"><ArrowLeftIcon className="h-6 mr-1 group-hover:mr-2 transition-all stroke-2" /> Course Catalog</a>
+      <h1 className="text-4xl font-bold inline-flex gap-2 items-center"><FavoriteButton courseCode={course.code}/> {course.name}</h1>
       <div className="flex gap-2 my-3">
-      {/* rounded-full px-3 bg-emerald-400 dark:bg-emerald-400/30 */}
         <span className={`inline-flex uppercase items-center ${colorTextBySubject(course.subject)}`}><HashtagIcon className="h-4 stroke-2" /> {course.subject}</span>
         <span className={`inline-flex uppercase items-center ${colorTextByRigor(course.rigor)}`}><HashtagIcon className="h-4 stroke-2" /> {course.rigor}</span>
       </div>
-      {/* <div className="flex gap-2 my-3">
-        <span className="inline-flex uppercase items-center text-rose-400"><HashtagIcon className="h-4 stroke-2" /> {course.subject}</span>
-        <span className="inline-flex uppercase items-center text-fuchsia-400"><HashtagIcon className="h-4 stroke-2" /> {course.rigor}</span>
-      </div> */}
       {
         course.rigor === 'AP' ? (
           <div className="p-4 mb-3 rounded bg-sky-300/40">
@@ -65,11 +68,11 @@ export default async function CourseView({ params }: {params: { code: string }})
         }
         {
           (media?.source === 'gsites' || media?.source === 'other') && media  ? (
-            <div className="bg-sky-400/40 p-4 rounded text-lg">
-              <LightBulbIcon className="h-8 text-sky-600 inline mr-2" />
-              <span>This course has a </span>
-              <Link legacyBehavior href={media.link} className="text-sky-800" passHref>
-                <a target="_blank" rel="noreferrer noopener">website <ArrowTopRightOnSquareIcon className="h-5 inline -translate-y-1" /></a>
+            <div className="bg-fuchsia-400/20 p-4 rounded text-base">
+              <ArrowTopRightOnSquareIcon className="h-8 text-fuchsia-400 inline mr-2" />
+              <span>This course has an </span>
+              <Link legacyBehavior href={media.link} className="text-fuchsia-800" passHref>
+                <a className="underline" target="_blank" rel="noreferrer noopener">external link</a>
               </Link>!
             </div>
           ) : null
@@ -99,8 +102,8 @@ function colorTextBySubject(subject: ['English', 'Math', 'Science', 'History', '
 
 function colorTextByRigor(rigor: 'AP' | 'Honors' | 'Regular') {
   switch (rigor) {
-    case "AP": return "text-sky-200";
-    case "Honors": return "text-emerald-200";
-    case "Regular": return "text-zinc-200";
+    case "AP": return "dark:text-blue-200 text-blue-400";
+    case "Honors": return "dark:text-emerald-200 text-green-400";
+    case "Regular": return "dark:text-zinc-200 text-zinc-400";
   }
 }

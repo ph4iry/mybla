@@ -3,11 +3,20 @@
 import { Item } from "@/types/Listings";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import classNames from "classnames";
 
 export default function List({ allFilters, sheet }: { allFilters: ((listItem: Item) => boolean)[], sheet: Item[] }) {
-  let filter = (listItem: Item) => allFilters.map(f => f(listItem)).reduce((prev, curr) => prev && curr, true);
+  const filter = (listItem: Item) => allFilters.map(f => f(listItem)).every(b => b);
+  const [favs, setFavs] = useState<string[]>([]);
 
+  useEffect(() => {
+    if (!localStorage.getItem('favorites')) {
+      localStorage.setItem('favorites', JSON.stringify([]));
+    }
+
+    setFavs(JSON.parse(localStorage.getItem('favorites')!))
+  }, []);
   return (
     <div className="w-full">
       <div id="course-list" className="flex flex-col gap-3 mt-4 shrink-0 grow min-w-full max-h-screen overflow-y-scroll rounded">
@@ -23,46 +32,47 @@ export default function List({ allFilters, sheet }: { allFilters: ((listItem: It
           
             return 0;
         }).map((item, i) => (
-          <ListItem key={i} data={item}/>
+          <ListItem key={i} data={item} favorites={favs} updateAllFavorites={setFavs}/>
         ))}
       </div>
     </div>
   )
 }
 
-function ListItem({ data }: { data: Item }) {
-  const [listArray, setListArray] = useState<string[]>([]);
-  const [favorited, setFavorited] = useState(false);
+function ListItem({ data, favorites, updateAllFavorites }: { data: Item, favorites: string[], updateAllFavorites: Dispatch<SetStateAction<string[]>> }) {
+  const [favorited, setFavorited] = useState(favorites.includes(data.code));
 
   useEffect(() => {
-    if (!localStorage.getItem('favorites')) {
-      localStorage.setItem('favorites', JSON.stringify([]));
-    }
-
-    setListArray((JSON.parse(localStorage.getItem('favorites')!) as string[]));
-
-    setFavorited((JSON.parse(localStorage.getItem('favorites')!) as string[]).includes(data.code));
-  }, []);
+    setFavorited(
+      (JSON.parse(localStorage.getItem('favorites')!) as string[]).includes(data.code)
+    )
+  })
 
   const handleClick = () => {
+    console.log('before edits: ', localStorage.getItem('favorites'))
     if (favorited) {
-      const arr = listArray;
+      const arr = favorites;
       arr.splice(arr.indexOf(data.code), 1);
 
       localStorage.setItem(
         'favorites',
         JSON.stringify(arr),
       )
+      updateAllFavorites(arr);
     } else {
-      const arr = listArray;
+      const arr = favorites;
       arr.push(data.code);
+
+      console.log(arr);
 
       localStorage.setItem(
         'favorites',
         JSON.stringify(arr),
       )
+      updateAllFavorites(arr);
     }
     setFavorited(!favorited);
+    console.log('after edits: ', localStorage.getItem('favorites'))
   }
 
   return (
@@ -71,28 +81,14 @@ function ListItem({ data }: { data: Item }) {
         <span className="block">
           {data.code}
         </span>
-        <button className="inline group" onClick={handleClick}>
-          {
-            favorited ? (
-              <>
-                <HeartIcon
-                  className="h-8 w-8 text-rose-400 inline group-hover:hidden"
-                />
-                <HeartOutlineIcon
-                  className="h-8 w-8 text-rose-400 hidden group-hover:inline"
-                />
-              </>
-            ) : (
-              <>
-                <HeartIcon
-                  className="h-8 w-8 text-rose-400 hidden group-hover:inline"
-                />
-                <HeartOutlineIcon
-                  className="h-8 w-8 text-rose-400 inline group-hover:hidden"
-                />
-              </>
-            )
-          }
+        <button className="inline group hover:scale-125 transition" onClick={handleClick}>
+          <HeartIcon
+            className={classNames({
+              "h-8 w-8 inline": true,
+              "text-zinc-400": !favorited,
+              "text-rose-400": favorited
+            })}
+          />
         </button>
       </div>
       <div className="block">

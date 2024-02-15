@@ -40,24 +40,24 @@ export default function FavoriteButton({ courseCode }: { courseCode: string }) {
   }
   
   return (
-    <button className="inline group" onClick={handleClick}>
+    <button className="inline hover:scale-125 transition" onClick={handleClick}>
     {
       favorited ? (
         <>
           <HeartIcon
-            className="h-8 w-8 text-rose-400 inline group-hover:hidden"
+            className="h-8 w-8 text-rose-400 inline"
           />
           <HeartOutlineIcon
-            className="h-8 w-8 text-rose-400 hidden group-hover:inline"
+            className="h-8 w-8 text-rose-400 hidden"
           />
         </>
       ) : (
         <>
           <HeartIcon
-            className="h-8 w-8 text-rose-400 hidden group-hover:inline"
+            className="h-8 w-8 text-rose-400 hidden"
           />
           <HeartOutlineIcon
-            className="h-8 w-8 text-rose-400 inline group-hover:hidden"
+            className="h-8 w-8 text-rose-400 inline"
           />
         </>
       )

@@ -2,11 +2,13 @@ import FavoriteCoursesSummary from "@/components/search/Favorites";
 import { Item } from "@/types/Listings";
 import { checkEnvironment } from "@/utils/environment";
 import { getSheet } from "@/utils/g-sheets/fetch";
+// import { useState } from "react";
 
 export const revalidate = 3600;
 
 export default async function FavoritesPage() {
   const sheet: Item[] = await (await fetch(checkEnvironment() + '/api', { method: 'GET' })).json();
+  // 
 
   return (
     <div className="">
