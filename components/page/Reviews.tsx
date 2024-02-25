@@ -1,7 +1,10 @@
 'use client';
 import { Review } from "@/types/Listings";
-import { BeakerIcon, BookOpenIcon, ClockIcon, CursorArrowRaysIcon, InboxArrowDownIcon, UserGroupIcon } from "@heroicons/react/24/outline";
+import { Disclosure, Transition } from "@headlessui/react";
+import { BeakerIcon, BookOpenIcon, ChevronRightIcon, ClockIcon, CursorArrowRaysIcon, InboxArrowDownIcon, UserGroupIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
+import { Tooltip } from "@material-tailwind/react";
+import SkillTutorial from "./SkillTutorial";
 
 export default function Reviews({ reviews } : { reviews: Review[] }) {
   if (!reviews) reviews = [];
@@ -29,18 +32,18 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
   
   // COMMITMENT / RIGOR
   const weeklyData = reviews.map(review => review.ratings.weeklyCommitment).flat();
-  const sortedWeeklyData = Object.entries(sortAndCountReviews(weeklyData)).sort((a, b) => b[1] - a[1]);
+  const mostFrequentWeeklyCommitmentReport = Object.entries(sortAndCountReviews(weeklyData)).sort((a, b) => b[1] - a[1])[0];
 
   const homeworkData = reviews.map(review => review.ratings.homework).flat();
-  const sortedHomeworkData = Object.entries(sortAndCountReviews(homeworkData)).sort((a, b) => b[1] - a[1]);
-
+  const mostFrequentHomeworkReport = Object.entries(sortAndCountReviews(homeworkData)).sort((a, b) => b[1] - a[1])[0];
+  
   const resourceData = reviews.map(review => review.ratings.resources).flat();
-  const sortedResourceData = Object.entries(sortAndCountReviews(resourceData)).sort((a, b) => b[1] - a[1]);
+  const mostFrequentResourceReport = Object.entries(sortAndCountReviews(resourceData)).sort((a, b) => b[1] - a[1])[0];
 
   return (
     <div className="mt-4">
-      <h2 className="text-3xl font-semibold mb-2">Student Voice</h2>
-      {/* <p className="italic">Note: These are student-submitted comments on the courses they&apos;ve taken. While these reviews may not depict what your experience taking the course will be like, the comments submitted are subject to moderation and deletion.</p> */}
+      <h2 className="text-3xl font-semibold">Student Voice</h2>
+      <p className="italic mb-2">Learn about how this works <a className="underline" href="/guide/student-voice">here</a>.</p>
       { reviews.length > 0 ? (
         <div className="space-y-4">
           {/* <div className="bg-zinc-100/80 dark:bg-zinc-700 p-4 rounded">
@@ -71,76 +74,101 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
               ))}
             </div>
           </div> */}
-          <div className="bg-zinc-100/80 dark:bg-zinc-700 p-4">
-            <h3 className="text-2xl font-semibold mb-2 text-zinc-500 dark:text-zinc-300">Skills Summary</h3>
-            <p className="text-base italic mb-2">What skills will help a student succeed in this course?</p>
-            {
-              humanities.data.length > 0 && (
-                <>
-                  <h4 className="text-xl font-semibold my-2 text-amber-500">Humanities</h4>
-                  <div className="flex gap-2">
-                    {humanities.data.map((comment, i) => (
-                      <Fragment key={i}>
-                        <SkillTag text={comment} type="humanities" quantity={humanities.sorted[comment]}/>
-                      </Fragment>
-                    ))}
+          <div className="bg-zinc-100/80 dark:bg-zinc-700 rounded-lg">
+            <Disclosure>
+            {({ open }) => (
+              <>
+                <Disclosure.Button className="flex w-full p-4 text-left bg-black/20 rounded-lg justify-between items-center">
+                  <div>
+                    <h3 className="text-2xl font-semibold mb-2 text-zinc-500 dark:text-zinc-300 underline">Skills Summary</h3>
+                    <p className="text-base italic">What skills will help a student succeed in this course?</p>
                   </div>
-                </>
-              )
-            }
+                  <ChevronRightIcon className={`h-8 translate ${open ? 'rotate-90' : ''}`} />
+                </Disclosure.Button>
+                <Transition
+                  enter="transition duration-100 ease-out"
+                  enterFrom="transform scale-95 opacity-0"
+                  enterTo="transform scale-100 opacity-100"
+                  leave="transition duration-75 ease-out"
+                  leaveFrom="transform scale-100 opacity-100"
+                  leaveTo="transform scale-95 opacity-0"
+                >
+                  <Disclosure.Panel className="p-4 rounded-lg">
+                  {
+                    humanities.data.length > 0 && (
+                    <>
+                      <h4 className="text-xl font-semibold my-2 text-amber-500">Humanities</h4>
+                      <div className="flex gap-2 flex-wrap">
+                        {Object.entries(humanities.sorted).map((comment, i) => (
+                          <Fragment key={i}>
+                            <SkillTag type="humanities" text={comment[0]} quantity={comment[1]}/>
+                          </Fragment>
+                        ))}
+                      </div>
+                    </>
+                    )
+                  }
 
-            {
-              stem.data.length > 0 && (
-                <>
-                  <h4 className="text-xl font-semibold my-2 text-emerald-500">STEM</h4>
-                  <div className="flex gap-2 flex-wrap">
-                    {stem.data.map((comment, i) => (
-                      <Fragment key={i}>
-                        <SkillTag text={comment} type="stem" quantity={stem.sorted[comment]}/>
-                      </Fragment>
-                    ))}
-                  </div>
-                </>
-              )
-            }
+                  {
+                    stem.data.length > 0 && (
+                      <>
+                        <h4 className="text-xl font-semibold my-2 text-emerald-500">STEM</h4>
+                        <div className="flex gap-2 flex-wrap">
+                          {Object.entries(stem.sorted).map((comment, i) => (
+                            <Fragment key={i}>
+                              <SkillTag type="stem" text={comment[0]} quantity={comment[1]}/>
+                            </Fragment>
+                          ))}
+                        </div>
+                      </>
+                    )
+                  }
 
-            { 
-              personal.data.length > 0 && (
-                <>
-                  <h4 className="text-xl font-semibold my-2 text-sky-500">Personal</h4>
-                  <div className="flex gap-2 flex-wrap">
-                    {personal.data.map((comment, i) => (
-                      <Fragment key={i}>
-                        <SkillTag text={comment} type="personal" quantity={personal.sorted[comment]}/>
-                      </Fragment>
-                    ))}
-                  </div>
-                </>
-              )
-            }
+                  { 
+                    personal.data.length > 0 && (
+                      <>
+                        <h4 className="text-xl font-semibold my-2 text-sky-500">Personal</h4>
+                        <div className="flex gap-2 flex-wrap">
+                          {Object.entries(personal.sorted).map((comment, i) => (
+                            <Fragment key={i}>
+                              <SkillTag type="personal" text={comment[0]} quantity={comment[1]}/>
+                            </Fragment>
+                          ))}
+                        </div>
+                      </>
+                    )
+                  }
+                  </Disclosure.Panel>
+                </Transition>
+              </>
+            )}
+            </Disclosure>
+            
+
           </div>
-          <h3 className="text-2xl font-semibold mb-2">Comments</h3>
-          {
+          {/* <div>
+            <h3 className="text-2xl font-semibold mb-1">Submissions ({reviews.length})</h3>
+            <SkillTutorial />
+          </div>
+          <div className="my-2">
+            
+          </div> */}
+          {/* {
             reviews.map((review, i) => {
 
 
               return (
                 <div className="bg-zinc-100/80 dark:bg-zinc-700 p-4" key={i}>
                   <div className="text-lg font-semibold">{review.name && review.name !== "" ? review.name : "Anonymous Student"}</div>
-                  <div className="flex flex-wrap gap-4">
+                  <div className="flex flex-wrap gap-2 my-3">
                     <CommitmentTag text={review.ratings.weeklyCommitment} type="weekly"/>
                     <CommitmentTag text={review.ratings.homework} type="homework"/>
                     <CommitmentTag text={review.ratings.resources} type="resources"/>
                   </div>
-                  {
-                    review.tips && review.tips !== "" && (
-                      <div><span className="font-bold">Tips and Tricks: </span>{review.tips}</div>
-                    ) 
-                  }
                 </div>
               )
             })
-          }
+          } */}
         </div>
       ) : (
         <div>There are no student submissions available for this course.</div>
@@ -155,22 +183,29 @@ type CommitmentTagType = 'weekly' | 'homework' | 'resources';
 function CommitmentTag({ text, type, quantity }:{ text: string, type: CommitmentTagType, quantity?: number }) {
   const color = (() => {
     switch(type) {
-      case "weekly": return 'bg-rose-400/30';
-      case "homework": return 'bg-fuchsia-400/30';
-      case "resources": return 'bg-blue-400/30';
+      case "weekly": return ['bg-rose-400/30', 'bg-rose-400'];
+      case "homework": return ['bg-fuchsia-400/30', 'bg-fuchsia-400'];
+      case "resources": return ['bg-blue-400/30','bg-blue-400'];
     }
   })();
 
   const explanation = (() => {
     switch(type) {
-      case "weekly": return "Weekly Commitment: "
-      case "homework": return "Homework Load: "
-      case "resources": return "Available Resources: "
+      case "weekly": return "Weekly Commitment"
+      case "homework": return "Homework Load"
+      case "resources": return "Available Resources\n(ex. Khan Academy, Youtube Videos)"
     }
   })();
   return (
-    <span className={`md:inline inline-flex md:gap-0 px-3 py-1.5 md:rounded-full rounded ${color} md:whitespace-nowrap text-sm items-center`}><CommitmentTagIcon type={type}/>
-      <span><span className="inline font-bold">{explanation}</span>{text}</span> {quantity && quantity > 0 ? `(${quantity})` : null}
+    <span className={`md:inline inline-flex md:gap-0 px-3 py-1.5 md:rounded-full rounded ${color[0]} md:whitespace-nowrap text-sm items-center`}>
+      <Tooltip
+        content={explanation}
+        placement="top"
+        className={`${color[1]} rounded-full text-center`}
+      >
+        <button><CommitmentTagIcon type={type}/></button>
+      </Tooltip>
+      <span>{text}</span> {quantity && quantity > 0 ? `(${quantity})` : null}
     </span>
   )
 }

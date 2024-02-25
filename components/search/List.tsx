@@ -1,13 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import { Item } from "@/types/Listings";
-import { HeartIcon } from "@heroicons/react/24/solid";
-import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import FavoriteButton from "../page/FavoriteButton";
 
 export default function List({ allFilters, sheet }: { allFilters: ((listItem: Item) => boolean)[], sheet: Item[] }) {
-  let filter = (listItem: Item) => allFilters.map(f => f(listItem)).reduce((prev, curr) => prev && curr, true);
+  const filter = (listItem: Item) => allFilters.map(fn => fn(listItem)).every(b => b);
+  const [favs, setFavs] = useState<string[]>([]);
 
+  useEffect(() => {
+    if (!localStorage.getItem('favorites')) {
+      localStorage.setItem('favorites', JSON.stringify([]));
+    }
+
+    setFavs(JSON.parse(localStorage.getItem('favorites')!))
+  }, []);
   return (
     <div className="w-full">
       <div id="course-list" className="flex flex-col gap-3 mt-4 shrink-0 grow min-w-full max-h-screen overflow-y-scroll rounded">
@@ -23,47 +30,20 @@ export default function List({ allFilters, sheet }: { allFilters: ((listItem: It
           
             return 0;
         }).map((item, i) => (
-          <ListItem key={i} data={item}/>
+          <ListItem key={i} data={item} favorites={favs} updateAllFavorites={setFavs}/>
         ))}
+
+      {sheet.filter(i => filter(i)).length === 0 && (
+        <div className="w-full h-full flex justify-center items-center">
+          No courses found from search.
+        </div>
+      )}
       </div>
     </div>
   )
 }
 
-function ListItem({ data }: { data: Item }) {
-  const [listArray, setListArray] = useState<string[]>([]);
-  const [favorited, setFavorited] = useState(false);
-
-  useEffect(() => {
-    if (!localStorage.getItem('favorites')) {
-      localStorage.setItem('favorites', JSON.stringify([]));
-    }
-
-    setListArray((JSON.parse(localStorage.getItem('favorites')!) as string[]));
-
-    setFavorited((JSON.parse(localStorage.getItem('favorites')!) as string[]).includes(data.code));
-  }, []);
-
-  const handleClick = () => {
-    if (favorited) {
-      const arr = listArray;
-      arr.splice(arr.indexOf(data.code), 1);
-
-      localStorage.setItem(
-        'favorites',
-        JSON.stringify(arr),
-      )
-    } else {
-      const arr = listArray;
-      arr.push(data.code);
-
-      localStorage.setItem(
-        'favorites',
-        JSON.stringify(arr),
-      )
-    }
-    setFavorited(!favorited);
-  }
+function ListItem({ data, favorites, updateAllFavorites }: { data: Item, favorites: string[], updateAllFavorites: Dispatch<SetStateAction<string[]>> }) {
 
   return (
     <div className="flex p-3 shadow-md bg-zinc-50 dark:bg-zinc-700 rounded-md">
@@ -71,33 +51,11 @@ function ListItem({ data }: { data: Item }) {
         <span className="block">
           {data.code}
         </span>
-        <button className="inline group" onClick={handleClick}>
-          {
-            favorited ? (
-              <>
-                <HeartIcon
-                  className="h-8 w-8 text-rose-400 inline group-hover:hidden"
-                />
-                <HeartOutlineIcon
-                  className="h-8 w-8 text-rose-400 hidden group-hover:inline"
-                />
-              </>
-            ) : (
-              <>
-                <HeartIcon
-                  className="h-8 w-8 text-rose-400 hidden group-hover:inline"
-                />
-                <HeartOutlineIcon
-                  className="h-8 w-8 text-rose-400 inline group-hover:hidden"
-                />
-              </>
-            )
-          }
-        </button>
+        <FavoriteButton data={data} favorites={favorites} updateAllFavorites={updateAllFavorites} />
       </div>
       <div className="block">
-        <a href={`/catalog/courses/${data.code}`} className="text-2xl underline font-semibold">{data.name}</a>
-        <div className="flex gap-3 text-xs font-medium mt-2">
+        <a href={`/catalog/courses/${data.code}`} className="text-xl md:text-2xl underline font-semibold">{data.name}</a>
+        <div className="flex gap-3 text-xs font-medium mt-2 flex-wrap md:flex-nowrap">
           <span className={`uppercase px-3 py-1 rounded-full ${getSubjectColor(data.subject)}`}>{data.subject}</span>
           <span className={`uppercase px-3 py-1 rounded-full ${getRigorColor(data.rigor)}`}>{data.rigor}</span>
         </div>
