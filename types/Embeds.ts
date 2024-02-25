@@ -56,7 +56,7 @@ export namespace CustomEmbeds {
     }
   
     getEmbedLink(): string {
-      return this.link;
+      return `https://www.youtube.com/embed/${this.getId()}`;
     }
   }
   

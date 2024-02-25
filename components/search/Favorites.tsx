@@ -1,5 +1,5 @@
 'use client';
-import { Item } from "@/types/Listings";
+import { Item, Subject } from "@/types/Listings";
 import { useState, useEffect, Fragment } from "react";
 import Card from "../home/Card";
 import { Popover, Transition } from "@headlessui/react";
@@ -139,7 +139,7 @@ function Course({ data, update, selecting, selected } : { data: Item, update: ()
   )
 }
 
-function getSubjectColor(subject: typeof subjects[number], src: 0 | 1 | 2 | 3) {
+function getSubjectColor(subject: Subject, src: 0 | 1 | 2 | 3) {
   switch (subject) {
     case "English":
       return ['bg-amber-400', 'text-amber-400', 'bg-amber-400/30', 'dark:text-amber-400/80'][src];

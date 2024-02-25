@@ -1,13 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import { Item } from "@/types/Listings";
-import { HeartIcon } from "@heroicons/react/24/solid";
-import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import classNames from "classnames";
+import FavoriteButton from "../page/FavoriteButton";
 
 export default function List({ allFilters, sheet }: { allFilters: ((listItem: Item) => boolean)[], sheet: Item[] }) {
-  const filter = (listItem: Item) => allFilters.map(f => f(listItem)).every(b => b);
+  const filter = (listItem: Item) => allFilters.map(fn => fn(listItem)).every(b => b);
   const [favs, setFavs] = useState<string[]>([]);
 
   useEffect(() => {
@@ -34,46 +32,18 @@ export default function List({ allFilters, sheet }: { allFilters: ((listItem: It
         }).map((item, i) => (
           <ListItem key={i} data={item} favorites={favs} updateAllFavorites={setFavs}/>
         ))}
+
+      {sheet.filter(i => filter(i)).length === 0 && (
+        <div className="w-full h-full flex justify-center items-center">
+          No courses found from search.
+        </div>
+      )}
       </div>
     </div>
   )
 }
 
 function ListItem({ data, favorites, updateAllFavorites }: { data: Item, favorites: string[], updateAllFavorites: Dispatch<SetStateAction<string[]>> }) {
-  const [favorited, setFavorited] = useState(favorites.includes(data.code));
-
-  useEffect(() => {
-    setFavorited(
-      (JSON.parse(localStorage.getItem('favorites')!) as string[]).includes(data.code)
-    )
-  })
-
-  const handleClick = () => {
-    console.log('before edits: ', localStorage.getItem('favorites'))
-    if (favorited) {
-      const arr = favorites;
-      arr.splice(arr.indexOf(data.code), 1);
-
-      localStorage.setItem(
-        'favorites',
-        JSON.stringify(arr),
-      )
-      updateAllFavorites(arr);
-    } else {
-      const arr = favorites;
-      arr.push(data.code);
-
-      console.log(arr);
-
-      localStorage.setItem(
-        'favorites',
-        JSON.stringify(arr),
-      )
-      updateAllFavorites(arr);
-    }
-    setFavorited(!favorited);
-    console.log('after edits: ', localStorage.getItem('favorites'))
-  }
 
   return (
     <div className="flex p-3 shadow-md bg-zinc-50 dark:bg-zinc-700 rounded-md">
@@ -81,19 +51,11 @@ function ListItem({ data, favorites, updateAllFavorites }: { data: Item, favorit
         <span className="block">
           {data.code}
         </span>
-        <button className="inline group hover:scale-125 transition" onClick={handleClick}>
-          <HeartIcon
-            className={classNames({
-              "h-8 w-8 inline": true,
-              "text-zinc-400": !favorited,
-              "text-rose-400": favorited
-            })}
-          />
-        </button>
+        <FavoriteButton data={data} favorites={favorites} updateAllFavorites={updateAllFavorites} />
       </div>
       <div className="block">
-        <a href={`/catalog/courses/${data.code}`} className="text-2xl underline font-semibold">{data.name}</a>
-        <div className="flex gap-3 text-xs font-medium mt-2">
+        <a href={`/catalog/courses/${data.code}`} className="text-xl md:text-2xl underline font-semibold">{data.name}</a>
+        <div className="flex gap-3 text-xs font-medium mt-2 flex-wrap md:flex-nowrap">
           <span className={`uppercase px-3 py-1 rounded-full ${getSubjectColor(data.subject)}`}>{data.subject}</span>
           <span className={`uppercase px-3 py-1 rounded-full ${getRigorColor(data.rigor)}`}>{data.rigor}</span>
         </div>

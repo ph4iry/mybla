@@ -1,9 +1,10 @@
 'use client';
 import { Review } from "@/types/Listings";
-import { Disclosure } from "@headlessui/react";
-import { BeakerIcon, BookOpenIcon, ClockIcon, CursorArrowRaysIcon, InboxArrowDownIcon, UserGroupIcon } from "@heroicons/react/24/outline";
+import { Disclosure, Transition } from "@headlessui/react";
+import { BeakerIcon, BookOpenIcon, ChevronRightIcon, ClockIcon, CursorArrowRaysIcon, InboxArrowDownIcon, UserGroupIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import { Tooltip } from "@material-tailwind/react";
+import SkillTutorial from "./SkillTutorial";
 
 export default function Reviews({ reviews } : { reviews: Review[] }) {
   if (!reviews) reviews = [];
@@ -41,8 +42,8 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
 
   return (
     <div className="mt-4">
-      <h2 className="text-3xl font-semibold mb-2">Student Voice</h2>
-      {/* <p className="italic">Note: These are student-submitted comments on the courses they&apos;ve taken. While these reviews may not depict what your experience taking the course will be like, the comments submitted are subject to moderation and deletion.</p> */}
+      <h2 className="text-3xl font-semibold">Student Voice</h2>
+      <p className="italic mb-2">Learn about how this works <a className="underline" href="/guide/student-voice">here</a>.</p>
       { reviews.length > 0 ? (
         <div className="space-y-4">
           {/* <div className="bg-zinc-100/80 dark:bg-zinc-700 p-4 rounded">
@@ -73,64 +74,86 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
               ))}
             </div>
           </div> */}
-          <div className="bg-zinc-100/80 dark:bg-zinc-700 p-4">
+          <div className="bg-zinc-100/80 dark:bg-zinc-700 rounded-lg">
             <Disclosure>
-              <Disclosure.Button className="py-2">
-                <h3 className="text-2xl font-semibold mb-2 text-zinc-500 dark:text-zinc-300">Skills Summary</h3>
-              </Disclosure.Button>
-              <Disclosure.Panel className="text-gray-500">
-                Yes! You can purchase a license that you can share with your entire
-                team.
-              </Disclosure.Panel>
+            {({ open }) => (
+              <>
+                <Disclosure.Button className="flex w-full p-4 text-left bg-black/20 rounded-lg justify-between items-center">
+                  <div>
+                    <h3 className="text-2xl font-semibold mb-2 text-zinc-500 dark:text-zinc-300 underline">Skills Summary</h3>
+                    <p className="text-base italic">What skills will help a student succeed in this course?</p>
+                  </div>
+                  <ChevronRightIcon className={`h-8 translate ${open ? 'rotate-90' : ''}`} />
+                </Disclosure.Button>
+                <Transition
+                  enter="transition duration-100 ease-out"
+                  enterFrom="transform scale-95 opacity-0"
+                  enterTo="transform scale-100 opacity-100"
+                  leave="transition duration-75 ease-out"
+                  leaveFrom="transform scale-100 opacity-100"
+                  leaveTo="transform scale-95 opacity-0"
+                >
+                  <Disclosure.Panel className="p-4 rounded-lg">
+                  {
+                    humanities.data.length > 0 && (
+                    <>
+                      <h4 className="text-xl font-semibold my-2 text-amber-500">Humanities</h4>
+                      <div className="flex gap-2 flex-wrap">
+                        {Object.entries(humanities.sorted).map((comment, i) => (
+                          <Fragment key={i}>
+                            <SkillTag type="humanities" text={comment[0]} quantity={comment[1]}/>
+                          </Fragment>
+                        ))}
+                      </div>
+                    </>
+                    )
+                  }
+
+                  {
+                    stem.data.length > 0 && (
+                      <>
+                        <h4 className="text-xl font-semibold my-2 text-emerald-500">STEM</h4>
+                        <div className="flex gap-2 flex-wrap">
+                          {Object.entries(stem.sorted).map((comment, i) => (
+                            <Fragment key={i}>
+                              <SkillTag type="stem" text={comment[0]} quantity={comment[1]}/>
+                            </Fragment>
+                          ))}
+                        </div>
+                      </>
+                    )
+                  }
+
+                  { 
+                    personal.data.length > 0 && (
+                      <>
+                        <h4 className="text-xl font-semibold my-2 text-sky-500">Personal</h4>
+                        <div className="flex gap-2 flex-wrap">
+                          {Object.entries(personal.sorted).map((comment, i) => (
+                            <Fragment key={i}>
+                              <SkillTag type="personal" text={comment[0]} quantity={comment[1]}/>
+                            </Fragment>
+                          ))}
+                        </div>
+                      </>
+                    )
+                  }
+                  </Disclosure.Panel>
+                </Transition>
+              </>
+            )}
             </Disclosure>
-            <p className="text-base italic mb-2">What skills will help a student succeed in this course?</p>
-            {
-              humanities.data.length > 0 && (
-                <>
-                  <h4 className="text-xl font-semibold my-2 text-amber-500">Humanities</h4>
-                  <div className="flex gap-2 flex-wrap">
-                    {Object.entries(humanities.sorted).map((comment, i) => (
-                      <Fragment key={i}>
-                        <SkillTag type="humanities" text={comment[0]} quantity={comment[1]}/>
-                      </Fragment>
-                    ))}
-                  </div>
-                </>
-              )
-            }
+            
 
-            {
-              stem.data.length > 0 && (
-                <>
-                  <h4 className="text-xl font-semibold my-2 text-emerald-500">STEM</h4>
-                  <div className="flex gap-2 flex-wrap">
-                    {Object.entries(stem.sorted).map((comment, i) => (
-                      <Fragment key={i}>
-                        <SkillTag type="stem" text={comment[0]} quantity={comment[1]}/>
-                      </Fragment>
-                    ))}
-                  </div>
-                </>
-              )
-            }
-
-            { 
-              personal.data.length > 0 && (
-                <>
-                  <h4 className="text-xl font-semibold my-2 text-sky-500">Personal</h4>
-                  <div className="flex gap-2 flex-wrap">
-                    {Object.entries(personal.sorted).map((comment, i) => (
-                      <Fragment key={i}>
-                        <SkillTag type="personal" text={comment[0]} quantity={comment[1]}/>
-                      </Fragment>
-                    ))}
-                  </div>
-                </>
-              )
-            }
           </div>
-          <h3 className="text-2xl font-semibold mb-2">Comments ({reviews.length})</h3>
-          {
+          {/* <div>
+            <h3 className="text-2xl font-semibold mb-1">Submissions ({reviews.length})</h3>
+            <SkillTutorial />
+          </div>
+          <div className="my-2">
+            
+          </div> */}
+          {/* {
             reviews.map((review, i) => {
 
 
@@ -142,15 +165,10 @@ export default function Reviews({ reviews } : { reviews: Review[] }) {
                     <CommitmentTag text={review.ratings.homework} type="homework"/>
                     <CommitmentTag text={review.ratings.resources} type="resources"/>
                   </div>
-                  {
-                    review.tips && review.tips !== "" && (
-                      <div><span className="font-bold">Tips and Tricks: </span>{review.tips}</div>
-                    ) 
-                  }
                 </div>
               )
             })
-          }
+          } */}
         </div>
       ) : (
         <div>There are no student submissions available for this course.</div>
@@ -175,7 +193,7 @@ function CommitmentTag({ text, type, quantity }:{ text: string, type: Commitment
     switch(type) {
       case "weekly": return "Weekly Commitment"
       case "homework": return "Homework Load"
-      case "resources": return "Available Resources"
+      case "resources": return "Available Resources\n(ex. Khan Academy, Youtube Videos)"
     }
   })();
   return (
@@ -183,7 +201,7 @@ function CommitmentTag({ text, type, quantity }:{ text: string, type: Commitment
       <Tooltip
         content={explanation}
         placement="top"
-        className={`${color[1]} rounded-full`}
+        className={`${color[1]} rounded-full text-center`}
       >
         <button><CommitmentTagIcon type={type}/></button>
       </Tooltip>

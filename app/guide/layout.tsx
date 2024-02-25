@@ -5,7 +5,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 export default function GuideLayout({ children } : { children: ReactNode }) {
   return (
     <div>
-      <a href="/" className="flex text-md items-center font-medium group w-fit"><ArrowLeftIcon className="h-6 mr-1 group-hover:mr-2 transition-all stroke-2" /> Home</a>
+      <a href="/" className="flex text-md items-center font-medium group w-fit mb-3"><ArrowLeftIcon className="h-6 mr-1 group-hover:mr-2 transition-all stroke-2" /> Home</a>
       <div className="flex flex-col md:flex-row">
         <Navigator />
         <div>

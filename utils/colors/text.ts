@@ -1,5 +1,4 @@
-const subjects = ['English', 'Math', 'Science', 'History', 'Classics/MFL', 'Art'] as const;
-type Subject = typeof subjects[number];
+import { Subject } from "@/types/Listings";
 
 export function colorTextBySubject(subject: Subject) {
   switch (subject) {

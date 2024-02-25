@@ -7,11 +7,13 @@ export default function categorize(link: string | null): Embed | null {
   };
 
   const filters = [isYouTubeLink, isGoogleDriveLink, isGoogleSlidesLink, isGoogleDocsLink, isGoogleSitesLink];
-  const EmbedTypes = ['Youtube', 'Drive', 'Slideshow', 'Document', 'GSite'] as (keyof typeof CustomEmbeds)[];
+  const EmbedTypes = ['YouTube', 'Drive', 'Slideshow', 'Document', 'GSite'] as (keyof typeof CustomEmbeds)[];
+
 
   for (let i = 0; i < filters.length; i++) {
     if (filters[i](link)) {
       const embedType: keyof typeof CustomEmbeds = EmbedTypes[i];
+
       return new CustomEmbeds[embedType](link);
     }
   }
