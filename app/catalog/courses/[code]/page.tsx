@@ -1,9 +1,9 @@
 import { Item, Subject } from "@/types/Listings";
 import categorize from "@/utils/embeds/categorize";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-import { ArrowTopRightOnSquareIcon, InformationCircleIcon, LightBulbIcon, HashtagIcon } from '@heroicons/react/24/outline';
+import { ArrowTopRightOnSquareIcon, InformationCircleIcon, HashtagIcon } from '@heroicons/react/24/outline';
 import Link from "next/link";
-import FavoriteButton, { FavoriteButtonWithNoContext } from "@/components/page/FavoriteButton";
+import { FavoriteButtonWithNoContext } from "@/components/page/FavoriteButton";
 import { getSheet } from "@/utils/g-sheets/fetch";
 import Reviews from "@/components/page/Reviews";
 import NotFoundPage from "@/app/not-found";

@@ -1,9 +1,7 @@
 'use client';
 import { Item, Subject } from "@/types/Listings";
 import { useState, useEffect, Fragment } from "react";
-import Card from "../home/Card";
-import { Popover, Transition } from "@headlessui/react";
-import { CheckCircleIcon, DocumentArrowDownIcon, ShareIcon } from "@heroicons/react/24/outline";
+import { Transition } from "@headlessui/react";
 import cn from 'classnames';
 import Shareable from "../shareables/CopyButton";
 import Document from "../shareables/SelectionDocument";
@@ -52,7 +50,7 @@ export default function FavoriteCoursesSummary({ sheet }: { sheet: Item[] }) {
             "dark:text-amber-400": isSelecting && selectMethod === 'courseSelection',
             "dark:text-zinc-500/60": isSelecting && selectMethod === 'editFavorites'
           })} onClick={handleCreateCourseSelection}>
-            {isSelecting && ((selectMethod === 'courseSelection') ? "Cancel" : "Create Course Selection")}
+            {(isSelecting && (selectMethod === 'courseSelection')) ? "Cancel" : "Create Course Selection"}
           </button>
           {
             selectMethod === 'courseSelection' ? (
