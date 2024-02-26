@@ -6,6 +6,7 @@ import cn from 'classnames';
 import Shareable from "../shareables/CopyButton";
 import Document from "../shareables/SelectionDocument";
 import classNames from "classnames";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 const subjects = ['English', 'Math', 'Science', 'History', 'Classics/MFL', 'Art'] as const;
 
@@ -43,7 +44,7 @@ export default function FavoriteCoursesSummary({ sheet }: { sheet: Item[] }) {
   return (
     populatedFavorites.length > 0 ? (
       <div>
-        <div className="flex justify-between my-3" id="action-bar">
+        {/* <div className="flex justify-between my-3" id="action-bar">
           <button className={cn({
             "inline-flex gap-2 transition": true,
             "dark:text-zinc-400 hover:text-amber-400": !isSelecting && selectMethod === 'none',
@@ -75,6 +76,12 @@ export default function FavoriteCoursesSummary({ sheet }: { sheet: Item[] }) {
               )
             )
           }
+        </div> */}
+        <div className="flex justify-between my-3 text-zinc-300 items-center dark:text-zinc-500">
+          <span className="text-sm inline-flex items-center">
+            <ExclamationTriangleIcon className="h-5 inline mr-2" />
+            The course selection creation feature is currently under construction.
+          </span>
         </div>
         <div className="grid md:grid-cols-3 gap-4 overflow-x-auto overflow-y-hidden items-stretch">
           {populatedFavorites.map((f, i) => (
