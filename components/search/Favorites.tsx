@@ -36,7 +36,7 @@ export default function FavoriteCoursesSummary({ sheet }: { sheet: Item[] }) {
 
   const handleCreateCourseSelection = () => {
     try {
-      setSelectMethod(isSelecting && selectMethod === 'courseSelection' ? 'none' : 'courseSelection');
+      setSelectMethod((isSelecting && selectMethod === 'courseSelection') ? 'none' : 'courseSelection');
       setIsSelecting(!isSelecting);
     } catch (e) {
       console.log('There was an issue: ', e);
@@ -52,7 +52,7 @@ export default function FavoriteCoursesSummary({ sheet }: { sheet: Item[] }) {
             "dark:text-amber-400": isSelecting && selectMethod === 'courseSelection',
             "dark:text-zinc-500/60": isSelecting && selectMethod === 'editFavorites'
           })} onClick={handleCreateCourseSelection}>
-            {isSelecting && (selectMethod === 'courseSelection') ? "Cancel" : "Create Course Selection"}
+            {isSelecting && ((selectMethod === 'courseSelection') ? "Cancel" : "Create Course Selection")}
           </button>
           {
             selectMethod === 'courseSelection' ? (
