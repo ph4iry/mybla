@@ -33,18 +33,25 @@ export default function FavoriteCoursesSummary({ sheet }: { sheet: Item[] }) {
   }
 
   const populatedFavorites = sheet.filter(item => favoritedCourses.includes(item.code));
-  
 
+  const handleCreateCourseSelection = () => {
+    try {
+      setSelectMethod(isSelecting && selectMethod === 'courseSelection' ? 'none' : 'courseSelection');
+      setIsSelecting(!isSelecting);
+    } catch (e) {
+      console.log('There was an issue: ', e);
+    }
+}
   return (
     populatedFavorites.length > 0 ? (
       <div>
-        <div className="flex justify-between my-3">
+        <div className="flex justify-between my-3" id="action-bar">
           <button className={cn({
             "inline-flex gap-2 transition": true,
             "dark:text-zinc-400 hover:text-amber-400": !isSelecting && selectMethod === 'none',
             "dark:text-amber-400": isSelecting && selectMethod === 'courseSelection',
             "dark:text-zinc-500/60": isSelecting && selectMethod === 'editFavorites'
-          })} onClick={() => { setSelectMethod(isSelecting && selectMethod === 'courseSelection' ? 'none' : 'courseSelection'); setIsSelecting(!isSelecting);  }}>
+          })} onClick={handleCreateCourseSelection}>
             {isSelecting && (selectMethod === 'courseSelection') ? "Cancel" : "Create Course Selection"}
           </button>
           {
