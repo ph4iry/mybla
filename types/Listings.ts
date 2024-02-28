@@ -18,6 +18,7 @@ export interface Review {
     }
   };
   tips?: string;
+  
 }
 
 export interface Item {
@@ -27,7 +28,8 @@ export interface Item {
   description: string
   rigor: 'AP' | 'Honors' | 'Regular'
   link: string | null
-  reviews: Review[]
+  reviews: Review[];
+  grades: (7 | 8 | 9 | 10 | 11 | 12)[];
 }
 
 export interface FilterOptions {

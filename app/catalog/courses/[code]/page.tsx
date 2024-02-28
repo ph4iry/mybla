@@ -1,7 +1,7 @@
 import { Item, Subject } from "@/types/Listings";
 import categorize from "@/utils/embeds/categorize";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-import { ArrowTopRightOnSquareIcon, InformationCircleIcon, HashtagIcon } from '@heroicons/react/24/outline';
+import { ArrowTopRightOnSquareIcon, InformationCircleIcon, HashtagIcon, PencilIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import Link from "next/link";
 import { FavoriteButtonWithNoContext } from "@/components/page/FavoriteButton";
 import { getSheet } from "@/utils/g-sheets/fetch";
@@ -29,13 +29,27 @@ export default async function CourseView({ params }: {params: { code: string }})
 
   const media = categorize(course!.link);
 
+  function getGradeColor(grade: 7 | 8 | 9 | 10 | 11 | 12) {
+    switch(grade) {
+      case 7: return 'bg-amber-400/30';
+      case 8: return 'bg-orange-400/30';
+      case 9: return 'bg-purple-400/30';
+      case 10: return 'bg-green-400/30';
+      case 11: return 'bg-blue-400/30';
+      case 12: return 'bg-red-400/30';
+    }
+  }
+
   return (
     <div>
       <a href="/catalog" className="flex text-md items-center font-medium group w-fit mb-3"><ArrowLeftIcon className="h-6 mr-1 group-hover:mr-2 transition-all stroke-2" /> Course Catalog</a>
       <h1 className="text-4xl font-bold gap-2 items-center"><FavoriteButtonWithNoContext course={course}/> {course.name}</h1>
       <div className="flex gap-2 my-3">
-        <span className={`inline-flex uppercase items-center ${colorTextBySubject(course.subject)}`}><HashtagIcon className="h-4 stroke-2" /> {course.subject}</span>
-        <span className={`inline-flex uppercase items-center ${colorTextByRigor(course.rigor)}`}><HashtagIcon className="h-4 stroke-2" /> {course.rigor}</span>
+        <span className={`inline-flex flex-nowrap items-center gap-2 px-3 py-1 rounded-full ${getSubjectColor(course.subject)}`}><PencilIcon className="h-5" /> {course.subject}</span>
+        <span className={`inline-flex flex-nowrap items-center gap-2 px-3 py-1 rounded-full ${getRigorColor(course.rigor)}`}><SparklesIcon className="h-5" /> {course.rigor}</span>
+          {course.grades.map((g, i) => (
+            <span key={i} className={`px-3 py-1 rounded-full bg-fuchsia-400/30 ${getGradeColor(g)}`}>{g}</span>
+          ))}
       </div>
       {
         course.rigor === 'AP' ? (
@@ -91,21 +105,38 @@ export default async function CourseView({ params }: {params: { code: string }})
   )
 }
 
-function colorTextBySubject(subject: Subject) {
+function getSubjectColor(subject: "English" | "Math" | "Science" | "History" | "Classics/MFL" | "Art") {
   switch (subject) {
-    case "English": return "text-amber-400";
-    case "Math": return "text-sky-400";
-    case "Science": return "text-emerald-400";
-    case "History": return "text-amber-600";
-    case "Classics/MFL": return "text-violet-400";
-    case "Art": return "text-pink-400";
+    case "English":
+      return 'bg-amber-400/30';
+    case "Math":
+      return 'bg-blue-500/30';
+    case "Science":
+      return 'bg-emerald-400/30';
+    case "History":
+      return 'bg-amber-700/30';
+    case "Classics/MFL":
+      return 'bg-violet-400/30';
+    case "Art":
+      return 'bg-pink-400/30';
   }
 }
 
-function colorTextByRigor(rigor: 'AP' | 'Honors' | 'Regular') {
+function getRigorColor(rigor: 'AP' | 'Honors' | 'Regular') {
   switch (rigor) {
-    case "AP": return "dark:text-blue-200 text-blue-400";
-    case "Honors": return "dark:text-emerald-200 text-green-400";
-    case "Regular": return "dark:text-zinc-200 text-zinc-400";
+    case "AP": return 'bg-sky-400/30';
+    case "Honors": return 'bg-emerald-30';
+    case "Regular": return 'bg-zinc-400/30';
+  }
+}
+
+function getGradeColor(grade: `${7 | 8 | 9 | 10 | 11 | 12}`) {
+  switch(grade) {
+    case '7': return 'bg-amber-400/30';
+    case '8': return 'bg-orange-400/30';
+    case '9': return 'bg-purple-400/30';
+    case '10': return 'bg-green-400/30';
+    case '11': return 'bg-blue-400/30';
+    case '12': return 'bg-red-400/30';
   }
 }

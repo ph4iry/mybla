@@ -81,7 +81,8 @@ export const getSheet = cache(async () => {
         link: row.get("Course Video Link"),
         reviews: [
           ...courseReviews.filter(c => c.course === row.get("Course Number"))
-        ]
+        ],
+        grades: `${row.get("Grade Level(s)")}`.split(',').map(g => parseInt(g)) as (7 | 8 | 9 | 10 | 11 | 12)[],
       });
     });
     

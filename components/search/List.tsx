@@ -58,6 +58,9 @@ function ListItem({ data, favorites, updateAllFavorites }: { data: Item, favorit
         <div className="flex gap-3 text-xs font-medium mt-2 flex-wrap md:flex-nowrap">
           <span className={`uppercase px-3 py-1 rounded-full ${getSubjectColor(data.subject)}`}>{data.subject}</span>
           <span className={`uppercase px-3 py-1 rounded-full ${getRigorColor(data.rigor)}`}>{data.rigor}</span>
+            {data.grades.map((g, i) => (
+              <span key={i} className={`uppercase px-3 py-1 rounded-full bg-fuchsia-400/30 ${getGradeColor(`${g}`)}`}>{g}</span>
+            ))}
         </div>
         
       </div>
@@ -87,5 +90,16 @@ function getRigorColor(rigor: 'AP' | 'Honors' | 'Regular') {
     case "AP": return 'bg-sky-400/30';
     case "Honors": return 'bg-emerald-30';
     case "Regular": return 'bg-zinc-400/30';
+  }
+}
+
+function getGradeColor(grade: `${7 | 8 | 9 | 10 | 11 | 12}`) {
+  switch(grade) {
+    case '7': return 'bg-amber-400/30';
+    case '8': return 'bg-orange-400/30';
+    case '9': return 'bg-purple-400/30';
+    case '10': return 'bg-green-400/30';
+    case '11': return 'bg-blue-400/30';
+    case '12': return 'bg-red-400/30';
   }
 }

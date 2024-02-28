@@ -57,6 +57,17 @@ export default function Filters({ sheet }: { sheet: Item[] }) {
             setState={setFilters}
             options={['AP', 'Honors', 'Regular']}
           />
+          <Filter
+            name="Grade"
+            index={3}
+            condition={(i: Item, batch: [string, boolean][]) => {
+              if (batch.length === 0) return true;
+              return batch.map(b => i.grades?.map(g => `${g}`)?.includes(b[0])).includes(true);
+            }}
+            previous={filters}
+            setState={setFilters}
+            options={['7', '8', '9', '10', '11', '12']}
+          />
         </div>
         <div className="grow flex rounded-md bg-zinc-200/50  dark:bg-zinc-700 dark:text-white dark:placeholder:text-white/50">
           <input type="text" name="list-search" id="list-search" placeholder="Search by course code/name..." className="grow w-full outline-none ring-0 focus:ring-0 focus:outline-none focus:border-0 border-0 bg-transparent dark:placeholder:text-white/80 placeholder:text-zinc-400" onChange={handleInputChange} />
