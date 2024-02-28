@@ -47,7 +47,7 @@ export default async function CourseView({ params }: {params: { code: string }})
       <div className="flex gap-2 my-3">
         <span className={`inline-flex flex-nowrap items-center gap-2 px-3 py-1 rounded-full ${getSubjectColor(course.subject)}`}><PencilIcon className="h-5" /> {course.subject}</span>
         <span className={`inline-flex flex-nowrap items-center gap-2 px-3 py-1 rounded-full ${getRigorColor(course.rigor)}`}><SparklesIcon className="h-5" /> {course.rigor}</span>
-          {course.grades.map((g, i) => (
+          {course.grades?.map((g, i) => (
             <span key={i} className={`px-3 py-1 rounded-full bg-fuchsia-400/30 ${getGradeColor(g)}`}>{g}</span>
           ))}
       </div>

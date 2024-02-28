@@ -58,7 +58,7 @@ function ListItem({ data, favorites, updateAllFavorites }: { data: Item, favorit
         <div className="flex gap-3 text-xs font-medium mt-2 flex-wrap md:flex-nowrap">
           <span className={`uppercase px-3 py-1 rounded-full ${getSubjectColor(data.subject)}`}>{data.subject}</span>
           <span className={`uppercase px-3 py-1 rounded-full ${getRigorColor(data.rigor)}`}>{data.rigor}</span>
-            {data.grades.map((g, i) => (
+            {data.grades?.map((g, i) => (
               <span key={i} className={`uppercase px-3 py-1 rounded-full bg-fuchsia-400/30 ${getGradeColor(`${g}`)}`}>{g}</span>
             ))}
         </div>
