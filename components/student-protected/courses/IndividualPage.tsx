@@ -110,7 +110,7 @@ export default function IndividualPage({ catalogCourse, section }:{ catalogCours
         }
       });
     });
-
+  //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const term1 = course?.categories.map(category => category.terms.q1.average * category.terms.q1.weight).reduce((a, b) => a + b, 0) / 100;
@@ -178,7 +178,7 @@ export default function IndividualPage({ catalogCourse, section }:{ catalogCours
             <LinkPreview link={link} />
           </Fragment>
         )) : (
-          <div className="text-zinc-400">No links have been added yet. Add one with the "add a link" button!</div>
+          <div className="text-zinc-400">No links have been added yet. Add one with the &quot;add a link&quot; button!</div>
         )}
       </div>
       <div className="mt-4">

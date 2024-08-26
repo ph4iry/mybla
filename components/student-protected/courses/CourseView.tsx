@@ -68,7 +68,7 @@ export default function CourseView() {
         })
       });
     }
-
+  //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courses]);
 
   useEffect(() => {
@@ -78,6 +78,7 @@ export default function CourseView() {
       setCourseCatalog(data);
       secureLocalStorage.setItem('courseCatalog', data);
     });
+  //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const tabsToRender = [
