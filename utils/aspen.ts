@@ -1,4 +1,5 @@
 import { Session } from 'bla-aspen';
+import 'puppeteer-extra-plugin-stealth/evasions/chrome.app';
 
 export async function getAspenData(username: string, password: string) {
   const aspen = await new Session(username, password).init();

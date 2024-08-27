@@ -7,7 +7,7 @@ export default function Page() {
         <h1 className="text-4xl font-bold">Level up your student experience this year.</h1>
         <p className="mt-4 text-lg">Boston Latin Academy Resources only a click away</p>
         <div className="flex gap-4 mt-6">
-          <a href="/students/login" className="p-4 rounded-md bg-amber-300/20 text-amber-400 flex gap-2 flex-nowrap">Start your journey now <HiArrowRight className="size-6" /></a>
+          <a href="/students/login" className="p-4 rounded-md dark:bg-amber-300/20 text-sky-400 bg-sky-300/20 dark:text-amber-400 flex gap-2 flex-nowrap">Start your journey now <HiArrowRight className="size-6" /></a>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 shrink-0 md:-rotate-3">

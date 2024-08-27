@@ -76,7 +76,7 @@ function CatalogLink() {
       <PopoverPanel
           transition
           anchor="bottom"
-          className="mt-4 divide-y dark:divide-white/5 divide-black/5 rounded-xl bg-white border-2 border-black/5 dark:border-0 dark:bg-zinc-900/65 text-sm/6 dark:backdrop-blur transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+          className="z-50 mt-4 divide-y dark:divide-white/5 divide-black/5 rounded-xl bg-white border-2 border-black/5 dark:border-0 dark:bg-zinc-900/65 text-sm/6 dark:backdrop-blur transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
         >
           <div className="p-3">
             <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/">
@@ -106,7 +106,7 @@ function ForStudentsLink() {
       <PopoverPanel
         transition
         anchor="bottom"
-        className="mt-4 divide-y dark:divide-white/5 divide-black/5 rounded-xl bg-white border-2 border-black/5 dark:border-0 dark:bg-zinc-900/65 text-sm/6 dark:backdrop-blur transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+        className="mt-4 z-50 divide-y dark:divide-white/5 divide-black/5 rounded-xl bg-white border-2 border-black/5 dark:border-0 dark:bg-zinc-900/65 text-sm/6 dark:backdrop-blur transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
       >
         <div className="p-3">
           <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/students">
@@ -118,12 +118,12 @@ function ForStudentsLink() {
             <p className="dark:text-white/50 text-black/50">Log in with Aspen</p>
           </Link>
         </div>
-        <div className="p-3">
+        {/* <div className="p-3">
           <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/guide">
             <p className="font-semibold dark:text-white">Guide</p>
             <p className="dark:text-white/50 text-black/50">How to use the student portal</p>
           </Link>
-        </div>
+        </div> */}
       </PopoverPanel>
     </Popover>
   )

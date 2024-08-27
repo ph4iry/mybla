@@ -44,7 +44,7 @@ function getGreeting() {
 
 function PreferredNameDialog() {
   let [open, setOpen] = useState(false);
-  let [preferredName, setPreferredName] = useState(secureLocalStorage.getItem('preferredName') as string);
+  let [preferredName, setPreferredName] = useState('');
   let [record, setRecord] = useState<StudentRecord>(null!);
 
   const handleSave = () => {

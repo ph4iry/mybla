@@ -34,7 +34,7 @@ export default function Profile() {
 }
 function PreferredNameDialog() {
   let [open, setOpen] = useState(false);
-  let [preferredName, setPreferredName] = useState(secureLocalStorage.getItem('preferredName') as string);
+  let [preferredName, setPreferredName] = useState('');
   let [record, setRecord] = useState<StudentRecord>(null!);
 
   const handleSave = () => {
@@ -89,7 +89,7 @@ function PreferredNameDialog() {
     <>
       <div className="text-3xl font-bold flex flex-wrap gap-2">
         <span suppressHydrationWarning>{(preferredName && preferredName !== 'null') ? preferredName : record?.name} </span>
-        <button className="inline text-sm text-amber-400 font-normal decoration-wavy underline underline-offset-4 -translate-y-[4px] whitespace-nowrap" onClick={() => setOpen(true)}>
+        <button className="inline text-sm text-amber-500 dark:text-amber-400 font-normal decoration-wavy underline underline-offset-4 -translate-y-[4px] whitespace-nowrap" onClick={() => setOpen(true)}>
           edit preferred name
         </button>
       </div>

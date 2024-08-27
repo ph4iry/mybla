@@ -1,11 +1,11 @@
 'use client';
 
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { HiMapPin } from 'react-icons/hi2';
+import { HiArrowRight, HiMapPin } from 'react-icons/hi2';
 import { Structures } from "bla-aspen";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import secureLocalStorage from "react-secure-storage";
 
 export default function ProfileLayout({ children }:{ children: React.ReactNode }) {
@@ -29,12 +29,15 @@ export default function ProfileLayout({ children }:{ children: React.ReactNode }
   return (
     <>
       <div className="flex w-full justify-between items-center">
-        <div className="inline text-sm">
-          <Link href="/students/home" className="py-1 px-2 rounded-full bg-black/15">home</Link> &gt;
+        <div className="flex flex-nowrap items-center gap-1 text-sm">
+          <Link href="/students/home" className="py-1 px-2 rounded-full bg-sky-50 dark:bg-black/15">home</Link>
+          <HiArrowRight className="size-4 inline" />
           {chunks.map((chunk, i, a) => (
-            <span key={i}>
-              <Link href={`/students/${chunks.slice(0, i + 1).join('/')}`} className="py-1 px-2 rounded-full bg-black/15 inline-flex items-center">{chunk}{i === a.length - 1 && <HiMapPin className="size-4 inline ml-1"/>}</Link>{i === a.length - 1 ? '' : ' > '}
-            </span>
+            <Fragment key={i}>
+              <Link href={`/students/${chunks.slice(0, i + 1).join('/')}`} className="py-1 px-2 rounded-full dark:bg-black/15 bg-sky-50 inline-flex items-center">{chunk}{i === a.length - 1 && <HiMapPin className="size-4 inline ml-1"/>}</Link>{i === a.length - 1 ? '' : <>
+                <HiArrowRight className="size-4 inline" />
+              </>}
+            </Fragment>
           ))}
         </div>
         <Popover>
@@ -51,16 +54,16 @@ export default function ProfileLayout({ children }:{ children: React.ReactNode }
           <PopoverPanel
             transition
             anchor="bottom end"
-            className="mt-3 divide-y divide-white/5 rounded-xl bg-black/25 text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 min-w-sm"
+            className="mt-3 divide-y divide-white/5 rounded-xl bg-white text-black dark:text-white dark:bg-black/25 text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 min-w-sm"
           >
             <div className="p-3">
-              <a href="/students/me" className="block rounded-lg py-1 px-3 transition text-white hover:bg-white/5">
+              <a href="/students/me" className="block rounded-lg py-1 px-3 transition hover:bg-white/5">
                 Profile
               </a>
             </div>
             <div className="bg-red-400/30 p-3">
               <button className="block rounded-lg py-1 px-3 transition hover:bg-white/5" onClick={handleLogout}>
-                <p className=" text-white">Log out</p>
+                <p className="">Log out</p>
               </button>
             </div>
             

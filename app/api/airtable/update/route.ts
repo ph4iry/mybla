@@ -14,8 +14,7 @@ export async function POST(request: Request) {
 
   const record = await findUserByUsername(username);
   const user: StudentRecord = record.fields as unknown as StudentRecord;
-  console.log(fields);
-  
+
   if (record) {
     const h = getHash(password, record.fields.salt as string);
     if (record.fields.hash as string === h.hash) {

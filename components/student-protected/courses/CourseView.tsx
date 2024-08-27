@@ -12,8 +12,8 @@ export default function CourseView() {
   const [previousCourses, setPreviousCourses] = useState<Structures.Course[]>([]);
   const [currentCourses, setCurrentCourses] = useState<Structures.Course[]>([]);
   const [courseCatalog, setCourseCatalog] = useState<Item[]>([]);
+  const [courses, setCourses] = useState<StoredCourses>(null!);
 
-  const courses = secureLocalStorage.getItem('courses') as StoredCourses;
   useEffect(() => {
     if (secureLocalStorage.getItem('courses')) {
       setPreviousCourses((secureLocalStorage.getItem('courses') as StoredCourses).previous);
@@ -68,8 +68,9 @@ export default function CourseView() {
         })
       });
     }
+    setCourses(secureLocalStorage.getItem('courses') as StoredCourses);
   //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses]);
+  }, []);
 
   useEffect(() => {
     setCourseCatalog(secureLocalStorage.getItem('courseCatalog') as Item[]);
@@ -127,40 +128,41 @@ export default function CourseView() {
         <div className="bg-violet-400 border-violet-400"></div>
         <div className="bg-amber-700 border-amber-700"></div>
         <div className="bg-pink-400 border-pink-400"></div>
+        <div className="bg-zinc-400 border-zinc-400"></div>
       </div>
       {previousCourses.length === 0 && currentCourses.length === 0 ? <Skeleton /> : (
         <TabGroup defaultIndex={currentCourses.length === 0 ? 0 : 1} className="mt-4">
           <TabList className="flex items-center gap-4">
             Year: 
             <Tab
-              className="rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white"
+              className="rounded-full py-1 px-3 text-sm/6 font-semibold text-black dark:text-white focus:outline-none dark:data-[selected]:bg-white/10 data-[selected]:bg-black/10 dark:data-[hover]:bg-white/5 data-[hover]:bg-black/5 dark:data-[selected]:data-[hover]:bg-white/10 data-[selected]:data-[hover]:bg-black/10 data-[focus]:outline-1 dark:data-[focus]:outline-white data-[focus]:outline-black"
             >
              Previous
             </Tab>
             <Tab
-              className="rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white"
+              className="rounded-full py-1 px-3 text-sm/6 font-semibold text-black dark:text-white focus:outline-none dark:data-[selected]:bg-white/10 data-[selected]:bg-black/10 dark:data-[hover]:bg-white/5 data-[hover]:bg-black/5 dark:data-[selected]:data-[hover]:bg-white/10 data-[selected]:data-[hover]:bg-black/10 data-[focus]:outline-1 dark:data-[focus]:outline-white data-[focus]:outline-black"
             >
              Current
             </Tab>
           </TabList>
           <TabPanels className="mt-3">
             {tabsToRender.map(({ name, courses }) => (
-              <TabPanel key={name} className="rounded-xl bg-white/5 p-3">
+              <TabPanel key={name} className="rounded-xl bg-sky-50 dark:bg-white/5 p-3">
                 <div className="grid md:grid-cols-2 gap-4">
-                  {courses.length > 0 ? courses.map((course: Structures.Course) => (
-                    <div key={course.sectionNumber} className={`relative rounded-md p-3 text-sm/6 transition bg-opacity-10 md:bg-opacity-0 md:hover:bg-opacity-20 border-opacity-50 ${getSubjectColorWithoutOpacitySettings(courseCatalog.find(c => c.code === course.courseCode)?.subject)}`}>
+                  {courses?.length > 0 ? courses.map((course: Structures.Course) => (
+                    <div key={course.sectionNumber} className={`relative rounded-md p-3 text-sm/6 transition bg-opacity-10 md:bg-opacity-0 md:hover:bg-opacity-20 border-opacity-50 hover:scale-[1.02] ${getSubjectColorWithoutOpacitySettings(courseCatalog.find(c => c.code === course.courseCode)?.subject)}`}>
                       <div className="flex">
-                        <a href={`/students/courses/${course.sectionNumber}`} className="font-semibold text-white text-lg">
+                        <a href={`/students/courses/${course.sectionNumber}`} className="font-semibold dark:text-white text-lg">
                           <span className="absolute inset-0" />
                           <span className="inline-flex items-center gap-2">
                             {subjectIcon(course)}
                             {course.courseName}
-                            <span className="text-sm bg-black/25 px-2 rounded-full">{course.semesters}</span>
+                            <span className="text-sm bg-sky-300/25 dark:bg-black/25 px-2 rounded-full">{course.semesters}</span>
                           </span>
                         </a>
                         
                       </div>
-                      <div className="flex gap-2 text-white/50" aria-hidden="true">
+                      <div className="flex gap-2 text-black/50 dark:text-white/50" aria-hidden="true">
                         <span className="inline-flex gap-1 items-center"><HiHashtag className="size-4" /> {course.courseCode}</span>
                         <span aria-hidden="true">&middot;</span>
                         <span className="inline-flex gap-1 items-center"><HiOutlineUser className="size-4" /> {course.teacherName}</span>
@@ -183,7 +185,7 @@ export default function CourseView() {
                       </div>
                     </div>
                   )) : (
-                    <span className="text-white/50 my-12 p-5 text-center w-full col-span-2">No courses found.</span>
+                    <span className="dark:text-white/50 text-black/50 my-12 p-5 text-center w-full col-span-2">No courses found.</span>
                   )}
                 </div>
               </TabPanel>
@@ -201,12 +203,12 @@ function Skeleton() {
       <div className="flex items-center gap-4">
         Year: 
         <span
-          className="block rounded-full py-1 px-3 text-sm/6 font-semibold text-zinc-400 focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white"
+          className="rounded-full py-1 px-3 text-sm/6 font-semibold text-black dark:text-white focus:outline-none dark:data-[selected]:bg-white/10 data-[selected]:bg-black/10 dark:data-[hover]:bg-white/5 data-[hover]:bg-black/5 dark:data-[selected]:data-[hover]:bg-white/10 data-[selected]:data-[hover]:bg-black/10 data-[focus]:outline-1 dark:data-[focus]:outline-white data-[focus]:outline-black"
         >
           Previous
         </span>
         <span
-          className="block rounded-full py-1 px-3 text-sm/6 font-semibold text-zinc-400 focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white"
+          className="rounded-full py-1 px-3 text-sm/6 font-semibold text-black dark:text-white focus:outline-none dark:data-[selected]:bg-white/10 data-[selected]:bg-black/10 dark:data-[hover]:bg-white/5 data-[hover]:bg-black/5 dark:data-[selected]:data-[hover]:bg-white/10 data-[selected]:data-[hover]:bg-black/10 data-[focus]:outline-1 dark:data-[focus]:outline-white data-[focus]:outline-black"
         >
           Current
         </span>
@@ -217,7 +219,7 @@ function Skeleton() {
           {Array.from({ length: 10 }).map((_, i) => (
             (
               <span key={i} className="relative rounded-md p-3 text-sm/6 transition bg-opacity-10 md:bg-opacity-0 md:hover:bg-opacity-20 border-opacity-50 border-zinc-400 border">
-                <div className="flex gap-2 text-white/50 items-center" aria-hidden="true">
+                <div className="flex gap-2 dark:text-white/50 items-center" aria-hidden="true">
                   <span className="w-[3ch] h-[1ch] rounded-full bg-white/5"></span>
                   <span aria-hidden="true">&middot;</span>
                   <span className="w-[15ch] h-[1ch] rounded-full bg-white/5"></span>
@@ -226,15 +228,15 @@ function Skeleton() {
                 </div>
                 <div className="flex gap-2 text-xs uppercase mt-2">
                   <div className="flex gap-1">
-                    <span className="text-zinc-400">Absence</span>
+                    <span className="dark:text-zinc-400">Absence</span>
                     <span className=""></span>
                   </div>
                   <div className="flex gap-1">
-                    <span className="text-zinc-400">Tardy</span>
+                    <span className="dark:text-zinc-400">Tardy</span>
                     <span></span>
                   </div>
                   <div className="flex gap-1">
-                    <span className="text-zinc-400">Dismissal</span>
+                    <span className="dark:text-zinc-400">Dismissal</span>
                     <span></span>
                   </div>
                 </div>
