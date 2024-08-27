@@ -9,14 +9,12 @@ export default function Home () {
         <p className="italic text-sm">The hub for BLA students to explore courses and prospective careers. Made with <HiHeart className="h-4 text-rose-400 inline" /> by Phaedra Sanon, &apos;25.</p>
       </div>
       <div id="jumbo">
-        <div className="flex flex-col md:grid md:grid-cols-3 gap-4">
-          <div className="bg-gradient-to-br from-amber-400/10 shadow-md to-black/10 col-span-2 rounded-md p-6 flex items-start justify-end flex-col min-h-[25vh]">
+        <div className="flex flex-col">
+          <div className="relative bg-gradient-to-br from-amber-400 to-rose-400 dark:from-amber-400/10 shadow-md dark:to-black/10 col-span-2 rounded-md p-6 flex items-start justify-end flex-col min-h-[25vh]">
+            <a href="/students/login" className="absolute inset-0 w-full h-full"></a>
             <h2 className="text-3xl font-semibold">NEW: myBLA for Students</h2>
-            {/* <p>A new school year means a new era for myBLA!</p> */}
+            <p>A new school year means a new era for myBLA!</p>
             <p className="mt-3 italic text-sm">Tons of more features have been added this summer-- log in with Aspen to check it out!</p>
-          </div>
-          <div className="bg-black/2 col-span-1">
-            action to check out the site
           </div>
         </div>
       </div>

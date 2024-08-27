@@ -78,3 +78,13 @@
   height: 1em;
   vertical-align: -0.125em;
 }
+
+input:-webkit-autofill {
+  -webkit-box-shadow:0 0 0 50px f0f9ff inset; /* Change the color to your own background color */
+  -webkit-text-fill-color: #333;
+}
+
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 50px f0f9ff inset;/*your box-shadow*/
+  -webkit-text-fill-color: #333;
+} 

@@ -8,6 +8,10 @@ export async function POST(request: Request) {
     year: 'previous' | 'current';
   }
   const { refreshToken, sectionNumber, year } = await request.json() as RequestBody;
+
+  if (!sectionNumber || !year) {
+    return new Response(null, { status: 400 });
+  }
   const [username, password] = Buffer.from(refreshToken, 'base64').toString().split(':');
 
   // console.log(username, Buffer.from(password, 'base64').toString());

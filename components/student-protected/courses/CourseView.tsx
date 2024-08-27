@@ -96,7 +96,7 @@ export default function CourseView() {
   const subjectIcon = (course: Structures.Course) => {
     const cn = "size-5";
 
-    switch(courseCatalog.find(c => c.code === course.courseCode)?.subject) {
+    switch(courseCatalog?.find(c => c.code === course?.courseCode)?.subject) {
       case 'Math': return <HiOutlineVariable className={cn} />
       case 'Science': return <HiOutlineBeaker className={cn} />
       case 'History': return <HiOutlineGlobeAmericas className={cn} />
@@ -104,13 +104,13 @@ export default function CourseView() {
       case 'Classics/MFL': return <HiOutlineLanguage className={cn} />
       case 'Art': return <HiOutlinePaintBrush className={cn} /> 
       default: {
-        if (course.courseName.includes('Study Hall')) {
+        if (course?.courseName.includes('Study Hall')) {
           return <HiOutlineClock className={cn} />
-        } else if (course.courseName.includes('Advisory')) {
+        } else if (course?.courseName.includes('Advisory')) {
           return <HiOutlineAcademicCap className={cn} />
-        } else if (course.courseName.includes('Wellness')) {
+        } else if (course?.courseName.includes('Wellness')) {
           return <HiOutlineChatBubbleOvalLeft className={cn} />
-        } else if (course.roomNumber === 'GYM') {
+        } else if (course?.roomNumber === 'GYM') {
           return <HiOutlineMegaphone className={cn} />
         } else {
           return <HiOutlineBolt className={cn} />
@@ -150,7 +150,7 @@ export default function CourseView() {
               <TabPanel key={name} className="rounded-xl bg-sky-50 dark:bg-white/5 p-3">
                 <div className="grid md:grid-cols-2 gap-4">
                   {courses?.length > 0 ? courses.map((course: Structures.Course) => (
-                    <div key={course.sectionNumber} className={`relative rounded-md p-3 text-sm/6 transition bg-opacity-10 md:bg-opacity-0 md:hover:bg-opacity-20 border-opacity-50 hover:scale-[1.02] ${getSubjectColorWithoutOpacitySettings(courseCatalog.find(c => c.code === course.courseCode)?.subject)}`}>
+                    <div key={course?.sectionNumber} className={`relative rounded-md p-3 text-sm/6 transition bg-opacity-10 md:bg-opacity-0 md:hover:bg-opacity-20 border-opacity-50 hover:scale-[1.02] ${getSubjectColorWithoutOpacitySettings(courseCatalog?.find(c => c.code === course.courseCode)?.subject)}`}>
                       <div className="flex">
                         <a href={`/students/courses/${course.sectionNumber}`} className="font-semibold dark:text-white text-lg">
                           <span className="absolute inset-0" />

@@ -10,9 +10,9 @@ const colorVariants = {
 export default function Card({ title, description, link, bgColor, callToAction, span }: { title: string, description: string, link: string, bgColor?: keyof typeof colorVariants, callToAction?: string, span?: `col-span-${number}` }) {
   
   return (
-    <div className={`flex w-full h-full shadow-xl  shadow-zinc-900/30 rounded-md hover:shadow-zinc-900/60 transition hover:-translate-y-1 ${span} bg-white/5`}>
+    <div className={`flex w-full h-full shadow-lg shadow-zinc-50/30 hover:shadow-zinc-50 dark:shadow-xl dark:shadow-zinc-900/30 rounded-md dark:hover:shadow-zinc-900/60 transition hover:-translate-y-1 ${span} bg-white/5`}>
       <div className={"w-2 rounded-l-md shrink-0 " + (bgColor ? colorVariants[bgColor][1] : 'hidden')}></div>
-      <div className="p-3 w-full flex flex-col justify-between border-r-2 border-t-2 border-b-2 rounded-r-md border-zinc-700/20">
+      <div className="p-3 w-full flex flex-col justify-between border-r-2 border-t-2 border-b-2 rounded-r-md border-zinc-700/20 bg-white dark:bg-transparent">
         <div className="mb-3">
           <h1 className="text-lg font-semibold">{title}</h1>
           <p className="text-sm text-zinc-400">{description}</p>

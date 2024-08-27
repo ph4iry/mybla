@@ -7,12 +7,14 @@ import { useEffect } from "react";
 import secureLocalStorage from "react-secure-storage";
 
 export default async function Page({ params }:{params: { section: string }}) {
+  if (!params.section) return notFound();
+
   const sheet = await getSheet();
   const catalogCourse = sheet.find(item => item.code.toUpperCase() === params.section.split('-')[0].toUpperCase()) || null;
 
   return (
     <div>
-      <IndividualPage section={params.section} catalogCourse={catalogCourse} />
+      <IndividualPage catalogCourse={catalogCourse} section={params.section} />
     </div>
   );
 }

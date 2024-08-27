@@ -45,6 +45,7 @@ export default function IndividualPage({ catalogCourse, section }:{ catalogCours
   const [course, setCourse] = useState<Course>(null!);
 
   useEffect(() => {
+    if (!section) return;
     const prevAndCurr = Object.entries(secureLocalStorage.getItem('courses') as StoredCourses).map(([key, value]: [string, Structures.Course[]]) => value.map(v => ({
       ...v,
       year: key,

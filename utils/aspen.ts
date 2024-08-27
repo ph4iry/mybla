@@ -39,8 +39,9 @@ export async function getCourses(username: string, password: string) {
 export async function getIndividualCourse(username: string, password: string, sectionNumber: string, year: 'previous' | 'current') {
   try {
     const aspen = await new Session(username, password).init();
-    const allCourses = await aspen.getClasses({ term: 'all', year });
-    const course = await aspen.getClassDetails('sectionNumber', sectionNumber, { term: 'all', year }).catch(() => {});
+    const course = await aspen.getClasses({ term: 'all', year }).then(async () => {
+      return await aspen.getClassDetails('sectionNumber', sectionNumber, { term: 'all', year, useCache: true });
+    });
     await aspen.exit();
     return {
       ...course,
