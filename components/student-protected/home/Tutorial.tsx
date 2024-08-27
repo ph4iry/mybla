@@ -3,6 +3,7 @@ import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { HiXMark } from 'react-icons/hi2';
 import { useEffect, useState } from "react";
 import secureLocalStorage from 'react-secure-storage';
+import Image from 'next/image';
 
 export default function TutorialModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +29,7 @@ export default function TutorialModal() {
           <div className="italic">New to the site? Click here!</div>
         </div>
         <div className="shrink-0 size-32 relative bg-emerald-400/20 rounded-r-lg">
-          <img src="/dragon-head.png" alt="" className="w-4/5 h-auto absolute bottom-0 right-4" />
+          <Image src="/dragon-head.png" alt="" width={100} height={100} className="!w-4/5 !h-auto absolute bottom-0 right-4" />
         </div>
       </Button>
 
