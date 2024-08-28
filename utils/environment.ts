@@ -11,7 +11,7 @@ export const useServer = () => {
   let server_url =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3030"
-      : "https://server.mybla.app";
+      : "https://mybla-server-30f658414629.herokuapp.com";
 
   return server_url;
 }

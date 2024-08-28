@@ -24,7 +24,7 @@ export default function ProfileLayout({ children }:{ children: React.ReactNode }
     const storedStudent = (secureLocalStorage.getItem('profile') as Structures.Student);
     setStudent(storedStudent);
     const name = secureLocalStorage.getItem('preferredName') as string;
-    setPreferredName(`${name}` !== 'null' ? name : storedStudent.name);
+    setPreferredName(`${name}` !== 'null' ? name : storedStudent?.name);
   }, []);
 
   return (
