@@ -1,10 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
     "outDir": "dist",
-    "lib": ["es2019"],
-    "target": "es2019",
+    "lib": ["ESNext"],
+    "target": "ESNext",
     "isolatedModules": false,
     "noEmit": false,
     "paths": {
