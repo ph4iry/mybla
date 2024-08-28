@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "tsc --project tsconfig.server.json",
+    "heroku-postbuild": "npm run build && mkdir ./.cache && mv /app/.cache/puppeteer ./.cache",
     "start": "cross-env NODE_ENV=production node dist/server.js",
     "server-start": "npx tsc --project tsconfig.server.json && node dist/server.js"
   },
