@@ -34,7 +34,11 @@ export async function createUser(student: Partial<StudentRecord>) {
     "name": student.name,
     "username": student.username,
     "preferredName": 'null',
-    "studentJSON": JSON.stringify(student || {}),
+    "studentJSON": JSON.stringify({
+      ...student,
+      salt: undefined,
+      hash: undefined,
+    }),
     "coursesJSON": JSON.stringify({}),
     "salt": student.salt,
     "hash": student.hash,

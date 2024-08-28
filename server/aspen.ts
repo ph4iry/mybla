@@ -7,7 +7,6 @@ import { RequestHandler } from 'express';
 // POST: /api/aspen/auth
 export const handleAspenAuth: RequestHandler = async (req, res) => {
   const { username, password } = req.body;
-  console.log(username, Buffer.from(`${password}`, 'base64').toString());
 
   try {
     const record = await findUserByUsername(username);
@@ -74,10 +73,10 @@ export const fetchCourses: RequestHandler = async (req, res) => {
   }
   
   const { refreshToken } = req.body as RequestBody;
-  const [username, password] = Buffer.from(refreshToken, 'base64').toString().split(':');
+  const [username, password] = Buffer.from(`${refreshToken}`, 'base64').toString().split(':');
 
   // console.log(username, Buffer.from(password, 'base64').toString());
-  const data = await getCourses(username, Buffer.from(password, 'base64').toString());
+  const data = await getCourses(username, Buffer.from(`${password}`, 'base64').toString());
   return res.json({ 
     ...data
   });
@@ -96,10 +95,10 @@ export const fetchCourseDetails: RequestHandler = async (req, res) => {
     return res.status(400).send();
   }
 
-  const [username, password] = Buffer.from(refreshToken, 'base64').toString().split(':');
+  const [username, password] = Buffer.from(`${refreshToken}`, 'base64').toString().split(':');
 
   // console.log(username, Buffer.from(password, 'base64').toString());
-  const data = await getIndividualCourse(username, Buffer.from(password, 'base64').toString(), sectionNumber, year);
+  const data = await getIndividualCourse(username, Buffer.from(`${password}`, 'base64').toString(), sectionNumber, year);
 
   return res.json({ 
     ...data
