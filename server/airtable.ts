@@ -16,7 +16,7 @@ export const getAirtable: RequestHandler = async (req, res) => {
   }
 
   const { refreshToken, method } = req.body as RequestBody;
-  const [username, password] = Buffer.from(refreshToken, 'base64').toString().split(':');
+  const [username, password] = Buffer.from(`${refreshToken}`, 'base64').toString().split(':');
 
   switch (method) {
     case 'profile': {
@@ -32,7 +32,7 @@ export const getAirtable: RequestHandler = async (req, res) => {
             hash: undefined,
           });  
         } else {
-          const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(password, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
+          const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(`${password}`, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
           if (data) {
             updateUser(data.studentId, {
               ...h
@@ -62,7 +62,7 @@ export const getAirtable: RequestHandler = async (req, res) => {
             ...JSON.parse(user.coursesJSON!),
           });  
         } else {
-          const data: StoredCourses = (await getCourses(username, Buffer.from(password, 'base64').toString()))!;
+          const data: StoredCourses = (await getCourses(username, Buffer.from(`${password}`, 'base64').toString()))!;
           if (data) {
             updateUser(user.studentId, {
               ...h
@@ -91,7 +91,7 @@ export const updateAirtableRecord: RequestHandler = async (req, res) => {
   }
 
   const { refreshToken, fields } = req.body as RequestBody;
-  const [username, password] = Buffer.from(refreshToken, 'base64').toString().split(':');
+  const [username, password] = Buffer.from(`${refreshToken}`, 'base64').toString().split(':');
 
   const record = await findUserByUsername(username);
   const user: StudentRecord = record.fields as unknown as StudentRecord;
@@ -103,7 +103,7 @@ export const updateAirtableRecord: RequestHandler = async (req, res) => {
         ...fields
       });
     } else {
-      const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(password, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
+      const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(`${password}`, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
       if (data) {
         updateUser(data.studentId, {
           ...h,

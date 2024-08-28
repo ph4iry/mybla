@@ -7,12 +7,13 @@ import { RequestHandler } from 'express';
 // POST: /api/aspen/auth
 export const handleAspenAuth: RequestHandler = async (req, res) => {
   const { username, password } = req.body;
+  console.log(username, Buffer.from(`${password}`, 'base64').toString());
 
   try {
     const record = await findUserByUsername(username);
 
     if (record) {
-      // if the hash is different from the one in the database BUT the login was successful on aspen's end, update the hash to be with the new password
+      // if the user is already in the database, check if the hash is the same as the one in the database
       const h = getHash(password, record.fields.salt as string);
       if (record.fields.hash as string === h.hash) {
         return res.json({ 
@@ -21,7 +22,8 @@ export const handleAspenAuth: RequestHandler = async (req, res) => {
           initial: false,
         });  
       } else {
-        const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(password, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
+        // if the hash is different from the one in the database BUT the login was successful on aspen's end, update the hash to be with the new password
+        const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(`${password}`, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
         if (data) {
           updateUser(data.studentId, {
             ...h
@@ -37,8 +39,8 @@ export const handleAspenAuth: RequestHandler = async (req, res) => {
         }
       }
     } else {
-      // find the student, add them to airtable, return the student
-      const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(password, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
+      // if they arent in the database, 1: check aspen, 2: add them to airtable, 3: return the student
+      const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(`${password}`, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
       // console.log(data);
 
       if (data?.school.id === '1020') {
@@ -51,7 +53,11 @@ export const handleAspenAuth: RequestHandler = async (req, res) => {
       }
 
       return res.status(200).json({ 
-        student: data,
+        student: {
+          ...data,
+          salt: undefined,
+          hash: undefined,
+        },
         isValidStudent: data?.school.id === '1020',
       });
     }
