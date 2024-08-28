@@ -20,7 +20,15 @@ export interface StudentRecord {
   coursesJSON?: string;
 }
 
-export function createUser(student: Partial<StudentRecord>) {
+export async function createUser(student: Partial<StudentRecord>) {
+  const record = (await base('Users').select({
+    filterByFormula: `studentId = "${student.studentId}"`,
+  }).all())[0];
+
+  if (record) {
+    return;
+  }
+
   base('Users').create({
     "studentId": student.studentId!,
     "name": student.name,
@@ -28,38 +36,14 @@ export function createUser(student: Partial<StudentRecord>) {
     "preferredName": 'null',
     "studentJSON": JSON.stringify(student || {}),
     "coursesJSON": JSON.stringify({}),
+    "salt": student.salt,
+    "hash": student.hash,
   }, function(err, record) {
     if (err) {
       console.error(err);
       return;
     }
   });
-}
-
-export async function handleLogin(student: Partial<Structures.Student>) {
-  const records = await base('Users').select({
-    filterByFormula: `studentId = "${student.studentId}"`,
-  }).all();
-
-  let initial = false;
-
-  if (records.length === 0) {
-    initial = true;
-    createUser({
-      ...student,
-      username: student.email!.split('@')[0],
-    });
-
-    return {
-      initial,
-      student,
-    };
-  }
-
-  return {
-    initial,
-    student,
-  };
 }
 
 export async function findUserByStudentId(studentId: string) {

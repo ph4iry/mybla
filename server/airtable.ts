@@ -32,7 +32,7 @@ export const getAirtable: RequestHandler = async (req, res) => {
             hash: undefined,
           });  
         } else {
-          const data: Structures.Student = await getStudentInfo(username, Buffer.from(password, 'base64').toString());
+          const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(password, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
           if (data) {
             updateUser(data.studentId, {
               ...h
@@ -103,7 +103,7 @@ export const updateAirtableRecord: RequestHandler = async (req, res) => {
         ...fields
       });
     } else {
-      const data: Structures.Student = await getStudentInfo(username, Buffer.from(password, 'base64').toString());
+      const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(password, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
       if (data) {
         updateUser(data.studentId, {
           ...h,

@@ -1,4 +1,4 @@
-import { findUserByUsername, updateUser, handleLogin, createUser } from '../utils/airtable';
+import { findUserByUsername, updateUser, createUser } from '../utils/airtable';
 import { getCourses, getIndividualCourse, getStudentInfo } from '../utils/aspen';
 import { getHash } from '../utils/security';
 import { Structures } from 'bla-aspen';
@@ -21,7 +21,7 @@ export const handleAspenAuth: RequestHandler = async (req, res) => {
           initial: false,
         });  
       } else {
-        const data: Structures.Student = await getStudentInfo(username, Buffer.from(password, 'base64').toString());
+        const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(password, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
         if (data) {
           updateUser(data.studentId, {
             ...h
@@ -38,27 +38,21 @@ export const handleAspenAuth: RequestHandler = async (req, res) => {
       }
     } else {
       // find the student, add them to airtable, return the student
-      const data: Structures.Student = await getStudentInfo(username, Buffer.from(password, 'base64').toString());
+      const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(password, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
       // console.log(data);
 
-      // check for initial login given student data
-      const { initial } = data.school.id === '1020' ? (await handleLogin(data) as {
-        initial: boolean;
-        student: Partial<Structures.Student>;
-      }) : { initial: false };
+      if (data?.school.id === '1020') {
+        const creds = getHash(password);
+        createUser({
+          ...data,
+          username: data.email.split('@')[0],
+          ...creds
+        });
+      }
 
-      const creds = getHash(password);
-      // console.log(creds);
-      createUser({
-        ...data,
-        username: data.email.split('@')[0],
-        ...creds
-      });
-
-      return Response.json({ 
+      return res.status(200).json({ 
         student: data,
-        isValidStudent: data.school.id === '1020',
-        initial,
+        isValidStudent: data?.school.id === '1020',
       });
     }
   } catch (e) {

@@ -14,10 +14,14 @@ export async function getAspenData(username: string, password: string) {
 }
 
 export async function getStudentInfo(username: string, password: string) {
-  const aspen = await new Session(username, password).init(process.env.PUPPETEER_EXECUTABLE_PATH || undefined);
-  const student = await aspen.getStudentInfo();
-  aspen.exit();
-  return student;
+  try {
+    const aspen = await new Session(username, password).init(process.env.PUPPETEER_EXECUTABLE_PATH || undefined);
+    const student = await aspen.getStudentInfo();
+    aspen.exit();
+    return student;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 export async function getCourses(username: string, password: string) {
@@ -46,6 +50,6 @@ export async function getIndividualCourse(username: string, password: string, se
       ...course,
     }
   } catch (e) {
-    // console.log(e);
+    console.log(e);
   }
 }
