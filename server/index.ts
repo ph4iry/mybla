@@ -9,6 +9,11 @@ const app = express();
 const PORT = process.env.PORT || 3030;
 
 app.use(bodyParser.json());
+
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
+
 // ASPEN ENDPOINTS
 app.post('/api/aspen/auth', handleAspenAuth);
 app.post('/api/aspen/courses', fetchCourses);
