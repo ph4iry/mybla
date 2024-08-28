@@ -1,5 +1,14 @@
-const withMDX = require('@next/mdx')()
- 
+const withMDX = require('@next/mdx')() 
+
+const environment = () => {
+  let server_url =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3030"
+      : "https://server.mybla.app";
+
+  return server_url;
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Configure `pageExtensions` to include MDX files
@@ -13,31 +22,16 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (
-    config,
-    { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack },
-  ) => {
-    // add externals
-    config.externals = config.externals || [];
-    config.externals.push(
-      // "bla-aspen",
-      "puppeteer",
-      "puppeteer-core",
-      "puppeteer-extra",
-      "puppeteer-extra-plugin-stealth"
-    );
-
-    return config;
+  async rewrites() {
+    return {
+      fallback: [
+        {
+          source: '/api/:path*',
+          destination: `${environment()}/api/:path*`,
+        },
+      ],
+    }
   },
-  experimental: {
-    serverComponentsExternalPackages: [
-      // "bla-aspen",
-      "puppeteer",
-      "puppeteer-core",
-      "puppeteer-extra",
-      "puppeteer-extra-plugin-stealth",
-    ],
-  }
 }
  
 module.exports = withMDX(nextConfig);

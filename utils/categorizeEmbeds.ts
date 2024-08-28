@@ -1,4 +1,4 @@
-import { CustomEmbeds, Embed } from "@/types/Embeds";
+import { CustomEmbeds, Embed } from "../types/Embeds";
 export type EmbedCategories = 'gsites' | 'slides' | 'docs' | 'youtube' | 'drive' | 'other';
 
 export default function categorize(link: string | null): Embed | null {

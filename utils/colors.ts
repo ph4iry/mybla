@@ -1,4 +1,4 @@
-import { Subject } from "@/types/Listings";
+import { Subject } from "../types/Listings";
 
 export function colorBgBySubject(subject: Subject) {
   switch (subject) {

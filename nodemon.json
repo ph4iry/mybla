@@ -1,0 +1,5 @@
+{
+  "watch": ["**/*.ts", "**/*.tsx"],
+  "exec": "concurrently \"ts-node --project tsconfig.server.json server/index.ts\" \"next dev\"",
+  "ext": "js ts"
+}

@@ -10,6 +10,9 @@ export default function StudentInfoLoader({ username, password }:{ username: str
     if (secureLocalStorage.getItem('profile')) return;
     fetch('/api/aspen', {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         username: username,
         password: password,

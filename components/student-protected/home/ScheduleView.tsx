@@ -31,6 +31,9 @@ export default function ScheduleView({ courses }: { courses: {
       } else {
         fetch('/api/aspen', {
           method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify({
             refreshToken: Buffer.from(secureLocalStorage.getItem('refreshToken') as string, 'utf-8').toString('base64'),
           })

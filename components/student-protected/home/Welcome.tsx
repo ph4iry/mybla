@@ -52,6 +52,9 @@ function PreferredNameDialog() {
     if (v && v !== 'null') {
       fetch('/api/airtable/update', {
         method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           refreshToken: Buffer.from(secureLocalStorage.getItem('refreshToken') as string, 'utf-8').toString('base64'),
           fields: {
@@ -75,24 +78,27 @@ function PreferredNameDialog() {
       return;
     }
 
-    console.log(secureLocalStorage.getItem('refreshToken'));
-
-    fetch('/api/airtable', {
-      method: "POST",
-      body: JSON.stringify({
-        refreshToken: Buffer.from(secureLocalStorage.getItem('refreshToken') as string, 'utf-8').toString('base64'),
-        method: 'profile',
-      }),
-    }).then(async (data) => {
-      const result = await data.json();
-      console.log(result);
-
-      if (result.preferredName) {
-        secureLocalStorage.setItem('preferredName', result.preferredName);
-      }
-      setPreferredName(result.preferredName);
-      setRecord(result);
-    });
+    if (secureLocalStorage.getItem('refreshToken')) {
+      fetch('/api/airtable', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          refreshToken: Buffer.from(secureLocalStorage.getItem('refreshToken') as string, 'utf-8').toString('base64'),
+          method: 'profile',
+        }),
+      }).then(async (data) => {
+        const result = await data.json();
+        console.log(result);
+  
+        if (result.preferredName) {
+          secureLocalStorage.setItem('preferredName', result.preferredName);
+        }
+        setPreferredName(result.preferredName);
+        setRecord(result);
+      });
+    }
   }, []);
 
   return (

@@ -32,7 +32,7 @@ export default function Navbar() {
             </div>
             <div className="md:hidden flex items-center">
               <button onClick={handleMobileMenu}>
-                <HiOutlineBars3 className="size-8 text-white" />
+                <HiOutlineBars3 className="size-8 text-sky-400 dark:text-white" />
               </button>
             </div>
           </div>
@@ -43,7 +43,7 @@ export default function Navbar() {
         enterFrom="opacity-0 scale-95"
         enterTo="opacity-100 scale-100"
       >
-        <div className="fixed inset-0 w-screen h-screen bg-zinc-900/50 backdrop-blur-lg z-40 px-8">
+        <div className="fixed inset-0 w-screen h-screen bg-sky-50/50 dark:bg-zinc-900/50 backdrop-blur-lg z-40 px-8">
           <div className="flex flex-col mt-[15vh] gap-6">
             <Link className="" href="/">Home</Link>
             <Link href="/catalog">

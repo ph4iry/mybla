@@ -1,4 +1,5 @@
 import Airtable from 'airtable';
+import 'dotenv/config';
 import { Structures } from 'bla-aspen';
 
 Airtable.configure({
@@ -44,10 +45,15 @@ export async function handleLogin(student: Partial<Structures.Student>) {
 
   if (records.length === 0) {
     initial = true;
-    return createUser({
+    createUser({
       ...student,
       username: student.email!.split('@')[0],
     });
+
+    return {
+      initial,
+      student,
+    };
   }
 
   return {

@@ -10,8 +10,8 @@ export default function FavoriteButton({ data, favorites, updateAllFavorites }: 
   const [favorited, setFavorited] = useState(favorites.includes(data.code));
 
   useEffect(() => {
-    setFavorited((secureLocalStorage.getItem('favorites')! as string[]).includes(data.code))
-  })
+    setFavorited((secureLocalStorage.getItem('favorites')! as string[])?.includes(data.code))
+  }, []);
 
   const handleClick = () => {
     console.log(favorited);

@@ -42,6 +42,9 @@ function PreferredNameDialog() {
     if (v && v !== 'null') {
       fetch('/api/airtable/update', {
         method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           refreshToken: Buffer.from(secureLocalStorage.getItem('refreshToken') as string, 'utf-8').toString('base64'),
           fields: {
@@ -69,6 +72,9 @@ function PreferredNameDialog() {
 
     fetch('/api/airtable', {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         refreshToken: Buffer.from(secureLocalStorage.getItem('refreshToken') as string, 'utf-8').toString('base64'),
         method: 'profile',

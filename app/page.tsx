@@ -1,4 +1,4 @@
-import Card from "@/components/home/Card";
+import Card from "../components/home/Card";
 import { HiLink, HiHeart, HiOutlineSquares2X2, HiOutlineAcademicCap } from 'react-icons/hi2';
 
 export default function Home () {

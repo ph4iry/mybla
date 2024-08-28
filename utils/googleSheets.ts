@@ -1,4 +1,4 @@
-import { Item, Review } from '@/types/Listings';
+import { Item, Review } from '../types/Listings';
 import { JWT } from 'google-auth-library';
 const { base64encode, base64decode } = require('nodejs-base64');
 import { GoogleSpreadsheet, GoogleSpreadsheetRow } from 'google-spreadsheet';
