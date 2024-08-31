@@ -1675,10 +1675,10 @@ bindings@^1.4.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bla-aspen@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/bla-aspen/-/bla-aspen-1.4.0.tgz#3b83032197e0953824809ce240b8bd9f26a80599"
-  integrity sha512-i1fYaH8bXnruaj4WJCjF1rxDLZPyvyPOvEH5FAWPpoD1I79kUDyo5IgdmnuVYTOceCPOGdrQ3qVziLtLmJT0pw==
+bla-aspen@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/bla-aspen/-/bla-aspen-1.4.1.tgz#0b8af707ee4b0dffed57e52798dd84fe04301a0e"
+  integrity sha512-+YhQk9vtV9gC1olD5gtId3b7cocUI6lBWClDXgtWJKRLk9ovA0rWoU8fDkMICpO62FahtP8Tg+5mJvrBW/ZrmQ==
   dependencies:
     cheerio "^1.0.0-rc.12"
     dotenv "^16.0.3"

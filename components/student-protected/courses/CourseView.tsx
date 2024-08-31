@@ -70,7 +70,7 @@ export default function CourseView() {
         })
       });
     }
-  //eslint-disable-next-line react-hooks/exhaustive-deps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function CourseView() {
       setCourseCatalog(data);
       secureLocalStorage.setItem('courseCatalog', data);
     });
-  //eslint-disable-next-line react-hooks/exhaustive-deps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const tabsToRender = [
@@ -120,19 +120,10 @@ export default function CourseView() {
     }
   }
 
-  console.log(previousCourses, currentCourses);
   return (
     <div>
       <h1 className="text-3xl font-bold">My Courses</h1>
       <div className="text-base">Jump to classes from this or last year!</div>
-      <div className="hidden">
-        <div className="bg-sky-400 border-sky-400"></div>
-        <div className="bg-emerald-400 border-emerald-400"></div>
-        <div className="bg-violet-400 border-violet-400"></div>
-        <div className="bg-amber-700 border-amber-700"></div>
-        <div className="bg-pink-400 border-pink-400"></div>
-        <div className="bg-zinc-400 border-zinc-400"></div>
-      </div>
       {previousCourses && currentCourses && (
         <div>
           {(previousCourses?.length === 0 && currentCourses?.length === 0) ? <Skeleton /> : (

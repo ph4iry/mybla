@@ -71,7 +71,7 @@ export default function LoginForm() {
 
   return (
     <div className="px-4 py-6 rounded-md bg-sky-50 dark:bg-gray-900 mt-3">
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form className="space-y-4">
         {failReasoning && <div className="text-red-500">{failReasoning}</div>}
         <div className="flex flex-col gap-4">
           <div>
@@ -87,7 +87,11 @@ export default function LoginForm() {
               <label htmlFor="password" className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-sky-50 dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-amber-600 peer-focus:dark:text-amber-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Password</label>
             </div>
           </div>
-          <button type="submit" className="w-full transition hover:scale-105 bg-zinc-700 text-white py-2 px-4 rounded-lg">Log In</button>
+          <button type="submit" onClick={(e) => {
+            e.preventDefault();
+            e.currentTarget.setAttribute('disabled', 'true');
+            handleSubmit(e);
+          }} className="w-full transition disabled:opacity-50 bg-zinc-700 text-white py-2 px-4 rounded-lg">Log In</button>
         </div>
       </form>
     </div>

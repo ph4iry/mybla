@@ -38,38 +38,39 @@
     content: "";
     @apply z-10 absolute inset-0 bg-transparent pointer-events-auto;
   }
-}
 
-/* Chrome, Edge, and Safari */
-.fancy-scrollbar::-webkit-scrollbar {
-  height: 4px;
-  width: 4px;
-}
+  /* Chrome, Edge, and Safari */
+  .fancy-scrollbar::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+    @apply rounded-full overflow-hidden;
+  }
 
-.fancy-scrollbar::-webkit-scrollbar-track {
-  border-radius: 5px;
-  background-color: #DFE9EB;
-}
+  .fancy-scrollbar::-webkit-scrollbar-track {
+    border-radius: 5px;
+    /* background-color: #DFE9EB; */
+    @apply rounded-full dark:bg-zinc-700 bg-white;
+  }
 
-.fancy-scrollbar::-webkit-scrollbar-track:hover {
-  background-color: #B8C0C2;
-}
+  .fancy-scrollbar::-webkit-scrollbar-track:hover {
+    @apply dark:bg-zinc-800 bg-white;
+  }
 
-.fancy-scrollbar::-webkit-scrollbar-track:active {
-  background-color: #B8C0C2;
-}
+  .fancy-scrollbar::-webkit-scrollbar-track:active {
+    @apply dark:bg-zinc-800 bg-white;
+  }
 
-.fancy-scrollbar::-webkit-scrollbar-thumb {
-  border-radius: 0px;
-  background-color: #397524;
-}
+  .fancy-scrollbar::-webkit-scrollbar-thumb {
+    @apply rounded-full dark:bg-zinc-600 bg-zinc-300 transition-colors;
+  }
 
-.fancy-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #62A34B;
-}
+  .fancy-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply dark:bg-zinc-700 bg-zinc-400;
+  }
 
-.fancy-scrollbar::-webkit-scrollbar-thumb:active {
-  background-color: #62A34B;
+  .fancy-scrollbar::-webkit-scrollbar-thumb:active {
+    @apply dark:bg-zinc-700 bg-zinc-400;
+  }
 }
 
 .emoji {

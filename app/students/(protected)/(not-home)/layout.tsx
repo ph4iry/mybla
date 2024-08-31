@@ -1,6 +1,6 @@
 'use client';
 
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { Menu, MenuButton, MenuItem, MenuItems, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { HiArrowRight, HiMapPin } from 'react-icons/hi2';
 import { Structures } from "bla-aspen";
 import Link from "next/link";
@@ -41,8 +41,8 @@ export default function ProfileLayout({ children }:{ children: React.ReactNode }
             </Fragment>
           ))}
         </div>
-        <Popover>
-          <PopoverButton className="!ring-0 !outline-none">
+        <Menu>
+          <MenuButton className="!ring-0 !outline-none">
             <div className="flex items-center gap-3">
               <div suppressHydrationWarning className="md:block hidden">{preferredName || student?.name}</div>
               <div className="size-10 rounded-full" style={{
@@ -51,25 +51,28 @@ export default function ProfileLayout({ children }:{ children: React.ReactNode }
                 backgroundPosition: 'center',
               }}></div>
             </div>
-          </PopoverButton>
-          <PopoverPanel
+          </MenuButton>
+          <MenuItems
             transition
             anchor="bottom end"
             className="mt-3 divide-y divide-white/5 rounded-xl bg-white text-black dark:text-white dark:bg-black/25 text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 min-w-sm"
           >
-            <div className="p-3">
-              <a href="/students/me" className="block rounded-lg py-1 px-3 transition hover:bg-white/5">
-                Profile
-              </a>
-            </div>
-            <div className="bg-red-400/30 p-3">
-              <button className="block rounded-lg py-1 px-3 transition hover:bg-white/5" onClick={handleLogout}>
-                <p className="">Log out</p>
-              </button>
-            </div>
-            
-          </PopoverPanel>
-        </Popover>
+            <MenuItem>            
+              <div className="p-3">
+                <a href="/students/home" className="block rounded-lg py-1 px-3">
+                  Home
+                </a>
+              </div>
+            </MenuItem>
+            <MenuItem>
+              <div className="bg-red-400/30 p-3">
+                <button className="block rounded-lg py-1 px-3" onClick={handleLogout}>
+                  <p className="">Log out</p>
+                </button>
+              </div>
+            </MenuItem>
+          </MenuItems>
+        </Menu>
       </div>
       {children}
     </>

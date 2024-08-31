@@ -18,6 +18,7 @@ export interface StudentRecord {
   preferredName?: string;
   studentJSON?: string;
   coursesJSON?: string;
+  scheduleJSON?: string;
 }
 
 export async function createUser(student: Partial<StudentRecord>) {
@@ -40,6 +41,7 @@ export async function createUser(student: Partial<StudentRecord>) {
       hash: undefined,
     }),
     "coursesJSON": JSON.stringify({}),
+    "scheduleJSON": JSON.stringify({}),
     "salt": student.salt,
     "hash": student.hash,
   }, function(err, record) {

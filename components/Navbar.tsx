@@ -1,5 +1,5 @@
 'use client';
-import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
+import { Menu, MenuButton, MenuItem, MenuItems, Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { HiOutlineBars3, HiOutlineBookmark, HiChevronDown, HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 import { Fragment, useState } from 'react';
@@ -71,52 +71,62 @@ function CatalogLink() {
   //   </PopoverButton>
 
   // </Popover>
-    <Popover className="relative">
-      <PopoverButton className="inline-flex items-center active:outline-none focus:outline-none group">Catalog <HiChevronDown className="ml-2 w-4 h-4 group-focus:rotate-180 group-active:rotate-180 transition-transform" /></PopoverButton>
-      <PopoverPanel
+    <Menu as={'div'} className="relative">
+      <MenuButton className="inline-flex items-center active:outline-none focus:outline-none group">Catalog <HiChevronDown className="ml-2 w-4 h-4 group-focus:rotate-180 group-active:rotate-180 transition" /></MenuButton>
+      <MenuItems
           transition
           anchor="bottom"
           className="z-50 mt-4 divide-y dark:divide-white/5 divide-black/5 rounded-xl bg-white border-2 border-black/5 dark:border-0 dark:bg-zinc-900/65 text-sm/6 dark:backdrop-blur transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
         >
           <div className="p-3">
-            <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/">
-              <p className="font-semibold dark:text-white">Course Catalog</p>
-              <p className="dark:text-white/50 text-black/50">Explore available courses</p>
-            </Link>
-            <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/catalog/favorites">
-              <p className="font-semibold dark:text-white">Favorites</p>
-              <p className="dark:text-white/50 text-black/50">Share and export saved courses</p>
-            </Link>
+            <MenuItem>
+              <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/">
+                <p className="font-semibold dark:text-white">Course Catalog</p>
+                <p className="dark:text-white/50 text-black/50">Explore available courses</p>
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/catalog/favorites">
+                <p className="font-semibold dark:text-white">Favorites</p>
+                <p className="dark:text-white/50 text-black/50">Share and export saved courses</p>
+              </Link>
+            </MenuItem>
           </div>
           <div className="p-3">
-            <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/guide">
-              <p className="font-semibold dark:text-white">Guide</p>
-              <p className="dark:text-white/50 text-black/50">How to use the catalog</p>
-            </Link>
+            <MenuItem>
+              <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/guide">
+                <p className="font-semibold dark:text-white">Guide</p>
+                <p className="dark:text-white/50 text-black/50">How to use the catalog</p>
+              </Link>
+            </MenuItem>
           </div>
-        </PopoverPanel>
-    </Popover>
+        </MenuItems>
+    </Menu>
   )
 }
 
 function ForStudentsLink() {
   return (
-    <Popover className="relative">
-      <PopoverButton className="inline-flex items-center active:outline-none focus:outline-none group">For Students <HiChevronDown className="ml-2 w-4 h-4 text-zinc-50 group-focus:rotate-180 group-active:rotate-180 transition" /></PopoverButton>
-      <PopoverPanel
+    <Menu as="div" className="relative">
+      <MenuButton className="inline-flex items-center active:outline-none focus:outline-none group">For Students <HiChevronDown className="ml-2 w-4 h-4 text-zinc-50 group-focus:rotate-180 group-active:rotate-180 transition" /></MenuButton>
+      <MenuItems
         transition
         anchor="bottom"
         className="mt-4 z-50 divide-y dark:divide-white/5 divide-black/5 rounded-xl bg-white border-2 border-black/5 dark:border-0 dark:bg-zinc-900/65 text-sm/6 dark:backdrop-blur transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
       >
         <div className="p-3">
-          <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/students">
-            <p className="font-semibold dark:text-white">myBLA For Students</p>
-            <p className="dark:text-white/50 text-black/50">Learn more</p>
-          </Link>
-          <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/students/login">
-            <p className="font-semibold dark:text-white">Log In</p>
-            <p className="dark:text-white/50 text-black/50">Log in with Aspen</p>
-          </Link>
+          <MenuItem>
+            <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/students">
+              <p className="font-semibold dark:text-white">myBLA For Students</p>
+              <p className="dark:text-white/50 text-black/50">Learn more</p>
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/students/login">
+              <p className="font-semibold dark:text-white">Log In</p>
+              <p className="dark:text-white/50 text-black/50">Log in with Aspen</p>
+            </Link>
+          </MenuItem>
         </div>
         {/* <div className="p-3">
           <Link className="block rounded-lg py-2 px-3 transition hover:bg-white/5" href="/guide">
@@ -124,7 +134,7 @@ function ForStudentsLink() {
             <p className="dark:text-white/50 text-black/50">How to use the student portal</p>
           </Link>
         </div> */}
-      </PopoverPanel>
-    </Popover>
+      </MenuItems>
+    </Menu>
   )
 }

@@ -1,13 +1,13 @@
 'use client';
 
-import { Item } from "@/types/Listings";
+import { Item, Review } from "@/types/Listings";
 import { StoredCourses } from "@/types/Storage";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { Structures } from "bla-aspen";
 import { clearModuleContext } from "next/dist/server/lib/render-server";
 import { notFound } from "next/navigation";
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
-import { HiLink, HiOutlineArrowTopRightOnSquare, HiOutlinePlusCircle, HiXMark } from "react-icons/hi2";
+import { HiLink, HiOutlineArrowTopRightOnSquare, HiOutlineBeaker, HiOutlineBookOpen, HiOutlinePlusCircle, HiOutlineUserGroup, HiXMark } from "react-icons/hi2";
 import secureLocalStorage from "react-secure-storage";
 
 interface DetailedCourse extends Structures.Course {
@@ -52,14 +52,9 @@ export default function IndividualPage({ catalogCourse, section }:{ catalogCours
     }))).flat();
 
     const thisCourse = prevAndCurr.find(course => course.sectionNumber === section);
-    
-    if (!thisCourse) {
-      notFound();
-    }
 
 
-
-    if (((secureLocalStorage.getItem('courses') as StoredCourses)[thisCourse.year as 'previous' | 'current'].find((c) => c.sectionNumber === section) as Course).hasOwnProperty('teacherEmail')) {
+    if (((secureLocalStorage.getItem('courses') as StoredCourses)[thisCourse?.year as 'previous' | 'current']?.find((c) => c.sectionNumber === section) as Course)?.hasOwnProperty('teacherEmail')) {
       setCourse(thisCourse as Course);
       return;
     }
@@ -73,13 +68,13 @@ export default function IndividualPage({ catalogCourse, section }:{ catalogCours
       body: JSON.stringify({
         refreshToken: Buffer.from(secureLocalStorage.getItem('refreshToken') as string, 'utf-8').toString('base64'),
         sectionNumber: section,
-        year: thisCourse.year,
+        year: thisCourse?.year || 'current',
       }),
     }).then(res => res.json()).then(data => {
       setCourse(data);
       secureLocalStorage.setItem('courses', {
         ...(secureLocalStorage.getItem('courses') as StoredCourses),
-        [thisCourse.year]: (secureLocalStorage.getItem('courses') as StoredCourses)[thisCourse.year as 'previous' | 'current'].map(course => {
+        [thisCourse?.year || 'previous']: (secureLocalStorage.getItem('courses') as StoredCourses)[thisCourse?.year as 'previous' | 'current']?.map(course => {
           if (course.sectionNumber === section) {
             return {
               ...course,
@@ -114,10 +109,10 @@ export default function IndividualPage({ catalogCourse, section }:{ catalogCours
   //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const term1 = course?.categories.map(category => category.terms.q1.average * category.terms.q1.weight).reduce((a, b) => a + b, 0) / 100;
-  const term2 = course?.categories.map(category => category.terms.q2.average * category.terms.q2.weight).reduce((a, b) => a + b, 0) / 100;
-  const term3 = course?.categories.map(category => category.terms.q3.average * category.terms.q3.weight).reduce((a, b) => a + b, 0) / 100;
-  const term4 = course?.categories.map(category => category.terms.q4.average * category.terms.q4.weight).reduce((a, b) => a + b, 0) / 100;
+  const term1 = course?.categories?.map(category => category.terms.q1.average * category.terms.q1.weight).reduce((a, b) => a + b, 0) / 100;
+  const term2 = course?.categories?.map(category => category.terms.q2.average * category.terms.q2.weight).reduce((a, b) => a + b, 0) / 100;
+  const term3 = course?.categories?.map(category => category.terms.q3.average * category.terms.q3.weight).reduce((a, b) => a + b, 0) / 100;
+  const term4 = course?.categories?.map(category => category.terms.q4.average * category.terms.q4.weight).reduce((a, b) => a + b, 0) / 100;
   const final = (term1 + term2 + term3 + term4) / 4;
 
   return (
@@ -182,9 +177,33 @@ export default function IndividualPage({ catalogCourse, section }:{ catalogCours
           <div className="text-zinc-400">No links have been added yet. Add one with the &quot;add a link&quot; button!</div>
         )}
       </div>
+      {catalogCourse &&
+      (<div className="mt-4">
+        <h2 className="text-2xl font-bold mb-4">myBLA Actions</h2>
+        <div className="grid md:grid-cols-3 gap-4 grid-cols-1">
+          <div className="w-full max-w-sm bg-slate-50 dark:bg-zinc-600 p-4 rounded-md">
+            <div className="text-sm uppercase">go to catalog</div>
+            <div className="font-bold text-lg">{catalogCourse.name}</div>
+            <div className="line-clamp-2 text-sm max-w-sm">{catalogCourse.description}</div>
+            <a href={`/catalog/${catalogCourse.code}`} className="underline underline-offset-4 block mt-2 dark:text-amber-400 text-sky-500">view full description</a>
+          </div>
+          {catalogCourse.reviews.length > 0 &&
+          <>
+            <div className="w-full flex flex-col justify-between items-start max-w-sm bg-slate-50 dark:bg-zinc-600 p-4 rounded-md">
+              <div>
+                <div className="text-sm uppercase">skill summary</div>
+                <div className="text-base">Past students respond to: <span className="italic">What kinds of skills will help you succeed in this class?</span></div>
+              </div>
+              <SkillSummary reviews={catalogCourse.reviews} />
+            </div>
+          </>
+          }
+        </div>
+        
+      </div>)}
       <div className="mt-4">
         <h2 className="text-2xl font-bold">Grading Breakdown</h2>
-        <div className="md:block hidden w-full bg-sky-100/30 dark:bg-zinc-900/30 border border-sky-400 rounded-md overflow-hidden mt-3">
+        <div className="md:block hidden w-full bg-sky-100/30 dark:bg-zinc-900/30 border dark:border-sky-900 border-sky-400 rounded-md overflow-hidden mt-3">
           <table className="table-auto w-full">
             <thead>
               <tr>
@@ -199,7 +218,7 @@ export default function IndividualPage({ catalogCourse, section }:{ catalogCours
             <tbody>
               {course ? (
                 <>
-                  {course?.categories.map((category, i) => (
+                  {course?.categories?.map((category, i) => (
                     <tr className="even:dark:bg-zinc-700/30 even:bg-sky-200/30" key={i}>
                       <td className="pl-3 border dark:border-zinc-600/30 border-sky-300/30">{category.name}</td>
                       <td className="py-2 border dark:border-zinc-600/30 border-sky-300/30">
@@ -385,7 +404,7 @@ export default function IndividualPage({ catalogCourse, section }:{ catalogCours
           </TabPanels>
         </TabGroup>
       </div>
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <h2 className="text-2xl font-bold">Assignments</h2>
         <TabGroup className="mt-3">
           <TabList className="flex gap-4">
@@ -417,7 +436,7 @@ export default function IndividualPage({ catalogCourse, section }:{ catalogCours
             <TabPanel>and assignments from term 4</TabPanel>
           </TabPanels>
         </TabGroup>
-      </div>
+      </div> */}
     </main>
   )
 }
@@ -552,4 +571,145 @@ function AddLink({ section, year, update }: { section: string, year: 'previous' 
       </Dialog>
     </>
   )
+}
+
+function SkillSummary({ reviews }:{ reviews: Review[] }) {
+  const [open, setOpen] = useState(false);
+  if (!reviews) reviews = [];
+  // SKILLS
+  const humanitiesSkillData = reviews.map(review => review.ratings.skills.humanities).flat()
+  const sortedHumanities = sortAndCountReviews(humanitiesSkillData);
+  const humanities = {
+    data: humanitiesSkillData,
+    sorted: sortedHumanities,
+  };
+
+  const stemStillData = reviews.map(review => review.ratings.skills.stem).flat()
+  const sortedStemSkillData = sortAndCountReviews(stemStillData);
+  const stem = {
+    data: stemStillData,
+    sorted: sortedStemSkillData,
+  };
+
+  const personalSkillData = reviews.map(review => review.ratings.skills.personal).flat()
+  const sortedPersonalSkillData = sortAndCountReviews(personalSkillData);
+  const personal = {
+    data: personalSkillData,
+    sorted: sortedPersonalSkillData,
+  };
+  
+  // COMMITMENT / RIGOR
+  const weeklyData = reviews.map(review => review.ratings.weeklyCommitment).flat();
+  const mostFrequentWeeklyCommitmentReport = Object.entries(sortAndCountReviews(weeklyData)).sort((a, b) => b[1] - a[1])[0];
+
+  const homeworkData = reviews.map(review => review.ratings.homework).flat();
+  const mostFrequentHomeworkReport = Object.entries(sortAndCountReviews(homeworkData)).sort((a, b) => b[1] - a[1])[0];
+  
+  const resourceData = reviews.map(review => review.ratings.resources).flat();
+  const mostFrequentResourceReport = Object.entries(sortAndCountReviews(resourceData)).sort((a, b) => b[1] - a[1])[0];
+
+  return (
+    <>
+    <button className="dark:text-amber-400 text-sky-500 underline underline-offset-4" onClick={() => setOpen(true)}>open skill summary</button>
+    <Dialog onClose={() => setOpen(false)} open={open}>
+      <DialogBackdrop
+        transition
+        className="fixed inset-0 bg-black/30 backdrop-blur duration-300 ease-out data-[closed]:opacity-0"
+      />
+      <div className="fixed inset-0 flex w-screen items-center justify-center p-6">
+        <DialogPanel className="w-full max-w-2xl transition duration-300 data-[closed]:delay-0 data-[closed]:opacity-0 space-y-4 bg-sky-50/80 dark:bg-zinc-900/80 rounded-lg p-4">
+          <DialogTitle className="text-xl font-bold">Skill Summary</DialogTitle>
+            {humanities.data.length > 0 && (
+              <>
+                <h4 className="text-lg font-semibold my-2 text-amber-500">Humanities</h4>
+                <div className="flex gap-2 flex-wrap">
+                  {Object.entries(humanities.sorted).map((comment, i) => (
+                    <Fragment key={i}>
+                      <SkillTag type="humanities" text={comment[0]} quantity={comment[1]}/>
+                    </Fragment>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {stem.data.length > 0 && (
+              <>
+                <h4 className="text-lg font-semibold my-2 text-emerald-500">STEM</h4>
+                <div className="flex gap-2 flex-wrap">
+                  {Object.entries(stem.sorted).map((comment, i) => (
+                    <Fragment key={i}>
+                      <SkillTag type="stem" text={comment[0]} quantity={comment[1]}/>
+                    </Fragment>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {personal.data.length > 0 && (
+              <>
+                <h4 className="text-lg font-semibold my-2 text-sky-500">Personal</h4>
+                <div className="flex gap-2 flex-wrap">
+                  {Object.entries(personal.sorted).map((comment, i) => (
+                    <Fragment key={i}>
+                      <SkillTag type="personal" text={comment[0]} quantity={comment[1]}/>
+                    </Fragment>
+                  ))}
+                </div>
+              </>
+            )}
+        </DialogPanel>
+      </div>
+    </Dialog>
+    </>
+  )
+}
+type SkillTagType = 'humanities' | 'stem' | 'personal'
+
+function SkillTag({ text, type, quantity }:{ text: string, type: SkillTagType, quantity?: number }) {
+  const color = (() => {
+    switch(type) {
+      case "humanities": return 'bg-amber-400/30';
+      case "stem": return 'bg-emerald-400/30';
+      case "personal": return 'bg-sky-400/30';
+    }
+  })();
+
+  return (
+    text.length > 0 && <span className={`md:inline inline-flex md:gap-0 px-3 py-1.5 md:rounded-full rounded ${color} md:whitespace-nowrap text-sm items-center`}><SkillTagIcon type={type}/> {text} {quantity && quantity > 0 ? `(${quantity})` : null}</span>
+  )
+}
+
+function SkillTagIcon({ type }: { type: SkillTagType }) {
+  switch (type) {
+    case "humanities":
+      return (
+        <HiOutlineBookOpen className="inline h-6 shrink-0 mx-1 text-amber-400"/>
+      );
+    case "stem":
+      return (
+        <HiOutlineBeaker className="inline h-6 shrink-0 mx-1 text-emerald-400"/>
+      );
+    case "personal":
+      return (
+        <HiOutlineUserGroup className="inline h-6 shrink-0 mx-1 text-sky-400"/>
+      );
+  }
+}
+
+function sortAndCountReviews(arr: string[]): {
+  [index: string]: number,
+} {
+  const count: {
+    [index: string]: number,
+  } = {};
+
+  for (const element of arr) {
+    if (count[element]) {
+      count[element] += 1;
+    } else {
+      count[element] = 1;
+    }
+  }
+
+  return count;
 }

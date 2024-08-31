@@ -1,5 +1,5 @@
 import { findUserByUsername, updateUser, createUser } from '../utils/airtable';
-import { getCourses, getIndividualCourse, getStudentInfo } from '../utils/aspen';
+import { getCourses, getIndividualCourse, getSchedule, getStudentInfo } from '../utils/aspen';
 import { getHash } from '../utils/security';
 import { Structures } from 'bla-aspen';
 import { RequestHandler } from 'express';
@@ -7,6 +7,7 @@ import { RequestHandler } from 'express';
 // POST: /api/aspen/auth
 export const handleAspenAuth: RequestHandler = async (req, res) => {
   const { username, password } = req.body;
+  console.log(`Handling aspen auth for ${username}...`);
 
   try {
     const record = await findUserByUsername(username);
@@ -23,6 +24,7 @@ export const handleAspenAuth: RequestHandler = async (req, res) => {
       } else {
         // if the hash is different from the one in the database BUT the login was successful on aspen's end, update the hash to be with the new password
         const data: Structures.Student | null = await (getStudentInfo(username, Buffer.from(`${password}`, 'base64').toString()) as Promise<Structures.Student>).catch(() => null);
+
         if (data) {
           updateUser(data.studentId, {
             ...h
@@ -100,6 +102,20 @@ export const fetchCourseDetails: RequestHandler = async (req, res) => {
   // console.log(username, Buffer.from(password, 'base64').toString());
   const data = await getIndividualCourse(username, Buffer.from(`${password}`, 'base64').toString(), sectionNumber, year);
 
+  return res.json({ 
+    ...data
+  });
+}
+
+export const fetchSchedule: RequestHandler = async (req, res) => {
+  interface RequestBody {
+    refreshToken: string;
+  }
+  
+  const { refreshToken } = req.body as RequestBody;
+  const [username, password] = Buffer.from(`${refreshToken}`, 'base64').toString().split(':');
+
+  const data = await getSchedule(username, Buffer.from(`${password}`, 'base64').toString());
   return res.json({ 
     ...data
   });

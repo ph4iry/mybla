@@ -1,12 +1,14 @@
 const withMDX = require('@next/mdx')() 
 
 const environment = () => {
+  const heroku = false;
+
   let server_url =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3030"
-      : "https://server.mybla.app";
+      : "https://mybla-server-30f658414629.herokuapp.com";
 
-  return server_url;
+  return heroku || server_url ? "https://mybla-server-30f658414629.herokuapp.com" : server_url;
 }
 
 /** @type {import('next').NextConfig} */
@@ -27,7 +29,7 @@ const nextConfig = {
       fallback: [
         {
           source: '/api/:path*',
-          destination: `${environment()}/api/:path*`,
+          destination: `http://localhost:3030/api/:path*`,
         },
       ],
     }

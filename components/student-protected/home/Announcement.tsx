@@ -44,7 +44,7 @@ export default function Announcement() {
               <div className="text-sm mt-2">Instead of your student ID and password, you now sign in with your BPS Google Account.</div>
             </div>
             <div className="mt-3">
-              This changes the way that apps such as Grade Corner can access your schedule to present it on the app. It&apos;s a really hard cookie to crack! However, since the switch, <a className="underline" href="https://npmjs.org/bla-aspen">a new way to access information has been developed</a>!
+              This changes the way that apps such as <a href="https://gradecorner.com/" target="_blank" rel="noopener noreferrer" className="underline">Grade Corner</a> can access your schedule to present it on the app. It&apos;s a really hard cookie to crack! However, since the switch, <a className="underline" href="https://npmjs.org/bla-aspen">a new way to access information has been developed</a>!
             </div>
             <div className="mt-3">
               This area of the site is BLA-exclusive for students to access all of their student information in one place. See your grades, live schedule updates, and an interactive map of the school all at once! Features will roll out slowly over the course of the 2024-25 year, and by the end of the year there will be a full suite of tools available for dragons to come.

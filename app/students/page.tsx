@@ -15,7 +15,7 @@ export default function Page() {
         <div className="hidden md:block"></div>
         <div className="hidden md:block"></div>
         <div className="md:size-48 bg-zinc-300 rounded-xl text-black p-4 text-center flex justify-center items-center">Submit a course summary, straight from your portal</div>
-        <div className="md:size-48 bg-zinc-500 rounded-xl text-black p-4 text-center flex justify-center items-center">Tons of more utilities, such as an interactive locker map!</div>
+        <div className="md:size-48 bg-zinc-500 rounded-xl text-black p-4 text-center flex justify-center items-center">Tons of more utilities coming out throughout the year, such as an interactive locker map!</div>
         <div className="hidden md:block"></div>
         <div></div>
       </div>
