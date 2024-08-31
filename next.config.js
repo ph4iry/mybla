@@ -29,7 +29,7 @@ const nextConfig = {
       fallback: [
         {
           source: '/api/:path*',
-          destination: `http://localhost:3030/api/:path*`,
+          destination: `${environment()}/api/:path*`,
         },
       ],
     }
