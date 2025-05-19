@@ -1,16 +1,16 @@
-import { Item, Subject } from "@/types/Listings";
+import { CourseListing, Subject } from "@/types/Listings";
 import categorize from "@/utils/categorizeEmbeds";
 import { HiArrowLeft, HiArrowTopRightOnSquare, HiInformationCircle, HiHashtag, HiPencil, HiSparkles } from 'react-icons/hi2';
 import Link from "next/link";
 import { FavoriteButtonWithNoContext } from "@/components/page/FavoriteButton";
-import { getSheet } from "@/utils/googleSheets";
+import { getCourseSheet } from "@/utils/googleSheets";
 import Reviews from "@/components/page/Reviews";
 import NotFoundPage from "@/app/not-found";
 
 export const revalidate = 3600;
 
 export async function generateMetadata({ params }:{params: { code: string }}) {
-  const sheet: Item[] = await getSheet();
+  const sheet: CourseListing[] = await getCourseSheet();
   const course = sheet.find(item => item.code === params.code);
 
   return {
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }:{params: { code: string }}) {
 }
 
 export default async function CourseView({ params }: {params: { code: string }}) {
-  const sheet: Item[] = await getSheet();
+  const sheet: CourseListing[] = await getCourseSheet();
   const course = sheet.find(item => item.code === params.code.toUpperCase());
 
   if (!course) {

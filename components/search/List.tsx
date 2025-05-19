@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import { Item } from "@/types/Listings";
+import { CourseListing } from "@/types/Listings";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import FavoriteButton from "../page/FavoriteButton";
 import { Transition } from "@headlessui/react";
 import classNames from "classnames";
 import secureLocalStorage from "react-secure-storage";
 
-export default function List({ allFilters, sheet }: { allFilters: ((listItem: Item) => boolean)[], sheet: Item[] }) {
-  const filter = (listItem: Item) => allFilters.map(fn => fn(listItem)).every(b => b);
+export default function List({ allFilters, sheet }: { allFilters: ((listItem: CourseListing) => boolean)[], sheet: CourseListing[] }) {
+  const filter = (listItem: CourseListing) => allFilters.map(fn => fn(listItem)).every(b => b);
   const [favs, setFavs] = useState<string[]>([]);
   const [layout, setLayout] = useState<'grid' | 'list'>('list');
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function List({ allFilters, sheet }: { allFilters: ((listItem: It
   )
 }
 
-function ListItem({ data, favorites, updateAllFavorites, layout }: { data: Item, favorites: string[], updateAllFavorites: Dispatch<SetStateAction<string[]>>, layout: 'grid' | 'list' }) {
+function ListItem({ data, favorites, updateAllFavorites, layout }: { data: CourseListing, favorites: string[], updateAllFavorites: Dispatch<SetStateAction<string[]>>, layout: 'grid' | 'list' }) {
   const [groupHover, setGroupHover] = useState(false);
 
   return (

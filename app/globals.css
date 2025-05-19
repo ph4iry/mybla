@@ -4,7 +4,7 @@
 
 @layer base{
   body {
-    @apply dark:bg-zinc-800 bg-white dark:text-white transition duration-700
+    @apply bg-white transition duration-700
   }
 
   body * {
@@ -88,4 +88,4 @@ input:-webkit-autofill {
 input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 50px f0f9ff inset;/*your box-shadow*/
   -webkit-text-fill-color: #333;
-} 
+}

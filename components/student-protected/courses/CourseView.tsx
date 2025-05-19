@@ -11,7 +11,7 @@ import secureLocalStorage from 'react-secure-storage';
 export default function CourseView() {
   const [previousCourses, setPreviousCourses] = useState<Structures.Course[]>([]);
   const [currentCourses, setCurrentCourses] = useState<Structures.Course[]>([]);
-  const [courseCatalog, setCourseCatalog] = useState<Item[]>([]);
+  const [courseCatalog, setCourseCatalog] = useState<CourseListing[]>([]);
 
   
   useEffect(() => {
@@ -74,9 +74,9 @@ export default function CourseView() {
   }, []);
 
   useEffect(() => {
-    setCourseCatalog(secureLocalStorage.getItem('courseCatalog') as Item[]);
+    setCourseCatalog(secureLocalStorage.getItem('courseCatalog') as CourseListing[]);
     if (secureLocalStorage.getItem('courseCatalog')) return;
-    fetch('/api', { method: 'GET', next: { revalidate: 3600 } }).then(res => res.json()).then((data: Item[]) => {
+    fetch('/api', { method: 'GET', next: { revalidate: 3600 } }).then(res => res.json()).then((data: CourseListing[]) => {
       setCourseCatalog(data);
       secureLocalStorage.setItem('courseCatalog', data);
     });

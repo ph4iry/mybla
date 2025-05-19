@@ -66,7 +66,7 @@ export default function SkillTutorial() {
                       </thead>
                       <tbody>
                         <tr>
-                          <td><HiOutlineClock className="inline h-10 shrink-0 mx-1 mr-2 text-rose-400"/></td>
+                          <td><HiOutlineClock className="inline h-7 shrink-0 mx-1 mr-2 text-rose-400"/></td>
                           <td>
                             <div className="w-full text-left">
                               <span className="block text-lg text-rose-400 font-semibold">Weekly Time Commitment</span>
@@ -75,7 +75,7 @@ export default function SkillTutorial() {
                           </td>
                         </tr>
                         <tr>
-                          <td><HiOutlineInboxArrowDown className="inline h-10 shrink-0 mx-1 mr-2 text-fuchsia-400"/></td>
+                          <td><HiOutlineInboxArrowDown className="inline h-7 shrink-0 mx-1 mr-2 text-fuchsia-400"/></td>
                           <td>
                             <div className="w-full text-left">
                               <span className="block text-lg text-fuchsia-400 font-semibold">Nightly Homework</span>
@@ -84,7 +84,7 @@ export default function SkillTutorial() {
                           </td>
                         </tr>
                         <tr>
-                          <td><HiOutlineCursorArrowRays className="inline h-10 shrink-0 mx-1 mr-2 text-blue-400"/></td>
+                          <td><HiOutlineCursorArrowRays className="inline h-7 shrink-0 mx-1 mr-2 text-blue-400"/></td>
                           <td>
                             <div className="w-full text-left">
                               <span className="block text-lg text-blue-400 font-semibold">Available External Resources</span>

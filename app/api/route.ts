@@ -1,8 +1,8 @@
-import { getSheet } from "@/utils/googleSheets";
+import { getCourseSheet } from "@/utils/googleSheets";
 
 export const revalidate = 3600;
 
 export async function GET() {
-  const res = await getSheet();
+  const res = await getCourseSheet();
   return Response.json(res);
 }

@@ -4,7 +4,7 @@ import StudentInfoLoader from "@/components/student-protected/home/StudentInfoLo
 import Welcome from "@/components/student-protected/home/Welcome";
 import { getCurrentPeriod } from "@/utils/schedules";
 import ScheduleView from "@/components/student-protected/home/ScheduleView";
-import { getSheet } from "@/utils/googleSheets";
+import { getCourseSheet } from "@/utils/googleSheets";
 import { colorBgBySubject } from "@/utils/colors";
 // import { findUser } from "@/utils/airtable";
 import TutorialModal from "@/components/student-protected/home/Tutorial";
@@ -12,7 +12,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import Announcement from '@/components/student-protected/home/Announcement';
 
 export default async function Home() {
-  const sheet = await getSheet();
+  const sheet = await getCourseSheet();
   const coursesBySubject = sheet.map((course) => ({
     ...course,
     color: colorBgBySubject(course.subject),

@@ -1,11 +1,11 @@
 'use client';
-import { Item } from "@/types/Listings";
+import { CourseListing } from "@/types/Listings";
 import { ChangeEvent, useCallback, useRef, useState } from "react";
 import DocumentModal from "./DocumentModal";
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
 
-export default function SelectionDocument({ selection }:{ selection: Item[] }) {
+export default function SelectionDocument({ selection }:{ selection: CourseListing[] }) {
   const [name, setName] = useState('');
   const [id, setID] = useState('');
   const [email, setEmail] = useState('');

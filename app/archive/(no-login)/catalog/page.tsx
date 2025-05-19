@@ -1,11 +1,11 @@
 import CatalogSearch from '@/components/search/CatalogSearch';
-import { Item } from '@/types/Listings';
+import { CourseListing } from '@/types/Listings';
 import { checkEnvironment } from '@/utils/environment';
 
 export const revalidate = 3600;
 
 export default async function Catalog() {
-  const sheet: Item[] = await (await fetch(checkEnvironment() + '/api', { method: 'GET' })).json();
+  const sheet: CourseListing[] = await (await fetch(checkEnvironment() + '/api', { method: 'GET' })).json();
 
   return (
     <div className="">

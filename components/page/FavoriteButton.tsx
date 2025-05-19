@@ -1,12 +1,12 @@
 'use client';
-import { Item } from "@/types/Listings";
+import { CourseListing } from "@/types/Listings";
 /* eslint-disable react-hooks/exhaustive-deps */
 import { HiStar } from 'react-icons/hi2';
 import classNames from "classnames";
 import { useState, useEffect, SetStateAction, Dispatch } from "react";
 import secureLocalStorage from "react-secure-storage";
 
-export default function FavoriteButton({ data, favorites, updateAllFavorites }: { data: Item, favorites: string[], updateAllFavorites: Dispatch<SetStateAction<string[]>> }) {
+export default function FavoriteButton({ data, favorites, updateAllFavorites }: { data: CourseListing, favorites: string[], updateAllFavorites: Dispatch<SetStateAction<string[]>> }) {
   const [favorited, setFavorited] = useState(favorites.includes(data.code));
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function FavoriteButton({ data, favorites, updateAllFavorites }: 
   )
 }
 
-export function FavoriteButtonWithNoContext({ course }:{ course: Item }) {
+export function FavoriteButtonWithNoContext({ course }:{ course: CourseListing }) {
   const [favorited, setFavorited] = useState(false);
   const [allFavorites, setAllFavorites] = useState<string[]>([])
   
@@ -94,7 +94,7 @@ export function FavoriteButtonWithNoContext({ course }:{ course: Item }) {
     <button className="inline group hover:scale-125 transition" onClick={handleClick}>
       <HiStar
         className={classNames({
-          "h-10 w-10 inline": true,
+          "h-7 w-10 inline": true,
           "text-zinc-400": !favorited,
           "text-rose-400": favorited
         })}

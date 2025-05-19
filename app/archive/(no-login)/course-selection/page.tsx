@@ -1,6 +1,6 @@
 import SharedSelection from "@/components/shareables/SharedSelection"
-import { Item } from "@/types/Listings";
-import { getSheet } from "@/utils/googleSheets";
+import { CourseListing } from "@/types/Listings";
+import { getCourseSheet } from "@/utils/googleSheets";
 
 export async function generateMetadata({ searchParams }:{ searchParams: { name: string }}) {
   return {
@@ -9,7 +9,7 @@ export async function generateMetadata({ searchParams }:{ searchParams: { name: 
 }
 
 export default async function CourseSelectionView() {
-  const sheet: Item[] = await getSheet();
+  const sheet: CourseListing[] = await getCourseSheet();
   
   return (
     <div><SharedSelection sheet={sheet} /></div>

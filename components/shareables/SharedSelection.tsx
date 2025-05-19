@@ -1,11 +1,11 @@
 'use client';
-import { Item } from '@/types/Listings';
+import { CourseListing } from '@/types/Listings';
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react';
 
-export default function SharedSelection({ sheet }:{sheet: Item[]}) {
+export default function SharedSelection({ sheet }:{sheet: CourseListing[]}) {
   const params = useSearchParams();
-  const courses: Item[] = (JSON.parse(decodeURI(params.get('courses')!)) as string[]).map(c => sheet.find(s => s.code === c)!);
+  const courses: CourseListing[] = (JSON.parse(decodeURI(params.get('courses')!)) as string[]).map(c => sheet.find(s => s.code === c)!);
 
   // const [view, setView] = useState<'sheet' | 'grid'>('sheet');
   return (

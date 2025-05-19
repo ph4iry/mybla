@@ -1,5 +1,5 @@
 'use client';
-import { Item, Subject } from "@/types/Listings";
+import { CourseListing, Subject } from "@/types/Listings";
 import { useState, useEffect, Fragment } from "react";
 import { Transition } from "@headlessui/react";
 import cn from 'classnames';
@@ -11,7 +11,7 @@ import secureLocalStorage from "react-secure-storage";
 
 const subjects = ['English', 'Math', 'Science', 'History', 'Classics/MFL', 'Art'] as const;
 
-export default function FavoriteCoursesSummary({ sheet }: { sheet: Item[] }) {
+export default function FavoriteCoursesSummary({ sheet }: { sheet: CourseListing[] }) {
   const [favoritedCourses, setFavoritedCourses] = useState<string[]>([]);
   const [isSelecting, setIsSelecting] = useState(false);
   const [selectMethod, setSelectMethod] = useState<'courseSelection' | 'editFavorites' | 'none'>('none');
@@ -102,7 +102,7 @@ export default function FavoriteCoursesSummary({ sheet }: { sheet: Item[] }) {
   )
 }
 
-function Course({ data, update, selecting, selected } : { data: Item, update: () => void, selecting: boolean, selected: string[] }) {
+function Course({ data, update, selecting, selected } : { data: CourseListing, update: () => void, selecting: boolean, selected: string[] }) {
 
   return (
     <div className="shrink-0 flex w-full rounded max-w-sm">

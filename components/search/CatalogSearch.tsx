@@ -1,6 +1,6 @@
 'use client';
 import React, { ChangeEvent, Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
-import { FilterSet, Item } from "@/types/Listings";
+import { FilterSet, CourseListing } from "@/types/Listings";
 import { Menu, Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
 import { HiChevronDown, HiOutlineChevronDown } from 'react-icons/hi2';
 import { getSubjectColor, getRigorColor, getGradeColor } from "@/utils/colors";
@@ -17,10 +17,10 @@ const SubjectMap = new Map()
   .set('art', 'Art');
 
 // FULL PAGE COMPONENT
-export default function CatalogSearch({ sheet }: { sheet: Item[] }) {
+export default function CatalogSearch({ sheet }: { sheet: CourseListing[] }) {
   const [searchValue, setSearchValue] = useState('');
   const [filters, setFilters] = useState<FilterSet>([
-    (i: Item) => (
+    (i: CourseListing) => (
       i.name.toLowerCase().includes(searchValue.toLowerCase()) || i.code.toLowerCase().includes(searchValue.toLowerCase())
     )
   ]);
@@ -28,7 +28,7 @@ export default function CatalogSearch({ sheet }: { sheet: Item[] }) {
   const handleInputChange = (v: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(v.target.value);
     const x = filters;
-    x[0] = (i: Item) => (
+    x[0] = (i: CourseListing) => (
       i.name.toLowerCase().includes(searchValue.toLowerCase()) || i.code.toLowerCase().includes(searchValue.toLowerCase())
     );
 
@@ -44,7 +44,7 @@ export default function CatalogSearch({ sheet }: { sheet: Item[] }) {
             <Filter
               name="Subject"
               index={1}
-              condition={(i: Item, batch: [string, boolean][]) => {
+              condition={(i: CourseListing, batch: [string, boolean][]) => {
                 if (batch.length === 0) return true;
                 return batch.map(b => b[0] === i.subject).includes(true);
               }}
@@ -55,7 +55,7 @@ export default function CatalogSearch({ sheet }: { sheet: Item[] }) {
             <Filter
               name="Rigor"
               index={2}
-              condition={(i: Item, batch: [string, boolean][]) => {
+              condition={(i: CourseListing, batch: [string, boolean][]) => {
                 if (batch.length === 0) return true;
                 return batch.map(b => b[0] === i.rigor).includes(true);
               }}
@@ -66,7 +66,7 @@ export default function CatalogSearch({ sheet }: { sheet: Item[] }) {
             <Filter
               name="Grade"
               index={3}
-              condition={(i: Item, batch: [string, boolean][]) => {
+              condition={(i: CourseListing, batch: [string, boolean][]) => {
                 if (batch.length === 0) return true;
                 return batch.map(b => i.grades?.map(g => `${g}`)?.includes(b[0])).includes(true);
               }}
@@ -93,9 +93,9 @@ export default function CatalogSearch({ sheet }: { sheet: Item[] }) {
 function Filter({ name, index, previous,condition, setState, options } : {
   name: string,
   index: number,
-  condition: (i: Item, batch: [string, boolean][]) => boolean,
-  previous: ((i: Item) => boolean)[]
-  setState: Dispatch<SetStateAction<((i: Item) => boolean)[]>>,
+  condition: (i: CourseListing, batch: [string, boolean][]) => boolean,
+  previous: ((i: CourseListing) => boolean)[]
+  setState: Dispatch<SetStateAction<((i: CourseListing) => boolean)[]>>,
   options: string[]
 }) {
   const [values, setValues] = useState<[string, boolean][]>(options.map((o) => [o, false]));
@@ -112,7 +112,7 @@ function Filter({ name, index, previous,condition, setState, options } : {
     const valuesToCheck = values.filter(v => v[1]);
 
     const x = previous;
-    x[index]= (i: Item) => condition(i, valuesToCheck);
+    x[index]= (i: CourseListing) => condition(i, valuesToCheck);
 
     setState(x.slice());
   }
@@ -215,8 +215,8 @@ function FilterToggle({ handler, content, allToggles, updateToggle }: {handler: 
 
 // LIST FILTERING COMPONENT
 
-function List({ allFilters, sheet }: { allFilters: ((listItem: Item) => boolean)[], sheet: Item[] }) {
-  const filter = (listItem: Item) => allFilters.map(fn => fn(listItem)).every(b => b);
+function List({ allFilters, sheet }: { allFilters: ((listItem: CourseListing) => boolean)[], sheet: CourseListing[] }) {
+  const filter = (listItem: CourseListing) => allFilters.map(fn => fn(listItem)).every(b => b);
   const [favs, setFavs] = useState<string[]>([]);
   const [layout, setLayout] = useState<'grid' | 'list'>('list');
   useEffect(() => {
@@ -261,7 +261,7 @@ function List({ allFilters, sheet }: { allFilters: ((listItem: Item) => boolean)
   )
 }
 
-function ListItem({ data, favorites, updateAllFavorites, layout }: { data: Item, favorites: string[], updateAllFavorites: Dispatch<SetStateAction<string[]>>, layout: 'grid' | 'list' }) {
+function ListItem({ data, favorites, updateAllFavorites, layout }: { data: CourseListing, favorites: string[], updateAllFavorites: Dispatch<SetStateAction<string[]>>, layout: 'grid' | 'list' }) {
   const [groupHover, setGroupHover] = useState(false);
 
   return (
