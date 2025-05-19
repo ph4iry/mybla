@@ -71,10 +71,6 @@ export default function Sheet({ headers, data, filter }:{ headers: string[], dat
             <div key={i} className="p-4">
               <div key={i} className="flex gap-4 mb-2">
                 <div className="font-bold text-lg mb-2">{_activity.name}</div>
-                <button onClick={() => {
-                  setOpportunity(_activity);
-                  setExpanded(true);
-                }} className="opacity-0 group-hover:opacity-100 transition py-1 px-2 bg-stone-100 rounded uppercase text-sm flex w-fit items-center gap-1">open <FaArrowUpRightFromSquare className="size-3" /></button>
               </div>
               <div className="flex text-sm gap-2 flex-wrap mb-2">
                 {_activity.grades.map(((g, i) => (
@@ -101,6 +97,10 @@ export default function Sheet({ headers, data, filter }:{ headers: string[], dat
                   <span key={i} className="bg-orange-50 text-orange-600 py-1 px-2 rounded-md truncate">{program}</span>
                 ))}
               </div>
+              <button onClick={() => {
+                setOpportunity(_activity);
+                setExpanded(true);
+              }} className="transition w-full py-1 px-2 bg-stone-100 rounded uppercase text-sm flex items-center gap-1 justify-center">open <FaArrowUpRightFromSquare className="size-3" /></button>
             </div>
           ))}
         </div>
