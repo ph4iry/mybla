@@ -1,6 +1,6 @@
 'use client';
 
-import { Item, Review } from "@/types/Listings";
+import { CourseListing, Review } from "@/types/Listings";
 import { StoredCourses } from "@/types/Storage";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { Structures } from "bla-aspen";
@@ -41,7 +41,7 @@ interface DetailedCourse extends Structures.Course {
 }
 type Course = DetailedCourse & { year: string };
 
-export default function IndividualPage({ catalogCourse, section }:{ catalogCourse: Item | null, section: string }) {
+export default function IndividualPage({ catalogCourse, section }:{ catalogCourse: CourseListing | null, section: string }) {
   const [course, setCourse] = useState<Course>(null!);
 
   useEffect(() => {

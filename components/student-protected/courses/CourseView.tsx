@@ -1,5 +1,5 @@
 'use client';
-import { Item } from '@/types/Listings';
+import { CourseListing } from '@/types/Listings';
 import { StoredCourses } from '@/types/Storage';
 import { getSubjectColorWithoutOpacitySettings } from '@/utils/colors';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/react';

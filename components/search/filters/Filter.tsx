@@ -1,4 +1,4 @@
-import { FilterOptions, Item } from "@/types/Listings";
+import { FilterOptions, CourseListing } from "@/types/Listings";
 import { Popover, Transition } from "@headlessui/react";
 import { HiChevronDown } from 'react-icons/hi2';
 import { useState, Fragment } from "react";
@@ -19,7 +19,7 @@ export default function Filter({ name, index, previous,condition, setState, opti
     const valuesToCheck = values.filter(v => v[1]);
 
     const x = previous;
-    x[index]= (i: Item) => condition(i, valuesToCheck);
+    x[index]= (i: CourseListing) => condition(i, valuesToCheck);
 
     setState(x.slice());
   }
