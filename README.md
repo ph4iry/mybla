@@ -15,8 +15,6 @@ if you need to learn these technologies, here are some recommended resources:
 - [React Documentation](https://react.dev/learn)
 - [Git Guide](https://github.com/git-guides)
 
-note you may need to create a Google Sheets Service Account to access the course data. this should be done on a **non-school Google account** to avoid access restrictions!
-
 ### where to start with prerequisites
 
 to learn more about Next.js, take a look at the following resources:
@@ -28,8 +26,10 @@ you can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ### setting up google sheets api access
 
+note you may need to create a Google Sheets Service Account to access the course data. this should be done on a **non-school Google account** to avoid access restrictions!
+
 1. follow [Google's official guide to create a service account](https://developers.google.com/workspace/guides/create-credentials#service-account)
-2. enable the Google Sheets API for your project
+2. enable the Google Sheets API for a Google Developer project
 3. download the service account JSON credentials file
 4. create a `.env.local` file in your project root with the following variables:
    ```
@@ -51,7 +51,7 @@ you can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 when creating new components:
 
-1. add components to the `components/v3/` directory (ignore v1 and v2 directories as they are legacy code being updated)
+1. add components to the `components/v3/` directory (ignore other components directories as they are legacy code being updated)
 2. follow the naming convention: PascalCase for component names (e.g. `CoursePanel.tsx`)
 3. use TypeScript and include proper type definitions
 4. structure your component like this:
