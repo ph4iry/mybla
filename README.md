@@ -4,16 +4,22 @@ this is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### prerequisites
 
-before contributing to this project, you should have a good understanding of:
-- Next.js (13+) and React
-- TypeScript
+before contributing to this project, you should have a good understanding of (in order):
+- HTML/CSS/Javascript (basic web development)
 - Git basics
+- Node.js
+- TailwindCSS (which is really easy to learn how to use!)
+- Typescript (which is basically Javascript with some extra steps)
+- React
+- Next.js
 
-if you need to learn these technologies, here are some recommended resources:
-- [Next.js 13+ Tutorial](https://nextjs.org/learn)
+if you need to learn these technologies, **fun fact: you can learn how to use all of these (minus Tailwind) through free courses on [Codecademy](https://www.codecademy.com/), as long as you log in with your BPS Clever account!)**
+
+- [Next.js 14+ Tutorial](https://nextjs.org/learn)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
 - [React Documentation](https://react.dev/learn)
 - [Git Guide](https://github.com/git-guides)
+- [TailwindCSS Documentation](https://tailwindcss.com)
 
 ### where to start with prerequisites
 
