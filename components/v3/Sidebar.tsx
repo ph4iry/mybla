@@ -45,10 +45,10 @@ function Button({ children, text, link }:{ children: React.ReactNode, text: stri
   const pathname = usePathname();
 
   return (
-    <div className={`rounded-xl ${pathname === link ? 'bg-zinc-900 text-white' : 'bg-white border text-black'} size-14 flex items-center justify-center relative group`}>
+    <div className={`rounded-xl ${pathname === link ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900' : 'bg-white border text-black dark:bg-stone-900 dark:text-stone-200'} size-14 flex items-center justify-center relative group`}>
       {children}
       <Link href={link} className="absolute h-full w-full z-10"></Link>
-      <div className={`pointer-events-none z-50 whitespace-nowrap rounded-full px-3 py-1.5 group-hover:opacity-100 opacity-0 transition absolute left-16 text-sm ${pathname === link ? 'bg-zinc-900 text-white' : 'bg-white border text-black'}`}>{text}</div>
+      <div className={`pointer-events-none z-50 whitespace-nowrap rounded-full px-3 py-1.5 group-hover:opacity-100 opacity-0 transition absolute left-16 text-sm ${pathname === link ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900' : 'bg-white border text-black dark:bg-stone-900 dark:text-stone-200'}`}>{text}</div>
     </div>
   )
 }

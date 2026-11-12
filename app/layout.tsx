@@ -4,7 +4,6 @@ import { Plus_Jakarta_Sans, Playfair_Display } from 'next/font/google';
 import { Analytics } from "@vercel/analytics/react";
 import Sidebar from '@/components/v3/Sidebar';
 import KWrapper from '@/components/v3/KWrapper';
-import { PiStarFourFill } from 'react-icons/pi';
 import TopBar from '@/components/v3/TopBar';
 
 const rootFont = Plus_Jakarta_Sans({ subsets: ['latin'], weight: ['400', '500', '600', '700'] })
@@ -22,14 +21,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${rootFont.className} ${headingFont.variable}`}>
+    <html lang="en" className={`${rootFont.className} ${headingFont.variable}`} suppressHydrationWarning>
+      <head>
+        {/* apply the saved (or system) theme before first paint so the page doesn't flash */}
+        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}` }} />
+      </head>
       <Analytics />
       <body className="h-screen flex">
         <KWrapper>
           <Sidebar />
-          <div className="w-full">
+          <div className="w-full h-screen flex flex-col min-w-0">
             <TopBar />
-            <div className="h-[85%] p-4 md:p-10 overflow-hidden">
+            <div className="flex-1 min-h-0 p-4 md:p-8 overflow-hidden">
               {children}
             </div>
           </div>

@@ -4,7 +4,16 @@
 
 @layer base{
   body {
-    @apply bg-white transition duration-700
+    @apply bg-white text-stone-900 dark:bg-stone-900 dark:text-stone-100 transition-colors duration-300
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  /* bare `border` / `hr` utilities fall back to this color */
+  .dark *, .dark ::before, .dark ::after {
+    @apply border-stone-800;
   }
 
   body * {

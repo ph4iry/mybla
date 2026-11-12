@@ -1,16 +1,5 @@
 const withMDX = require('@next/mdx')() 
 
-const environment = () => {
-  const heroku = false;
-
-  let server_url =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3030"
-      : "https://mybla-server-30f658414629.herokuapp.com";
-
-  return heroku || server_url ? "https://mybla-server-30f658414629.herokuapp.com" : server_url;
-}
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Configure `pageExtensions` to include MDX files
@@ -23,16 +12,6 @@ const nextConfig = {
         hostname: "**",
       },
     ],
-  },
-  async rewrites() {
-    return {
-      fallback: [
-        {
-          source: '/api/:path*',
-          destination: `${environment()}/api/:path*`,
-        },
-      ],
-    }
   },
 }
  
