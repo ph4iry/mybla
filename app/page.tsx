@@ -8,8 +8,7 @@ export default function Home() {
       <p className="text-base italic font-light">Made with <FaHeart className="text-red-400 inline-block mx-2" /> by <span className="font-semibold">Phaedra Sanon, Class of &apos;25</span>. This site is open source on <Link href="https://github.com/ph4iry/mybla" className="underline underline-offset-2">Github</Link>.</p>
       <div className="border rounded-md p-6 mt-6">
         <div className="text-sm font-bold uppercase text-amber-500 mb-4">Resources</div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card title="Navigate myBLA" description="Got questions? Get them answered!" link="/guide" section="resources" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card title="Course Catalog" description="View this year&apos;s course selection catalog" link="/catalog" section="resources" />
           <Card title="Opportunities" description="Find extracurricular opportunities and explore your interests" link="/opportunities" section="resources" />
         </div>

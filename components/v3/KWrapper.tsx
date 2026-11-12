@@ -43,8 +43,8 @@ export default function KWrapper({ children }:{ children: ReactNode }) {
     <KBarProvider actions={actions}>
       <KBarPortal>
         <KBarPositioner className="bg-black/50 backdrop-blur-sm z-50">
-          <KBarAnimator className="w-full max-w-lg rounded bg-white overflow-hidden relative">
-            <KBarSearch className="w-full rounded text-lg !border-0 !ring-0 !outline-none py-5 px-4" placeholder="Type a command or search..." />
+          <KBarAnimator className="w-full max-w-lg rounded bg-white dark:bg-stone-800 dark:text-stone-100 overflow-hidden relative">
+            <KBarSearch className="w-full rounded text-lg !border-0 !ring-0 !outline-none py-5 px-4 bg-transparent dark:placeholder:text-stone-500" placeholder="Type a command or search..." />
             <RenderResults />
           </KBarAnimator>
         </KBarPositioner>
@@ -62,12 +62,12 @@ function RenderResults() {
       items={results as ActionImpl[]}
       onRender={({ item, active }: { item: string | ActionImpl; active: boolean }) => (
         typeof item === "string" ? (
-          <div className={`p-5 border-l-2 transition ${active ? 'border-amber-400 bg-amber-300/20' : 'border-white'}`}>
+          <div className={`p-5 border-l-2 transition ${active ? 'border-amber-400 bg-amber-300/20 dark:bg-amber-400/10' : 'border-white dark:border-stone-800'}`}>
             {item}
           </div>
         ) : (
           <div
-            className={`p-5 flex items-center gap-4 border-l-2 transition ${active ? 'border-amber-400 bg-amber-300/20' : 'border-white'}`}
+            className={`p-5 flex items-center gap-4 border-l-2 transition ${active ? 'border-amber-400 bg-amber-300/20 dark:bg-amber-400/10' : 'border-white dark:border-stone-800'}`}
           >
             {item.icon} {item.name}
           </div>

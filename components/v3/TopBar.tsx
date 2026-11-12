@@ -1,10 +1,13 @@
 'use client';
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { PiStarFourFill } from "react-icons/pi";
+import { usePathname } from "next/navigation";
+import { LuSearch } from "react-icons/lu";
+import ThemeToggle from "./ThemeToggle";
 
 export default function TopBar() {
   const [showCmd, setShowCmd] = useState(false);
+  const isHome = usePathname() === '/';
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -21,17 +24,18 @@ export default function TopBar() {
   }
 
   return (
-    <div className="border-b p-8 h-32 flex items-center justify-between">
-      <Link href={'/'} className="text-4xl md:text-6xl italic font-playfair-display font-semibold">myBLA</Link>
-      <div className="flex items-center gap-6">
-        {showCmd && <span className="hidden md:block">
-          <kbd className="px-2 py-1 text-sm font-mono text-zinc-700 bg-zinc-50 rounded border border-zinc-300">⌘ Cmd</kbd>
-          +
-          <kbd className="px-2 py-1 text-sm font-mono text-zinc-700 bg-zinc-50 rounded border border-zinc-300">K</kbd>
+    <div className={`border-b flex items-center justify-between shrink-0 ${isHome ? 'p-8 h-32' : 'px-4 md:px-8 h-16'}`}>
+      <Link href={'/'} className={`italic font-playfair-display font-semibold ${isHome ? 'text-4xl md:text-6xl' : 'text-2xl md:text-3xl'}`}>myBLA</Link>
+      <div className="flex items-center gap-2">
+      <button onClick={handleClick} className={`flex items-center gap-2 rounded-md border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-100 transition ${isHome ? 'h-10 px-3' : 'h-8 px-2.5'}`}>
+        <LuSearch className="size-4" />
+        <span className="text-sm">Search</span>
+        {showCmd && <span className="hidden md:inline-flex items-center gap-1 ml-2">
+          <kbd className="px-1.5 text-xs font-mono text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-300 dark:border-zinc-700">⌘ Cmd</kbd>
+          <kbd className="px-1.5 text-xs font-mono text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-300 dark:border-zinc-700">K</kbd>
         </span>}
-        <button className="flex gap-4 flex-nowrap items-center" onClick={handleClick}>
-          <PiStarFourFill className="size-14 transition hover:text-amber-500" />
-        </button>
+      </button>
+      <ThemeToggle className={`inline-flex items-center justify-center rounded-md border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-100 transition ${isHome ? 'size-10' : 'size-8'}`} />
       </div>
     </div>
   )

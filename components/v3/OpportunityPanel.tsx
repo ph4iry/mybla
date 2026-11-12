@@ -1,112 +1,92 @@
 import { Opportunity } from "@/types/Listings";
-import { AnimatePresence, motion } from "motion/react";
-import { FaArrowUpRightFromSquare, FaEnvelope, FaExpand, FaLink, FaXmark } from "react-icons/fa6";
+import { opportunityTag } from "@/utils/colors";
+import { seasons } from "@/utils/opportunities";
+import { LuCalendar, LuCalendarClock, LuGraduationCap, LuLayers, LuLink, LuListChecks, LuMail, LuMessageCircle, LuTarget } from "react-icons/lu";
+import SidePeek, { PeekSection, PeekTitle, Properties, Property } from "./SidePeek";
 
-export default function OpportunityPanel({ opportunity, setOpportunity }:{ opportunity: Opportunity | null, setOpportunity: (o: Opportunity | null) => void }) {
+const tag = "min-h-6 inline-flex px-2 py-0.5 items-center rounded text-xs";
+
+const withProtocol = (url: string) => `${!url.includes('http') ? 'https://' : ''}${url}`;
+
+const linkClass = "underline underline-offset-2 decoration-stone-300 dark:decoration-stone-600 hover:decoration-stone-800 dark:hover:decoration-stone-300 break-all";
+
+// contact fields sometimes hold a name and title alongside the address, so only the address becomes a link
+function WithEmails({ text }:{ text: string }) {
+  return <span>{text.split(/(\S+@\S+\.[^\s,;]+)/).map((part, i) => (
+    i % 2 === 1 ? <a key={i} href={`mailto:${part}`} className={linkClass}>{part}</a> : part
+  ))}</span>;
+}
+
+export default function OpportunityPanel({ opportunity, onClose, onPrev, onNext, position }:{
+  opportunity: Opportunity | null,
+  onClose: () => void,
+  onPrev?: () => void,
+  onNext?: () => void,
+  position?: string,
+}) {
+  const o = opportunity;
+  const grades = o ? Array.from(new Set(o.grades.filter(g => !isNaN(g)))).sort((a, b) => a - b) : [];
+  const programming = o ? o.programming.filter(p => p && !o.focus.includes(p)) : [];
+
   return (
-    <AnimatePresence>
-      {opportunity && (<>
-        <motion.div key="opportunity-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed bg-zinc-900/25 w-screen h-screen top-0 left-0 backdrop-blur-sm z-40 flex items-center justify-center p-8">
-          <motion.div key="opportunity-panel" initial={{ opacity: 0, y: 20}} animate={{ opacity: 1, y: 0}} exit={{ opacity: 0, y: 20 }} transition={{ ease: 'easeInOut' }} className="h-[80vh] max-w-5xl w-full bg-zinc-50 shadow-xl z-50 border overflow-auto relative">
-            <div className="border-b h-32 flex items-center justify-between p-8 text-right w-full gap-4 sticky bg-zinc-50 top-0">
-              <div>
-                <h2 className="text-2xl md:text-4xl font-bold font-playfair-display">{opportunity.name}</h2>
-              </div>
-              
-              <div className="flex flex-col items-center gap-3">
-                <button onClick={() => setOpportunity(null)}>
-                  <span className="sr-only">Close</span>
-                  <FaXmark className="size-8" />
-                </button>
-                {/* <button>
-                  <span className="sr-only">view in full</span>
-                  <FaArrowUpRightFromSquare className="size-6" />
-                  </button> */}
-              </div>
-            </div>
-            <div className="p-8 space-y-5">
-              <div className="">{opportunity.mission}</div>
-              <div className="flex flex-col md:grid md:grid-cols-2">
-                <div className="flex flex-nowrap gap-2 items-center">
-                  <FaEnvelope className="size-4" />
-                  <a href={`mailto:${opportunity.email}`} className="underline">{opportunity.email}</a>
-                </div>
-                <div className="flex flex-nowrap gap-2 items-center">
-                  <FaLink className="size-4 inline-block shrink-0" />
-                  <a href={`${!opportunity.website.includes('http') ? 'https://' : ''}${opportunity.website}`} className="underline truncate">{opportunity.website}</a>
-                </div>
-              </div>
-              <hr className="" />
-              <div className="flex flex-col md:grid md:grid-cols-2">
-                <div>
-                  <div className="text-xl font-bold">Program season</div>
-                  <div>{opportunity.dates}</div>
-                </div>
-                <div>
-                  <div className="text-xl font-bold">When to apply</div>
-                  <div>{opportunity.deadline}</div>
-                </div>
-              </div>
-              <hr className="" />
-              <div className="">
-                <div className="text-xl font-bold">Eligibility</div>
-                <div className="text-sm flex flex-col md:flex-row gap-2 items-center">
-                  <span>Grade level:</span>
-                  <div className="flex gap-2 items-center">
-                    {opportunity.grades.map(((g, i) => (
-                      <div key={i} className="flex items-center justify-center size-8 rounded-full border">
-                        <span>{g}</span>
-                      </div>
-                    )))}
-                  </div>
-                </div>
-                <div className="italic"><span className="font-bold">Other requirements:</span> {opportunity.requirements}</div>
-              </div>
-              <div>
-                <div className="font-bold text-xl">Any questions?</div>
-                <div className="flex flex-nowrap gap-2 items-center">
-                <FaEnvelope className="size-4" />
-                <a href={`mailto:${opportunity.contactEmail}`} className="underline">{opportunity.contactEmail}</a>
-              </div>
-              </div>
-              <div className="">
-                <div className="font-bold text-xl">Tags</div>
-                <div className="flex gap-2 flex-wrap mb-2">
-                  <span>Organizational Focus:</span>
-                  {opportunity.focus.map((goal, i) => (
-                    <span key={i} className="bg-rose-50 text-rose-600 py-1 px-2 rounded-md">{goal}</span>
-                  ))}
-                </div>
-                <div className="flex gap-2 flex-wrap">
-                  <span>Type of programming:</span>
-                  {opportunity.programming.map((program, i) => (
-                    <span key={i} className="bg-orange-50 text-orange-600 py-1 px-2 rounded-md">{program}</span>
-                  ))}
-                </div>
-              </div>
-              {/* <div className="italic">Sign up for this course during course selection with code: <strong></strong>.</div> */}
-              
-            </div>
-          </motion.div>
-        </motion.div>
-      </>)}
-    </AnimatePresence>
-  )
-}
+    <SidePeek open={!!o} onClose={onClose} onPrev={onPrev} onNext={onNext} position={position} contentKey={o?.name}>
+      {o && <>
+        <PeekTitle>{o.name}</PeekTitle>
+        <Properties>
+          {grades.length > 0 && (
+            <Property icon={<LuGraduationCap />} label="Grades">
+              {grades.map(g => <span key={g} className={`${tag} w-6 px-0 justify-center ${opportunityTag.grade}`}>{g}</span>)}
+            </Property>
+          )}
+          {o.dates && (
+            <Property icon={<LuCalendar />} label="Season">
+              {seasons(o.dates).map(s => <span key={s} className={`${tag} ${opportunityTag.season}`}>{s}</span>)}
+            </Property>
+          )}
+          {o.deadline && (
+            <Property icon={<LuCalendarClock />} label="Deadline">
+              {seasons(o.deadline).map(s => <span key={s} className={`${tag} ${opportunityTag.deadline}`}>{s}</span>)}
+            </Property>
+          )}
+          {o.focus.filter(Boolean).length > 0 && (
+            <Property icon={<LuTarget />} label="Focus">
+              {o.focus.filter(Boolean).map(f => <span key={f} className={`${tag} ${opportunityTag.focus}`}>{f}</span>)}
+            </Property>
+          )}
+          {programming.length > 0 && (
+            <Property icon={<LuLayers />} label="Programming">
+              {programming.map(p => <span key={p} className={`${tag} ${opportunityTag.programming}`}>{p}</span>)}
+            </Property>
+          )}
+          {o.requirements && (
+            <Property icon={<LuListChecks />} label="Requirements">
+              <span>{o.requirements}</span>
+            </Property>
+          )}
+          {o.website && (
+            <Property icon={<LuLink />} label="Website">
+              <a href={withProtocol(o.website)} target="_blank" rel="noreferrer noopener" className={`${linkClass} break-all`}>{o.website}</a>
+            </Property>
+          )}
+          {o.email && (
+            <Property icon={<LuMail />} label="Email">
+              <WithEmails text={o.email} />
+            </Property>
+          )}
+          {o.contactEmail && o.contactEmail !== o.email && (
+            <Property icon={<LuMessageCircle />} label="Questions">
+              <WithEmails text={o.contactEmail} />
+            </Property>
+          )}
+        </Properties>
 
-/*
-all properties of opportunity: 
-{
-  name: string;
-  mission: string;
-  website: string;
-  email: string;
-  contactEmail: string;
-  focus: string[];
-  programming: string[];
-  grades: number[];
-  dates: string;
-  requirements: string;
-  deadline: string;
+        {o.mission && <>
+          <hr className="my-6 border-stone-100 dark:border-stone-800" />
+          <PeekSection title="Mission">
+            <p className="whitespace-pre-line">{o.mission}</p>
+          </PeekSection>
+        </>}
+      </>}
+    </SidePeek>
+  );
 }
-*/

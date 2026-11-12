@@ -15,7 +15,7 @@ export default function Card({ title, description, link, section }:{ title: stri
     }
   })()
   return (
-    <div className={`border-2 border-zinc-400 p-6 rounded-md ${category} transition bg-white hover:shadow-md flex flex-col justify-between`}>
+    <div className={`border-2 border-zinc-400 dark:border-zinc-700 p-6 rounded-md ${category} transition bg-white dark:bg-stone-900 hover:shadow-md dark:hover:shadow-black/40 flex flex-col justify-between`}>
       <div>
         <div className="text-xl font-bold">{title}</div>
         <div>{description}</div>
